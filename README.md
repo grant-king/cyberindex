@@ -1,2 +1,2 @@
 # cyberindex
-DRF + Vue project for managing user-uploaded game assets
+DRF + Vue project for managing user-uploaded civic technology projects
