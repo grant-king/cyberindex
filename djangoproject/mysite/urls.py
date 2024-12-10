@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
 from techprojects import views_api as techprojects_views
+from frontend_techprojects.views import index as frontend_1_index
 
 router = routers.DefaultRouter()
 router.register(r'projectusers', techprojects_views.ProjectUserViewSet)
@@ -32,4 +33,5 @@ urlpatterns = [
     path('api-auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('apiv1/', include(router.urls)),
+    path('', frontend_1_index, name='index'),
 ]

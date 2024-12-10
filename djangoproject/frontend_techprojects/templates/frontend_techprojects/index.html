@@ -1,0 +1,23 @@
+<!-- path cyberindex/djangoproject/frontend_techprojects/templates/frontend_techprojects -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TECH PROJECTS APP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'frontend_saga/favicon.webp' %}">
+</head>
+
+<body class="bg-black">
+    <script>
+        window.csrf_token = "{{ csrf_token }}";
+        window.user_id = "{{ user.id }}";
+    </script>
+    <div id="app">
+        TECH PROJECTS APP APP
+    </div>
+    <script type="module" src="{% static 'frontend_techprojects/assets/index-D9XIYvBO.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'frontend_techprojects/assets/index-2ZaS5HyD.css' %}">
+</body>
