@@ -24,8 +24,9 @@ class ProjectResourceLinkSerializer(serializers.ModelSerializer):
 class ProjectRegistrationSerializer(serializers.HyperlinkedModelSerializer):
     location = LocationSerializer(read_only=True)
     resource_links = ProjectResourceLinkSerializer(many=True, read_only=True)
+    submitted_by = ProjectUserSerializer(read_only=True)
     class Meta:
         model = ProjectRegistration
-        fields = ['url', 'location', 'name', 'sumbission_date', 'last_updated', 'image_url', 'repository_url', 'submitted_by', 'resource_links']
+        fields = ['url', 'location', 'name', 'submission_date', 'last_updated', 'image_url', 'repository_url', 'submitted_by', 'resource_links']
 
 

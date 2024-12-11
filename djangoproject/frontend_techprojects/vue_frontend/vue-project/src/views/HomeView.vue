@@ -1,9 +1,7 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import ProjectList from '../components/ProjectList.vue';
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <ProjectList />
 </template>

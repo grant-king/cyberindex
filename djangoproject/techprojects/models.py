@@ -24,7 +24,7 @@ class Location(models.Model):
 class ProjectRegistration(models.Model):
     name = models.CharField(max_length=100)
     submitted_by = models.ForeignKey(ProjectUser, on_delete=models.CASCADE, related_name='projects')
-    sumbission_date = models.DateTimeField(auto_now_add=True)
+    submission_date = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     image_url = models.URLField(null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True, related_name='projects')

@@ -38,6 +38,10 @@ class ProjectRegistrationViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectRegistrationSerializer
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        project_user = ProjectUser.objects.get(user=self.request.user)
+        serializer.save(submitted_by=project_user)
+
 
 class ProjectResourceLinkViewSet(viewsets.ModelViewSet):
     queryset = ProjectResourceLink.objects.all()
