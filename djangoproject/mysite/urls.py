@@ -22,7 +22,6 @@ from techprojects import views_api as techprojects_views
 from frontend_techprojects.views import index as frontend_1_index
 
 router = routers.DefaultRouter()
-router.register(r'projectusers', techprojects_views.ProjectUserViewSet)
 router.register(r'locations', techprojects_views.LocationViewSet)
 router.register(r'projectregistrations', techprojects_views.ProjectRegistrationViewSet)
 router.register(r'projectresourcelinks', techprojects_views.ProjectResourceLinkViewSet)

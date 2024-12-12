@@ -33,6 +33,17 @@
                 </div>
                 <nav class="flex flex-1 flex-col">
                   <ul role="list" class="flex flex-1 flex-col gap-y-7">
+                    <!-- routerlink navigation -->
+                    <li>
+                      <ul role="list" class="-mx-2 space-y-1">
+                        <li v-for="item in router_navigation" :key="item.name">
+                          <RouterLink :to="item.to" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
+                            <component :is="item.icon" class="size-6 shrink-0" aria-hidden="true" />
+                            {{ item.name }}
+                          </RouterLink>
+                        </li>
+                      </ul>
+                    </li>
                     <li>
                       <ul role="list" class="-mx-2 space-y-1">
                         <li v-for="item in navigation" :key="item.name">
@@ -192,6 +203,12 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+
+const router_navigation = [
+  {name: 'Home', to: '/', current: true},
+  {name: 'About', to: '/about', current: false},
+  {name: 'Project Registration', to: '/projectadd', current: false},
+]
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },

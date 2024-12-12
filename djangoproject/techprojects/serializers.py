@@ -1,13 +1,7 @@
 from rest_framework import serializers
 from techprojects.models import (
-    ProjectUser, Location, ProjectRegistration, ProjectResourceLink,
+    Location, ProjectRegistration, ProjectResourceLink,
     )
-
-class ProjectUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProjectUser
-        fields = '__all__'
-
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,9 +18,8 @@ class ProjectResourceLinkSerializer(serializers.ModelSerializer):
 class ProjectRegistrationSerializer(serializers.HyperlinkedModelSerializer):
     location = LocationSerializer(read_only=True)
     resource_links = ProjectResourceLinkSerializer(many=True, read_only=True)
-    submitted_by = ProjectUserSerializer(read_only=True)
     class Meta:
         model = ProjectRegistration
-        fields = ['url', 'location', 'name', 'submission_date', 'last_updated', 'image_url', 'repository_url', 'submitted_by', 'resource_links']
+        fields = ['url', 'location', 'name', 'submission_date', 'last_updated', 'image_url', 'repository_url', 'repo_details', 'resource_links']
 
 
