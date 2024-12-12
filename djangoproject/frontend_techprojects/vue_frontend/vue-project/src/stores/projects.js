@@ -108,6 +108,9 @@ export const useProjectsStore = defineStore('projects', () => {
     })
     if (response.ok) {
       console.log('Project submitted successfully')
+      // save the response project to the project_list
+      const new_project = await response.json()
+      project_list.value.push(new_project)
       // reset the new_object_preview
       new_object_preview.value = structuredClone(new_object_template)
       show_preview.value = false
