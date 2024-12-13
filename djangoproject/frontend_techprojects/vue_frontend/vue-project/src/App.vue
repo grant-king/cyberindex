@@ -214,9 +214,10 @@
                 <MenuItems
                   class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none">
                   <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                  <a :href="item.href"
-                    :class="[active ? 'bg-gray-50 outline-none' : '', 'block px-3 py-1 text-sm/6 text-black']">{{
-                      item.name }}</a>
+                    <RouterLink :to="item.to"
+                    :class="[active ? 'bg-gray-50 outline-none' : '', 'block px-3 py-1 text-sm/6 text-black']">
+                    {{ item.name }}
+                    </RouterLink>
                   </MenuItem>
                 </MenuItems>
               </transition>
@@ -285,7 +286,7 @@ const feat_sponsors = [
   { id: 3, name: 'IT20', href: 'https://2it0.com', initial: 'ITT', current: false },
 ]
 const userNavigation = [
-  { name: 'Sponsor Login', href: '#' },
+  { name: 'Sponsor Login', to: '/login' },
 ]
 
 const sidebarOpen = ref(false)

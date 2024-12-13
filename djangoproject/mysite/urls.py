@@ -20,6 +20,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
 from techprojects import views_api as techprojects_views
 from frontend_techprojects.views import index as frontend_1_index
+from sponsors import views_api as sponsors_views
+from django.contrib.auth import views as auth_views
 
 router = routers.DefaultRouter()
 router.register(r'locations', techprojects_views.LocationViewSet)
@@ -33,4 +35,12 @@ urlpatterns = [
     path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('apiv1/', include(router.urls)),
     path('', frontend_1_index, name='index'),
+    # sponsors accounts
+    path('login/', sponsors_views.LoginView.as_view(), name='login'),
+    path('logout/', sponsors_views.LogoutView.as_view(), name='logout'),
+    path('register/', sponsors_views.RegisterView.as_view(), name='register'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
