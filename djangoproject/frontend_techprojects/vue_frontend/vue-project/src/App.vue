@@ -233,11 +233,15 @@
       </main>
     </div>
   </div>
+  <div class="min-h-32 bg-gradient-to-b from-white/50 via-black to-black"></div>
+  <FooterAnimation />
+  <FooterAnimation />
 </template>
 
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { ref } from 'vue'
+import FooterAnimation from './components/FooterAnimation.vue'
 import {
   Dialog,
   DialogPanel,
