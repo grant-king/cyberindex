@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="mt-10">
-                        <button type="submit"
+                        <button type="button"
                             class="block w-full rounded-md bg-lime-200 px-3.5 py-2.5 text-center text-sm font-bold text-white/20 bg-clip-text border-4 border-dotted border-black shadow-sm hover:bg-lime-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">Create
                             Sponsorship Profile</button>
                     </div>
@@ -82,7 +82,7 @@
                 </form>
                 <!-- Sponsorship Example -->
                 <div class="lg:mt-6 lg:w-80 lg:flex-none">
-                    <SponsorPreview :message="testimonial" :author="testimonial_author" 
+                    <SponsorWidget1 :message="testimonial" :author="testimonial_author" 
                         :sponsor_role="testimonial_author_title" :org_name="testimonial_author_org"
                         :sponsor_avatar="testimonial_author_image" :logo_source="logo_source" />
                 </div>
@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import SponsorPreview from './SponsorPreview.vue';
+import SponsorWidget1 from './SponsorWidget1.vue';
 
 const title_1 = 'Let’s get your sponsorship details in order.'
 const subtitle_1 = 'This information will be used to create your sponsorship profile.'
