@@ -1,12 +1,15 @@
 
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
-from rest_framework import permissions, status
+from rest_framework import permissions, status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication
+from .models import Sponsor, SponsorProfile
 
 from .serializers import LoginSerializer
+from .serializers import SponsorProfileSerializer, SponsorSerializer, SponsorMessageSerializer, SponsorContributionSerializer
+from rest_framework.decorators import action
 
 class LoginView(APIView):
     """
@@ -55,4 +58,67 @@ class RegisterView(APIView):
                 return Response({'message': f'{e}'}, status=status.HTTP_400_BAD_REQUEST)
         
         return Response({'message': 'username, password, and email are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SponsorViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows sponsors to be viewed or edited.
+    """
+    queryset = Sponsor.objects.all()
+    serializer_class = SponsorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=['get'])
+    def get_create_sponsor(self, request):
+        try:
+            sponsor = Sponsor.objects.get(user=request.user)
+            serializer = self.get_serializer(sponsor)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Sponsor.DoesNotExist:
+            try:
+                sponsor = Sponsor.objects.create(user=request.user)
+                serializer = self.get_serializer(sponsor)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({'message': f'{e}'}, status=status.HTTP_400_BAD_REQUEST)
     
+    def get_queryset(self):
+        return Sponsor.objects.filter(archived=False)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    def perform_destroy(self, instance):
+        if instance.user == self.request.user:
+            instance.archived = True
+            instance.save()
+        else:
+            pass
+
+
+class SponsorProfileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows sponsors to be viewed or edited.
+    """
+    queryset = SponsorProfile.objects.all()
+    serializer_class = SponsorProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return SponsorProfile.objects.filter(sponsor__archived=False)
+    
+    def perform_create(self, serializer):
+        serializer.save(sponsor=self.request.user.sponsor)
+    
+    def perform_update(self, serializer):
+        serializer.save(sponsor=self.request.user.sponsor)
+    
+    def perform_destroy(self, instance):
+        if instance.sponsor.user == self.request.user:
+            instance.sponsor.archived = True
+            instance.save()
+        else:
+            pass
