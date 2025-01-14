@@ -23,9 +23,9 @@
                 <SponsorMessageCreate />
                 <!-- Sponsorship Example -->
                 <div class="lg:mt-6 lg:w-80 lg:flex-none">
-                    <SponsorWidget1 :message="testimonial" :author="testimonial_author" 
-                        :sponsor_role="testimonial_author_title" :org_name="testimonial_author_org"
-                        :sponsor_avatar="testimonial_author_image" :logo_source="logo_source" />
+                    <SponsorWidget1 :message="preview.message" :author="preview.rep_name"
+                        :sponsor_role="preview.rep_role" :org_name="preview.organization_name"
+                        :sponsor_avatar="preview.rep_image_url" :logo_source="preview.logo_source" />
                 </div>
             </div>
         </div>
@@ -37,15 +37,12 @@ import SponsorWidget1 from './SponsorWidget1.vue';
 import SponsorMessageCreate from './SponsorMessageCreate.vue';
 import SponsorProfileCreate from './SponsorProfileCreate.vue';
 
+import { useSponsorprofilesStore } from '@/stores/sponsorprofiles';
+
+const sponsorprofiles_store = useSponsorprofilesStore();
+const preview = sponsorprofiles_store.new_object_preview;
+
 const title_1 = 'Let’s get your sponsorship details in order.'
 const subtitle_1 = 'This information will be used to create your sponsorship profile.'
-
-//sponsorship example data
-const logo_source = 'https://unrolla.blob.core.windows.net/unrolla/images/IT20_pumpkin_logo_D9SHwmg.webp'
-const testimonial = 'As someone who is averse to traditional marketing methods and muddy monetization models, I find quiet, transparent support of aligned projects to be the most rewarding.'
-const testimonial_author = 'Grant King'
-const testimonial_author_image = 'https://unrolla.blob.core.windows.net/unrolla/images/PXL_20231023_004949758_4679usk.webp'
-const testimonial_author_title = 'Product Manager'
-const testimonial_author_org = 'IT20'
 
 </script>
