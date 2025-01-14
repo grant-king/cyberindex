@@ -27,6 +27,8 @@ router = routers.DefaultRouter()
 router.register(r'locations', techprojects_views.LocationViewSet)
 router.register(r'projectregistrations', techprojects_views.ProjectRegistrationViewSet)
 router.register(r'projectresourcelinks', techprojects_views.ProjectResourceLinkViewSet)
+router.register(r'sponsors', sponsors_views.SponsorViewSet)
+router.register(r'sponsorprofiles', sponsors_views.SponsorProfileViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
