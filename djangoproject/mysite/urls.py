@@ -29,6 +29,7 @@ router.register(r'projectregistrations', techprojects_views.ProjectRegistrationV
 router.register(r'projectresourcelinks', techprojects_views.ProjectResourceLinkViewSet)
 router.register(r'sponsors', sponsors_views.SponsorViewSet)
 router.register(r'sponsorprofiles', sponsors_views.SponsorProfileViewSet)
+router.register(r'sponsormessages', sponsors_views.SponsorMessageViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
