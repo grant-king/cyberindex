@@ -67,20 +67,6 @@ class SponsorViewSet(viewsets.ModelViewSet):
     queryset = Sponsor.objects.all()
     serializer_class = SponsorSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-    @action(detail=False, methods=['get'])
-    def get_create_sponsor(self, request):
-        try:
-            sponsor = Sponsor.objects.get(user=request.user)
-            serializer = self.get_serializer(sponsor)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Sponsor.DoesNotExist:
-            try:
-                sponsor = Sponsor.objects.create(user=request.user)
-                serializer = self.get_serializer(sponsor)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                return Response({'message': f'{e}'}, status=status.HTTP_400_BAD_REQUEST)
     
     def get_queryset(self):
         return Sponsor.objects.filter(archived=False)
@@ -111,6 +97,7 @@ class SponsorProfileViewSet(viewsets.ModelViewSet):
         return SponsorProfile.objects.filter(sponsor__archived=False)
     
     def perform_create(self, serializer):
+        sponsor, created = Sponsor.objects.get_or_create(user=self.request.user)
         serializer.save(sponsor=self.request.user.sponsor)
     
     def perform_update(self, serializer):
