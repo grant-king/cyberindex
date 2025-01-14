@@ -163,7 +163,4 @@ class SponsorContributionViewSet(viewsets.ModelViewSet):
         serializer.save(sponsor=self.request.user.sponsor)
     
     def perform_destroy(self, instance):
-        if instance.sponsor.user == self.request.user:
-            instance.delete()
-        else:
-            pass
+        pass
