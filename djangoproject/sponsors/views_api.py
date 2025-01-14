@@ -136,3 +136,34 @@ class SponsorMessageViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save(sponsor=self.request.user.sponsor)
+
+    def perform_destroy(self, instance):
+        if instance.sponsor.user == self.request.user:
+            instance.delete()
+        else:
+            pass
+
+
+class SponsorContributionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows sponsor contributions to be viewed or edited.
+    """
+    queryset = SponsorContribution.objects.all()
+    serializer_class = SponsorContributionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return SponsorContribution.objects.filter(sponsor__archived=False)
+    
+    def perform_create(self, serializer):
+        sponsor, created = Sponsor.objects.get_or_create(user=self.request.user)
+        serializer.save(sponsor=sponsor)
+
+    def perform_update(self, serializer):
+        serializer.save(sponsor=self.request.user.sponsor)
+    
+    def perform_destroy(self, instance):
+        if instance.sponsor.user == self.request.user:
+            instance.delete()
+        else:
+            pass
