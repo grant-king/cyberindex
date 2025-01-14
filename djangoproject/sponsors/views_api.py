@@ -8,7 +8,7 @@ from rest_framework.authentication import SessionAuthentication
 from .models import Sponsor, SponsorProfile
 
 from .serializers import LoginSerializer
-from .serializers import SponsorProfileSerializer, SponsorSerializer, SponsorMessageSerializer, SponsorContributionSerializer
+from .serializers import SponsorProfileSerializer, SponsorProfileOwnerSerializer, SponsorSerializer, SponsorMessageSerializer, SponsorContributionSerializer
 from rest_framework.decorators import action
 
 class LoginView(APIView):
@@ -98,7 +98,7 @@ class SponsorProfileViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         sponsor, created = Sponsor.objects.get_or_create(user=self.request.user)
-        serializer.save(sponsor=self.request.user.sponsor)
+        serializer.save(sponsor=sponsor)
     
     def perform_update(self, serializer):
         serializer.save(sponsor=self.request.user.sponsor)
@@ -109,3 +109,11 @@ class SponsorProfileViewSet(viewsets.ModelViewSet):
             instance.save()
         else:
             pass
+
+    # action for getting the current user's sponsorprofile detail view
+    @action(detail=False, methods=['get'])
+    def my_profile(self, request):
+        sponsor = request.user.sponsor
+        sponsorprofile = sponsor.sponsorprofile
+        serializer = SponsorProfileOwnerSerializer(sponsorprofile, context={'request': request})
+        return Response(serializer.data)
