@@ -24,6 +24,12 @@ class SponsorProfileSerializer(serializers.ModelSerializer):
         fields = ['rep_name', 'rep_role', 'rep_image_url', 'company_name', 'company_logo_url', 'company_website']
 
 
+class SponsorProfileOwnerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SponsorProfile
+        fields = ['url', 'rep_name', 'rep_role', 'rep_image_url', 'company_name', 'company_logo_url', 'company_website']
+
+
 class SponsorMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = SponsorMessage
