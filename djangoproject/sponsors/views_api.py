@@ -5,7 +5,7 @@ from rest_framework import permissions, status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication
-from .models import Sponsor, SponsorProfile
+from .models import Sponsor, SponsorProfile, SponsorMessage, SponsorContribution
 
 from .serializers import LoginSerializer
 from .serializers import SponsorProfileSerializer, SponsorProfileOwnerSerializer, SponsorSerializer, SponsorMessageSerializer, SponsorContributionSerializer
@@ -117,3 +117,22 @@ class SponsorProfileViewSet(viewsets.ModelViewSet):
         sponsorprofile = sponsor.sponsorprofile
         serializer = SponsorProfileOwnerSerializer(sponsorprofile, context={'request': request})
         return Response(serializer.data)
+
+
+class SponsorMessageViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows sponsor messages to be viewed or edited.
+    """
+    queryset = SponsorMessage.objects.all()
+    serializer_class = SponsorMessageSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return SponsorMessage.objects.filter(sponsor__archived=False)
+    
+    def perform_create(self, serializer):
+        sponsor, created = Sponsor.objects.get_or_create(user=self.request.user)
+        serializer.save(sponsor=sponsor)
+
+    def perform_update(self, serializer):
+        serializer.save(sponsor=self.request.user.sponsor)
