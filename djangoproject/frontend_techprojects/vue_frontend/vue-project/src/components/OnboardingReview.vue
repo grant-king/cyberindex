@@ -19,17 +19,15 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </template>
 
 <script setup>
-import { useSponsorsStore } from '@/stores/sponsors';
+import { useSponsorprofilesStore } from '@/stores/sponsorprofiles';
 import SponsorWidget1 from './SponsorWidget1.vue';
 import SponsorWidget2 from './SponsorWidget2.vue';
 import SponsorWidget3 from './SponsorWidget3.vue';
 
-const sponsor_store = useSponsorsStore();
+const sponsorprofile_store = useSponsorprofilesStore();
 const preview = sponsor_store.new_object_preview;
 </script>

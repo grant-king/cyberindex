@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useSponsorsStore = defineStore('sponsors', () => {
+export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
   const base_url = window.location.origin
   const endpoint = `${base_url}/apiv1/sponsorprofiles/`
   const next_page = ref(`${endpoint}?page=1`)
