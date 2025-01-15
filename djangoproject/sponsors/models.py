@@ -9,12 +9,12 @@ class Sponsor(models.Model):
 
 class SponsorProfile(models.Model):
     sponsor = models.OneToOneField(Sponsor, on_delete=models.CASCADE)
-    rep_name = models.CharField(max_length=100)
-    rep_role = models.CharField(max_length=100)
-    rep_image_url = models.URLField()
-    company_name = models.CharField(max_length=100)
-    company_logo_url = models.URLField()
-    company_website = models.URLField()
+    rep_name = models.CharField(max_length=100, null=True, blank=True)
+    rep_role = models.CharField(max_length=100, null=True, blank=True)
+    rep_image_url = models.URLField(null=True, blank=True)
+    company_name = models.CharField(max_length=100, null=True, blank=True)
+    company_logo_url = models.URLField(null=True, blank=True)
+    company_website = models.URLField(null=True, blank=True)
 
 
 class SponsorMessage(models.Model):
