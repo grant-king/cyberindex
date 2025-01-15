@@ -52,9 +52,9 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
     
   }
 
-  async function submitNewSponsorProfile() {
+  async function updateSponsorProfile() {
     // make a POST request to the endpoint with the new_object_preview
-    const response = await fetch(endpoint, {
+    const response = await fetch(my_profile_detail_endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -66,14 +66,12 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
       // save the response sponsor to the sponsor_list
       const new_sponsor = await response.json()
       sponsor_list.value.push(new_sponsor)
-      // get the detail endpoint for the new sponsor
-      await fetchMyProfile()
-      console.log('Sponsor submitted successfully')
+      console.log('Sponsor profile updated successfully')
     } else {
-      console.error('Failed to submit sponsor')
+      console.error('Failed to update sponsor profile')
       console.error(response)
     }
   }
 
-  return { fetchMyProfile, fetchSponsorprofiles, submitNewSponsorProfile, sponsor_list, new_object_preview, show_preview }
+  return { fetchMyProfile, fetchSponsorprofiles, updateSponsorProfile, sponsor_list, new_object_preview, show_preview }
 })
