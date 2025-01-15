@@ -5,6 +5,8 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
   const base_url = window.location.origin
   const endpoint = `${base_url}/apiv1/sponsorprofiles/`
   const next_page = ref(`${endpoint}?page=1`)
+  const my_profile_read_endpoint = `${base_url}/my_profile/`
+  const my_profile_detail_endpoint = ref(null)
   const sponsor_list = ref([])
   const new_object_template = {
     rep_name: 'Grant King',
@@ -18,8 +20,21 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
   }
   const new_object_preview = ref(structuredClone(new_object_template))
   const show_preview = ref(false)
+  const my_profile_data = ref(null)
+
+  async function fetchMyProfile() {
+    const response = await fetch(my_profile_read_endpoint, {
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': window.csrf_token,
+      },
+    })
+    const data = await response.json()
+    my_profile_data.value = data
+    my_profile_detail_endpoint.value = data.url
+  }
   
-  async function fetchSponsors() {
+  async function fetchSponsorprofiles() {
     if (next_page.value === null) {
       console.log('no more pages to fetch')
       return
@@ -48,18 +63,17 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
       body: JSON.stringify(new_object_preview.value),
     })
     if (response.ok) {
-      console.log('Sponsor submitted successfully')
       // save the response sponsor to the sponsor_list
       const new_sponsor = await response.json()
       sponsor_list.value.push(new_sponsor)
-      // reset the new_object_preview
-      new_object_preview.value = structuredClone(new_object_template)
-      show_preview.value = false
+      // get the detail endpoint for the new sponsor
+      await fetchMyProfile()
+      console.log('Sponsor submitted successfully')
     } else {
       console.error('Failed to submit sponsor')
       console.error(response)
     }
   }
 
-  return { fetchSponsors, submitNewSponsorProfile, sponsor_list, new_object_preview, show_preview }
+  return { fetchMyProfile, fetchSponsorprofiles, submitNewSponsorProfile, sponsor_list, new_object_preview, show_preview }
 })
