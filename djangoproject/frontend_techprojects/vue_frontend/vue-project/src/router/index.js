@@ -1,5 +1,6 @@
 import { createRouter, createMemoryHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import SponsorOnboardingView from '@/views/SponsorOnboardingView.vue'
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -31,6 +32,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('../views/SignupView.vue'),
+    },
+    {
+      path: '/onboarding',
+      name: 'onboarding',
+      component: () => import('../views/SponsorOnboardingView.vue'),
     },
   ],
 })

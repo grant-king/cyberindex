@@ -287,6 +287,7 @@ const feat_sponsors = [
 ]
 const userNavigation = [
   { name: 'Sponsor Login', to: '/login' },
+  { name: 'Sponsor Setup', to: '/onboarding' },
 ]
 
 const sidebarOpen = ref(false)
