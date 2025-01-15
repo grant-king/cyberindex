@@ -113,8 +113,8 @@ class SponsorProfileViewSet(viewsets.ModelViewSet):
     # action for getting the current user's sponsorprofile detail view
     @action(detail=False, methods=['get'])
     def my_profile(self, request):
-        sponsor = request.user.sponsor
-        sponsorprofile = sponsor.sponsorprofile
+        sponsor, created = Sponsor.objects.get_or_create(user=request.user)
+        sponsorprofile, created = SponsorProfile.objects.get_or_create(sponsor=sponsor)
         serializer = SponsorProfileOwnerSerializer(sponsorprofile, context={'request': request})
         return Response(serializer.data)
 
