@@ -10,10 +10,10 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
     rep_name: 'Grant King',
     rep_role: 'Product Manager',
     rep_image_url: 'https://unrolla.blob.core.windows.net/unrolla/images/PXL_20231023_004949758_4679usk.webp', 
-    organization_name: 'IT20',
-    organization_url: 'https://2it0.com',
-    logo_source: 'https://unrolla.blob.core.windows.net/unrolla/images/IT20_pumpkin_logo_D9SHwmg.webp',
-    message: 'As part of a company that is averse to traditional marketing methods and muddy monetization models, I find quiet, transparent support of aligned projects to be the most rewarding.'
+    company_name: 'IT20',
+    company_website: 'https://2it0.com/',
+    company_logo_url: 'https://unrolla.blob.core.windows.net/unrolla/images/IT20_pumpkin_logo_D9SHwmg.webp',
+    message: 'They said, "Dance like this so we can find you, spin and twist until you fly". And so he started to dance and twist, just like this. He started to dance and spin. They found him well; together, they danced a spell. In a moment while spinning, he began to fly.'
 
   }
   const new_object_preview = ref(structuredClone(new_object_template))
@@ -37,12 +37,7 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
     
   }
 
-  async function submitNewSponsor() {
-    // check if the new_object_preview is valid
-    if (!new_object_preview.value.name) {
-      console.error('Invalid sponsor submission')
-      return
-    }
+  async function submitNewSponsorProfile() {
     // make a POST request to the endpoint with the new_object_preview
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -62,8 +57,9 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
       show_preview.value = false
     } else {
       console.error('Failed to submit sponsor')
+      console.error(response)
     }
   }
 
-  return { fetchSponsors, submitNewSponsor, sponsor_list, new_object_preview, show_preview }
+  return { fetchSponsors, submitNewSponsorProfile, sponsor_list, new_object_preview, show_preview }
 })

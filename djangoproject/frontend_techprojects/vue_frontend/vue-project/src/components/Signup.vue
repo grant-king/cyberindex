@@ -9,7 +9,7 @@
     -->
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white/50">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img class="mx-auto h-40 w-auto" :src="logo_source" alt="Logo" />
+      <img class="mx-auto h-40 w-auto" :src="company_logo_url" alt="Logo" />
         <h2 class="mt-20 text-center text-2xl/9 font-bold tracking-tight text-white">Register a new Sponsor account</h2>
       </div>
   
@@ -41,13 +41,14 @@
 </template>
 
 <script setup>
+import router from '@/router'
 import { ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
 const base_url = window.location.origin
 
-const logo_source = 'https://unrolla.blob.core.windows.net/unrolla/images/cti_logo.webp'
+const company_logo_url = 'https://unrolla.blob.core.windows.net/unrolla/images/cti_logo.webp'
 
 async function create_account() {
     const data = {
@@ -66,7 +67,8 @@ async function create_account() {
     console.log(json)
 
     if (response.status === 200) {
-        window.location.href = '/'
+        //window.location.href = '/'
+        router.push({ name: 'onboarding' })
     }
     else {
         if (json.message == "UNIQUE constraint failed: auth_user.username") {

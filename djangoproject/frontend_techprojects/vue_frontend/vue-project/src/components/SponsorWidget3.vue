@@ -26,7 +26,7 @@
                                 <div class="font-semibold text-white">{{ author }}</div>
                                 <div class="mt-1 text-gray-400">{{ sponsor_role }} of {{ org_name }}</div>
                             </div>
-                            <img :src="logo_source" alt="" class="size-32 flex-none rounded-xs bg-transparent" />
+                            <img :src="company_logo_url" alt="" class="size-32 flex-none rounded-xs bg-transparent" />
                         </figcaption>
                     </figure>
                 </div>
@@ -42,6 +42,6 @@ const props = defineProps({
     sponsor_role: String,
     org_name: String,
     sponsor_avatar: String,
-    logo_source: String
+    company_logo_url: String
 });
 </script>

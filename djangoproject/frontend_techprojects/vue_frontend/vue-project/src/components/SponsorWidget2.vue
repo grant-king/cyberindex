@@ -13,7 +13,7 @@
                 </div>
                 <div class="text-sm/6 font-semibold font-mono text-black">{{ sponsor_role }} for {{ org_name }}</div>
                 <div class="flex justify-center pt-2">
-                    <img :src="logo_source" alt="" class="size-20" />
+                    <img :src="company_logo_url" alt="" class="size-20" />
                 </div>
             </div>
         </figcaption>
@@ -27,6 +27,6 @@ const props = defineProps({
     sponsor_role: String,
     org_name: String,
     sponsor_avatar: String,
-    logo_source: String
+    company_logo_url: String
 });
 </script>

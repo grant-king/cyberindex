@@ -1,7 +1,7 @@
 <template>
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white/50">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img class="mx-auto h-40 w-auto" :src="logo_source" alt="Logo" />
+      <img class="mx-auto h-40 w-auto" :src="company_logo_url" alt="Logo" />
         <h2 class="mt-20 text-center text-2xl/9 font-bold tracking-tight text-black">Sign in to your account</h2>
       </div>
   
@@ -49,7 +49,7 @@
   const base_url = window.location.origin
   const reset_url = `${base_url}/password_reset/`
   
-  const logo_source = 'https://unrolla.blob.core.windows.net/unrolla/images/cti_logo.webp'
+  const company_logo_url = 'https://unrolla.blob.core.windows.net/unrolla/images/cti_logo.webp'
   
   const username = ref('')
   const password = ref('')

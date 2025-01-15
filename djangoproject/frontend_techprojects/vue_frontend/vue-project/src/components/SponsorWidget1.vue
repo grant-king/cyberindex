@@ -1,5 +1,5 @@
 <template>
-    <img class="h-40 w-auto" :src="logo_source" alt="" />
+    <img class="h-40 w-auto" :src="company_logo_url" alt="" />
     <figure class="mt-10">
         <blockquote class="text-lg/8 font-semibold text-black">
             <p>“{{ message }}”</p>
@@ -21,6 +21,6 @@ const props = defineProps({
     sponsor_role: String,
     org_name: String,
     sponsor_avatar: String,
-    logo_source: String
+    company_logo_url: String
 });
 </script>

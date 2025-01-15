@@ -24,8 +24,8 @@
                 <!-- Sponsorship Example -->
                 <div class="lg:mt-6 lg:w-80 lg:flex-none">
                     <SponsorWidget1 :message="preview.message" :author="preview.rep_name"
-                        :sponsor_role="preview.rep_role" :org_name="preview.organization_name"
-                        :sponsor_avatar="preview.rep_image_url" :logo_source="preview.logo_source" />
+                        :sponsor_role="preview.rep_role" :org_name="preview.company_name"
+                        :sponsor_avatar="preview.rep_image_url" :company_logo_url="preview.company_logo_url" />
                 </div>
             </div>
         </div>
