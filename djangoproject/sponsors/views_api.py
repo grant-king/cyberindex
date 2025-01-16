@@ -125,10 +125,11 @@ class SponsorMessageViewSet(viewsets.ModelViewSet):
     """
     queryset = SponsorMessage.objects.all()
     serializer_class = SponsorMessageSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return SponsorMessage.objects.filter(sponsor__archived=False)
+        sponsor, created = Sponsor.objects.get_or_create(user=self.request.user)
+        return SponsorMessage.objects.filter(sponsor=sponsor)
     
     def perform_create(self, serializer):
         sponsor, created = Sponsor.objects.get_or_create(user=self.request.user)
