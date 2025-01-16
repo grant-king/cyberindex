@@ -30,10 +30,10 @@ class SponsorProfileOwnerSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'rep_name', 'rep_role', 'rep_image_url', 'company_name', 'company_logo_url', 'company_website']
 
 
-class SponsorMessageSerializer(serializers.ModelSerializer):
+class SponsorMessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SponsorMessage
-        fields = ['message', 'created_at']
+        fields = ['url', 'message', 'created_at']
     
 
 class SponsorContributionSerializer(serializers.ModelSerializer):
