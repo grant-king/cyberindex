@@ -5,7 +5,7 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
   const base_url = window.location.origin
   const endpoint = `${base_url}/apiv1/sponsorprofiles/`
   const next_page = ref(`${endpoint}?page=1`)
-  const my_profile_read_endpoint = `${base_url}/my_profile/`
+  const my_profile_read_endpoint = `${endpoint}my_profile/`
   const my_profile_detail_endpoint = ref(null)
   const sponsor_list = ref([])
   const new_object_template = {
@@ -31,6 +31,7 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
     })
     const data = await response.json()
     my_profile_data.value = data
+    console.log(data.url)
     my_profile_detail_endpoint.value = data.url
   }
   
@@ -53,9 +54,9 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
   }
 
   async function updateSponsorProfile() {
-    // make a POST request to the endpoint with the new_object_preview
-    const response = await fetch(my_profile_detail_endpoint, {
-      method: 'POST',
+    // make a PUT request to the endpoint with the new_object_preview
+    const response = await fetch(my_profile_detail_endpoint.value, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': window.csrf_token,
