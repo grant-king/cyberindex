@@ -241,7 +241,7 @@
 
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import FooterAnimation from './components/FooterAnimation.vue'
 import {
   Dialog,
@@ -285,10 +285,19 @@ const feat_sponsors = [
   { id: 1, name: 'Ready Tech Pro', href: 'https://readytechpro.org/', initial: 'RTP', current: false },
   { id: 3, name: 'IT20', href: 'https://2it0.com', initial: 'ITT', current: false },
 ]
-const userNavigation = [
-  { name: 'Sponsor Login', to: '/login' },
-  { name: 'Sponsor Setup', to: '/onboarding' },
-]
+
+const userNavigation = computed(() => {
+  if (window.user_id > 0) {
+    return [
+      { name: 'Sponsor Setup', to: '/onboarding' },
+    ]
+  } else {
+    return [
+      { name: 'Sponsor Login', to: '/login' },
+      { name: 'Sponsor Signup', to: '/signup' },
+    ]
+  }
+})	
 
 const sidebarOpen = ref(false)
 
