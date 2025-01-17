@@ -68,7 +68,10 @@ import { useSponsorprofilesStore } from '@/stores/sponsorprofiles';
 const sponsorprofiles_store = useSponsorprofilesStore();
 const rep_name = sponsorprofiles_store.new_object_preview.rep_name;
 
+sponsorprofiles_store.fetchMyProfile();
+
 async function submit_profile() {
     sponsorprofiles_store.updateSponsorProfile();
 }
+
 </script>
