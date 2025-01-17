@@ -22,6 +22,9 @@ class SponsorMessage(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
 
 class SponsorContribution(models.Model):
     sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE)
