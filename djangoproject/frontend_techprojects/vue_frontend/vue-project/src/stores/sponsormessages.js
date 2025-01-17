@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useSponsormessagesStore = defineStore('sponsormessages', () => {
@@ -11,6 +11,15 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
     }
     const new_message_preview = ref(structuredClone(new_message_template))
 
+    // computed property to get a random message from message_list
+    const random_message = computed(() => {
+        if (message_list.value.length === 0) {
+            return new_message_preview.value
+        }
+        const random_index = Math.floor(Math.random() * message_list.value.length)
+        return message_list.value[random_index]
+    })
+
     async function fetchSponsormessages() {
         if (next_page.value === null) {
             console.log('no more pages to fetch')
@@ -21,8 +30,7 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
             method: 'GET',
             headers: {
                 'X-CSRFToken': window.csrf_token,
-            },
-            body: JSON.stringify(new_message_preview.value),
+            }
         })
         if (response.ok) {
             const data = await response.json()
@@ -53,5 +61,5 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
         }
     }
     
-    return { fetchSponsormessages, createSponsorMessage, message_list, new_message_preview }    
+    return { fetchSponsormessages, createSponsorMessage, random_message, message_list, new_message_preview }    
 })
