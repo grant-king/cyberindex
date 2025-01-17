@@ -5,12 +5,14 @@
                 <label for="message" class="block text-sm/6 font-semibold text-black">Add a public message</label>
                 <div class="mt-2.5">
                     <textarea id="message" name="message" rows="4"
+                    v-model="sponsormessages_store.new_message_preview.message"
                         class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-black/50 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-lime-600" />
                 </div>
             </div>
         </div>
         <div class="mt-10">
             <button type="button"
+                @click="submit_message()"
                 class="block w-full rounded-md bg-lime-200 px-3.5 py-2.5 text-center text-sm font-bold text-white/20 bg-clip-text border-4 border-dotted border-black shadow-sm hover:bg-lime-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">Create
                 Public Message</button>
         </div>
@@ -20,5 +22,10 @@
 </template>
 
 <script setup>
+import { useSponsormessagesStore } from '@/stores/sponsormessages';
+const sponsormessages_store = useSponsormessagesStore();
 
+async function submit_message() {
+    sponsormessages_store.createSponsorMessage();
+}
 </script>
