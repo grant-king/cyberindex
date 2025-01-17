@@ -23,7 +23,7 @@
                 <SponsorMessageCreate />
                 <!-- Sponsorship Example -->
                 <div class="lg:mt-6 lg:w-80 lg:flex-none">
-                    <SponsorWidget1 :message="preview.message" :author="preview.rep_name"
+                    <SponsorWidget1 :message="sponsormessages_store.new_message_preview.message" :author="preview.rep_name"
                         :sponsor_role="preview.rep_role" :org_name="preview.company_name"
                         :sponsor_avatar="preview.rep_image_url" :company_logo_url="preview.company_logo_url" />
                 </div>
@@ -38,8 +38,10 @@ import SponsorMessageCreate from './SponsorMessageCreate.vue';
 import SponsorProfileCreate from './SponsorProfileCreate.vue';
 
 import { useSponsorprofilesStore } from '@/stores/sponsorprofiles';
+import { useSponsormessagesStore } from '@/stores/sponsormessages';
 
 const sponsorprofiles_store = useSponsorprofilesStore();
+const sponsormessages_store = useSponsormessagesStore();
 const preview = sponsorprofiles_store.new_object_preview;
 
 const title_1 = 'Let’s get your sponsorship details in order.'
