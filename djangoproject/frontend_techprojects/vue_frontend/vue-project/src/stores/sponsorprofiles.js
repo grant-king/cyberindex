@@ -20,7 +20,7 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
   }
   const new_object_preview = ref(structuredClone(new_object_template))
   const show_preview = ref(false)
-  const my_profile_data = ref(null)
+  const my_profile_data = ref(structuredClone(new_object_template))
 
   async function fetchMyProfile() {
     const response = await fetch(my_profile_read_endpoint, {
@@ -32,7 +32,9 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
     const data = await response.json()
     my_profile_data.value = data
     console.log(data.url)
+    console.log(data)
     my_profile_detail_endpoint.value = data.url
+    new_object_preview.value = data
   }
   
   async function fetchSponsorprofiles() {
@@ -74,5 +76,5 @@ export const useSponsorprofilesStore = defineStore('sponsorprofiles', () => {
     }
   }
 
-  return { fetchMyProfile, fetchSponsorprofiles, updateSponsorProfile, sponsor_list, new_object_preview, show_preview }
+  return { fetchMyProfile, fetchSponsorprofiles, updateSponsorProfile, my_profile_data, sponsor_list, new_object_preview, show_preview }
 })
