@@ -20,6 +20,14 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
         return message_list.value[random_index]
     })
 
+    function get_random_message() {
+        if (message_list.value.length === 0) {
+            return new_message_preview.value
+        }
+        const random_index = Math.floor(Math.random() * message_list.value.length)
+        return message_list.value[random_index]
+    }
+
     async function fetchSponsormessages() {
         if (next_page.value === null) {
             console.log('no more pages to fetch')
@@ -61,5 +69,5 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
         }
     }
     
-    return { fetchSponsormessages, createSponsorMessage, random_message, message_list, new_message_preview }    
+    return { fetchSponsormessages, createSponsorMessage, get_random_message, random_message, message_list, new_message_preview }    
 })
