@@ -32,7 +32,6 @@ const recording_duration = ref(30)
 const time_remaining = ref(recording_duration.value)
 const pixel_position = reactive({ x: 0, y: 0 })
 const animation_interval = ref(null)
-const move_rate = ref(40)
 const stage_width = ref(400)
 const stage_height = ref(400)
 const pixel_log = ref([])
@@ -69,9 +68,7 @@ function move_pixel(event) {
 
   const delta_x = target_x - pixel_position.x
   const delta_y = target_y - pixel_position.y
-  const distance = Math.sqrt(delta_x ** 2 + delta_y ** 2)
-  move_rate.value = Math.max(1, distance / 2)
-  const duration = distance / move_rate.value
+  const travel_duration = 2
 
   const start_time = Date.now()
   const start_x = pixel_position.x
@@ -79,27 +76,32 @@ function move_pixel(event) {
 
   pixel_log.value.push(
     {
-      start: { x: start_x, y: start_y },
-      end: { x: target_x, y: target_y },
-      timestamp: start_time,
-      duration: duration
+      start_x: start_x, 
+      start_y: start_y,
+      end_x: target_x, 
+      end_y: target_y,
+      delta_x: delta_x, 
+      delta_y: delta_y,
+      click_tick: recording_duration.value - time_remaining.value,
     }
   )
 
+  console.log('start moving pixel', pixel_log.value)
+
   //start the animation
-  requestAnimationFrame(() => step(start_time, duration, start_x, start_y, delta_x, delta_y, pixel_position))
+  requestAnimationFrame(() => step(start_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position))
 }
 
-function step(start_time, duration, start_x, start_y, delta_x, delta_y, pixel_position) {
+function step(start_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position) {
   const elapsed = (Date.now() - start_time) / 1000
-  if (elapsed >= duration) {
+  if (elapsed >= travel_duration) {
     pixel_position.x = start_x + delta_x
     pixel_position.y = start_y + delta_y
   }
   else {
-    pixel_position.x = start_x + delta_x * (elapsed / duration)
-    pixel_position.y = start_y + delta_y * (elapsed / duration)
-    requestAnimationFrame(() => step(start_time, duration, start_x, start_y, delta_x, delta_y, pixel_position))
+    pixel_position.x = start_x + delta_x * (elapsed / travel_duration)
+    pixel_position.y = start_y + delta_y * (elapsed / travel_duration)
+    requestAnimationFrame(() => step(start_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position))
   }
 }
 
