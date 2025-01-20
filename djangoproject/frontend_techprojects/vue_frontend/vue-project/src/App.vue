@@ -236,6 +236,7 @@
   </div>
   <div class="min-h-32 bg-gradient-to-b from-white/50 via-black to-black"></div>
   <FooterAnimation />
+  <PixelDanceRecorder />
   <FooterAnimation />
 </template>
 
@@ -243,6 +244,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { computed, ref } from 'vue'
 import FooterAnimation from './components/FooterAnimation.vue'
+import PixelDanceRecorder from './components/PixelDanceRecorder.vue'
 import {
   Dialog,
   DialogPanel,
