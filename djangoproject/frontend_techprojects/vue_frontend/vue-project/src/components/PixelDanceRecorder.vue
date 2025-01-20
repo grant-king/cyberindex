@@ -1,27 +1,41 @@
 <template>
   <div class="flex flex-col align-center gap-1">
-    <div class="relative m-auto border-2" :style="{width: `${stage_width}px`, height: `${stage_height}px`}">
-      <div class="absolute w-2 h-2 bg-white" :style="{left: `${pixel_position.x}px`, top: `${pixel_position.y}px`}"></div>
+    <div class="relative m-auto border-2" :style="{ width: `${stage_width}px`, height: `${stage_height}px` }"
+      @click="move_pixel">
+      <div class="absolute w-2 h-2 bg-white" :style="{ left: `${pixel_position.x}px`, top: `${pixel_position.y}px` , backgroundColor: pixel_color }">
+      </div>
     </div>
   </div>
   <div clas="">
     <div>
-      <button type="button" @click="start_recording()"
-        class="block w-full rounded-md bg-lime-200 px-3.5 py-2.5 text-center text-sm font-bold text-white/20 bg-clip-text border-4 border-dotted border-black shadow-sm hover:bg-lime-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">Start
-        Recording</button>
+      <div v-if="!is_animating" class="flex items-center justify-center gap-2 w-full">
+        <!-- color picker -->
+        <input type="color" v-model="pixel_color" class="w-8 h-8 rounded-md bg-white"/>
+        <button type="button" @click="start_recording()"
+          class="rounded-md bg-lime-200 px-3.5 py-2.5 text-center text-sm font-bold text-white/20 bg-clip-text border-4 border-dotted border-black shadow-sm hover:bg-lime-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">Start
+          Recording</button>
+      </div>
+      <div v-else class="flex items-center justify-center gap-2 w-full">
+        <button type="button" @click="stop_recording()"
+          class="rounded-md bg-lime-200 px-3.5 py-2.5 text-center text-sm font-bold text-white/20 bg-clip-text border-4 border-dotted border-black shadow-sm hover:bg-lime-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">Stop
+          Recording ({{ time_remaining }})</button>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
 import { computed, reactive, ref, onUnmounted } from 'vue'
 
+const pixel_color = ref('#ff1100')
 const is_animating = ref(false)
-const time_remaining = ref(20)
+const recording_duration = ref(30)
+const time_remaining = ref(recording_duration.value)
 const pixel_position = reactive({ x: 0, y: 0 })
 const animation_interval = ref(null)
-const move_rate = ref(4)
+const move_rate = ref(40)
 const stage_width = ref(400)
 const stage_height = ref(400)
+const pixel_log = ref([])
 
 function reset_pixel_position() {
   pixel_position.x = stage_width.value / 2
@@ -29,7 +43,7 @@ function reset_pixel_position() {
 }
 
 function start_timer() {
-  time_remaining.value = 20
+  time_remaining.value = recording_duration.value
   animation_interval.value = setInterval(() => {
     time_remaining.value -= 1
     if (time_remaining.value <= 0) {
@@ -45,34 +59,48 @@ function clear_timer() {
   }
 }
 
-function handle_key_press(event) {
+function move_pixel(event) {
   if (!is_animating.value) {
     return
   }
 
-  switch (event.key) {
-    case 'w':
-      pixel_position.y = Math.max(pixel_position.y - move_rate.value, 0)
-      break
-    case 's':
-      pixel_position.y = Math.min(pixel_position.y + move_rate.value, stage_height.value)
-      break
-    case 'a':
-      pixel_position.x = Math.max(pixel_position.x - move_rate.value, 0)
-      break
-    case 'd':
-      pixel_position.x = Math.min(pixel_position.x + move_rate.value, stage_width.value)
-      break
+  const target_x = event.offsetX
+  const target_y = event.offsetY
+
+  const delta_x = target_x - pixel_position.x
+  const delta_y = target_y - pixel_position.y
+  const distance = Math.sqrt(delta_x ** 2 + delta_y ** 2)
+  move_rate.value = Math.max(1, distance / 2)
+  const duration = distance / move_rate.value
+
+  const start_time = Date.now()
+  const start_x = pixel_position.x
+  const start_y = pixel_position.y
+
+  pixel_log.value.push(
+    {
+      start: { x: start_x, y: start_y },
+      end: { x: target_x, y: target_y },
+      timestamp: start_time,
+      duration: duration
+    }
+  )
+
+  //start the animation
+  requestAnimationFrame(() => step(start_time, duration, start_x, start_y, delta_x, delta_y, pixel_position))
+}
+
+function step(start_time, duration, start_x, start_y, delta_x, delta_y, pixel_position) {
+  const elapsed = (Date.now() - start_time) / 1000
+  if (elapsed >= duration) {
+    pixel_position.x = start_x + delta_x
+    pixel_position.y = start_y + delta_y
   }
-  console.log('pixel_position', pixel_position)
-}
-
-function enable_controls() {
-  window.addEventListener('keydown', handle_key_press)
-}
-
-function disable_controls() {
-  window.removeEventListener('keydown', handle_key_press)
+  else {
+    pixel_position.x = start_x + delta_x * (elapsed / duration)
+    pixel_position.y = start_y + delta_y * (elapsed / duration)
+    requestAnimationFrame(() => step(start_time, duration, start_x, start_y, delta_x, delta_y, pixel_position))
+  }
 }
 
 function start_recording() {
@@ -81,16 +109,14 @@ function start_recording() {
   }
   console.log('start animation recording')
   is_animating.value = true
-  
+
   reset_pixel_position()
   start_timer()
-  enable_controls()
 }
 
 function stop_recording() {
   is_animating.value = false
   clear_timer()
-  disable_controls()
 }
 
 onUnmounted(() => {
