@@ -35,6 +35,7 @@ const animation_interval = ref(null)
 const stage_width = ref(400)
 const stage_height = ref(400)
 const pixel_log = ref([])
+const latest_start_time = ref(Date.now())
 
 function reset_pixel_position() {
   pixel_position.x = stage_width.value / 2
@@ -70,7 +71,7 @@ function move_pixel(event) {
   const delta_y = target_y - pixel_position.y
   const travel_duration = 2
 
-  const start_time = Date.now()
+  const event_time = Date.now()
   const start_x = pixel_position.x
   const start_y = pixel_position.y
 
@@ -82,18 +83,18 @@ function move_pixel(event) {
       end_y: target_y,
       delta_x: delta_x, 
       delta_y: delta_y,
-      click_tick: recording_duration.value - time_remaining.value,
+      click_tick: event_time - latest_start_time.value,
     }
   )
 
   console.log('start moving pixel', pixel_log.value)
 
   //start the animation
-  requestAnimationFrame(() => step(start_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position))
+  requestAnimationFrame(() => step(event_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position))
 }
 
-function step(start_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position) {
-  const elapsed = (Date.now() - start_time) / 1000
+function step(event_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position) {
+  const elapsed = (Date.now() - event_time) / 1000
   if (elapsed >= travel_duration) {
     pixel_position.x = start_x + delta_x
     pixel_position.y = start_y + delta_y
@@ -101,7 +102,7 @@ function step(start_time, travel_duration, start_x, start_y, delta_x, delta_y, p
   else {
     pixel_position.x = start_x + delta_x * (elapsed / travel_duration)
     pixel_position.y = start_y + delta_y * (elapsed / travel_duration)
-    requestAnimationFrame(() => step(start_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position))
+    requestAnimationFrame(() => step(event_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position))
   }
 }
 
