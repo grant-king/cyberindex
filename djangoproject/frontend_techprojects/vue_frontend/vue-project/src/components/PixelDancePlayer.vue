@@ -27,8 +27,7 @@ function play_pixel_dance() {
         return
     }
 
-    let dance_index = 0
-    pixeldance_store.animate_dance(dance_index)
+    pixeldance_store.animate_all_dances()
 }
 
 </script>
