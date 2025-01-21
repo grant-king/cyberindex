@@ -1,10 +1,10 @@
 <template>
     <div class="flex flex-col align-center gap-1 bg-white/10">
-        <div class="relative m-auto border-2 bg-white/10"
+        <div class="relative m-auto border-2 bg-black/95"
             :style="{ width: `${stage_width}px`, height: `${stage_height}px` }" @click="play_pixel_dance">
             <div v-for="pixeldance in pixeldance_store.pixeldance_list" :key="pixeldance.id"
-                class="absolute w-2 h-2 bg-white"
-                :style="{ left: `${pixeldance.x}px`, top: `${pixeldance.y}px`, backgroundColor: pixeldance.color }">
+                class="absolute w-4 h-4 opacity-80 rounded-full"
+                :style="{ left: `${pixeldance.x}px`, top: `${pixeldance.y}px`, backgroundColor: pixeldance.color}">
 
             </div>
         </div>
