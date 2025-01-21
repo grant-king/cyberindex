@@ -22,6 +22,7 @@ from techprojects import views_api as techprojects_views
 from frontend_techprojects.views import index as frontend_1_index
 from sponsors import views_api as sponsors_views
 from django.contrib.auth import views as auth_views
+from pixeldance import views_api as dance_views
 
 router = routers.DefaultRouter()
 router.register(r'locations', techprojects_views.LocationViewSet)
@@ -31,6 +32,7 @@ router.register(r'sponsors', sponsors_views.SponsorViewSet)
 router.register(r'sponsorprofiles', sponsors_views.SponsorProfileViewSet)
 router.register(r'sponsormessages', sponsors_views.SponsorMessageViewSet)
 router.register(r'sponsorcontributions', sponsors_views.SponsorContributionViewSet)
+router.register(r'dancers', dance_views.DancerViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
