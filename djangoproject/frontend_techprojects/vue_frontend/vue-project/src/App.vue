@@ -238,6 +238,8 @@
   <FooterAnimation />
   <PixelDanceRecorder />
   <FooterAnimation />
+  <PixelDancePlayer />
+  <FooterAnimation />
 </template>
 
 <script setup>
@@ -245,6 +247,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { computed, ref } from 'vue'
 import FooterAnimation from './components/FooterAnimation.vue'
 import PixelDanceRecorder from './components/PixelDanceRecorder.vue'
+import PixelDancePlayer from './components/PixelDancePlayer.vue'
 import {
   Dialog,
   DialogPanel,
