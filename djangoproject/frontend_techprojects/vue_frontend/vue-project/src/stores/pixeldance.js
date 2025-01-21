@@ -31,7 +31,8 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
         dance.x = dance.paths[dance.current_path].start_x + shift_x
         dance.y = dance.paths[dance.current_path].start_y + shift_y
 
-        if (elapsed_time < 2000) {
+        //if (elapsed_time < 2000) {
+        if (elapsed_time < dance.paths[dance.current_path].click_tick) {
             window.requestAnimationFrame((timestamp) => step(timestamp, dance))
         }
     }
@@ -39,6 +40,15 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     function animate_next_path(dance) {
         const zero = document.timeline.currentTime
         window.requestAnimationFrame((timestamp) => step(zero, dance))
+        dance.current_path += 1
+        dance.start_timestamp = null
+        if (dance.current_path == dance.total_paths) {
+            dance.current_path = 0
+        }
+    }
+
+    function animate_each_path(dance) {
+
     }
 
     function animate_dance(dance_idx) {
