@@ -77,6 +77,14 @@ function move_pixel(event) {
   const event_time = Date.now()
   const start_x = pixel_position.x
   const start_y = pixel_position.y
+  let latest_click_time = latest_start_time.value
+
+  // if pixel log has previous entry, set latest_click_interval
+  if (pixel_log.value.length > 0) {
+    latest_click_time = latest_start_time.value + pixel_log.value[pixel_log.value.length - 1].click_tick
+    console.log(pixel_log.value[pixel_log.value.length - 1].click_tick)
+    console.log(latest_click_time)
+  }
 
   pixel_log.value.push(
     {
@@ -86,7 +94,7 @@ function move_pixel(event) {
       end_y: target_y,
       delta_x: delta_x, 
       delta_y: delta_y,
-      click_tick: event_time - latest_start_time.value,
+      click_tick: event_time - latest_click_time,
     }
   )
 
