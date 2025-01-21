@@ -87,7 +87,6 @@ function move_pixel(event) {
       delta_x: delta_x, 
       delta_y: delta_y,
       click_tick: event_time - latest_start_time.value,
-      pixel_color: pixel_color.value,
     }
   )
 
@@ -122,8 +121,9 @@ function start_recording() {
 }
 
 function save_pixel_log() {
-  pixeldance_store.pixeldance_list.push(
-    pixel_log.value
+  pixeldance_store.store_pixel_dance(
+    pixel_log.value,
+    pixel_color.value,
   )
   pixel_log.value = []
 }
