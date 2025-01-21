@@ -46,6 +46,7 @@ function reset_pixel_position() {
 }
 
 function start_timer() {
+  latest_start_time.value = Date.now()
   time_remaining.value = recording_duration.value
   animation_interval.value = setInterval(() => {
     time_remaining.value -= 1
@@ -77,14 +78,14 @@ function move_pixel(event) {
   const event_time = Date.now()
   const start_x = pixel_position.x
   const start_y = pixel_position.y
-  let latest_click_time = latest_start_time.value
+  let click_time_delta = event_time - latest_start_time.value
 
-  // if pixel log has previous entry, set latest_click_interval
+  // if pixel log has previous entry, set latest_click_time
   if (pixel_log.value.length > 0) {
-    latest_click_time = latest_start_time.value + pixel_log.value[pixel_log.value.length - 1].click_tick
-    console.log(pixel_log.value[pixel_log.value.length - 1].click_tick)
-    console.log(latest_click_time)
+    click_time_delta = event_time - pixel_log.value[pixel_log.value.length - 1].event_time
   }
+
+  console.log('click delta', click_time_delta)
 
   pixel_log.value.push(
     {
@@ -94,7 +95,8 @@ function move_pixel(event) {
       end_y: target_y,
       delta_x: delta_x, 
       delta_y: delta_y,
-      click_tick: event_time - latest_click_time,
+      event_time: event_time,
+      click_time_delta: click_time_delta,
     }
   )
 
