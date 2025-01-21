@@ -30,9 +30,9 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
 
         dance.x = dance.paths[dance.current_path].start_x + shift_x
         dance.y = dance.paths[dance.current_path].start_y + shift_y
-
-        //if (elapsed_time < 2000) {
-        if (elapsed_time < dance.paths[dance.current_path].click_tick) {
+        
+        //animate each path according to durations btw events as recorded
+        if (elapsed_time < dance.paths[dance.current_path].click_time_delta) {
             window.requestAnimationFrame((timestamp) => step(timestamp, dance))
         }
     }
