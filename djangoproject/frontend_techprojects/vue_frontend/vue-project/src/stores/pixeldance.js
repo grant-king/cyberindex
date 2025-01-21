@@ -35,20 +35,19 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
         if (elapsed_time < dance.paths[dance.current_path].click_time_delta) {
             window.requestAnimationFrame((timestamp) => step(timestamp, dance))
         }
+        else {
+            dance.current_path += 1
+            dance.start_timestamp = null
+            if (dance.current_path == dance.total_paths) {
+                dance.current_path = 0
+            }
+            animate_next_path(dance)
+        }
     }
 
     function animate_next_path(dance) {
         const zero = document.timeline.currentTime
         window.requestAnimationFrame((timestamp) => step(zero, dance))
-        dance.current_path += 1
-        dance.start_timestamp = null
-        if (dance.current_path == dance.total_paths) {
-            dance.current_path = 0
-        }
-    }
-
-    function animate_each_path(dance) {
-
     }
 
     function animate_dance(dance_idx) {
@@ -56,7 +55,13 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
         animate_next_path(dance)
     }
 
+    function animate_all_dances(){
+        for (let i=0; i < pixeldance_list.value.length; i++) {
+            animate_dance(i)
+        }
+    }
+
     return {
-        pixeldance_list, store_pixel_dance, animate_dance
+        pixeldance_list, store_pixel_dance, animate_dance, animate_all_dances
     }
 })
