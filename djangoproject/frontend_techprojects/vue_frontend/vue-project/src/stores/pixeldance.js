@@ -7,7 +7,9 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     const endpoint = `${base_url}/apiv1/dancers/`
     const next_page = ref(`${endpoint}?page=1`)
     const path_endpoint = `${base_url}/apiv1/dancepaths/`
-    const my_dancer_list = ref([]) // dancers with detail endpoint urls for fetching related dance paths
+    const communal_dancers = ref([]) // dancers with detail endpoint urls for fetching related dance paths
+    const dancer_load_hold = ref([]) // latest fetched dancers with that need related paths to be fetched and loaded for animation
+    const dancer_paths_hold = ref([])
     const new_dancer_preview = ref({}) // next dancer object to be created
     const new_path_preview = ref({}) // next dance path object to be created
 
@@ -24,8 +26,31 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
             },
         })
         const data = await response.json()
-        my_dancer_list.value.push(...data.results)
-        next_page.value = data.next
+        if(response.ok){
+            dancer_load_hold.value.push(...data.results)   
+            next_page.value = data.next
+        } else {
+            console.error('failed to fetch dancers')
+            console.error(response)
+        }
+    }
+
+    async function fetchDancerPaths(dance_endpoint) {
+        console.log('fetching paths for dancer', dance_endpoint)
+        const dance_path_endpoint = `${dance_endpoint}paths/`
+        const response = await fetch(dance_path_endpoint, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': window.csrf_token,
+            },
+        })
+        const data = await response.json()
+        if(response.ok){
+            dancer_paths_hold.value.push(...data.results)
+        } else {
+            console.error('failed to fetch paths for dancer')
+            console.error(response)
+        }
     }
 
     async function createDancer() {
@@ -64,6 +89,16 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
         } else {
             console.error('Failed to create dance path')
             console.error(response)
+        }
+    }
+
+    async function load_communal_dances_page() {
+        // load next page of dancers
+        await fetchDancers()
+        // for each dancer detail endpoint, fetch related dance paths
+        for (let dancer_data of dancer_load_hold){
+            await fetchDancerPaths(dancer_data.url)
+            // then wrangle that dance and paths into pixeldance_list for animation
         }
     }
 
@@ -110,8 +145,8 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     }
 
     async function collect_recording(dance_paths, color) {
-        store_dance_from_recording()
-        save_dance_from_recording()
+        store_dance_from_recording(dance_paths, color)
+        save_dance_from_recording(dance_paths, color)
     }
 
     function step(timestamp, dance) {
@@ -157,6 +192,6 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     }
 
     return {
-        pixeldance_list, collect_recording, animate_dance, animate_all_dances
+        pixeldance_list, communal_dancers, collect_recording, animate_dance, animate_all_dances
     }
 })
