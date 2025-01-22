@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import Dancer, DancePath
 
-class DancerSerializer(serializers.ModelSerializer):
+class DancerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Dancer
-        fields = ['id', 'color', 'session_id', 'created_at']
+        fields = ['url', 'id', 'color', 'session_id', 'created_at']
+        read_only_fields = ['session_id']
 
 
 class DancePathSerializer(serializers.ModelSerializer):
