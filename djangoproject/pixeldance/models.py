@@ -2,9 +2,9 @@ from django.db import models
 
 class Dancer(models.Model):
     color = models.CharField(max_length=7, db_index=True)
-    session_id = models.CharField(max_length=32, db_index=True)
+    session_id = models.CharField(max_length=32, db_index=True, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
 
 class DancePath(models.Model):
     dancer = models.ForeignKey(Dancer, on_delete=models.CASCADE, related_name='paths')
