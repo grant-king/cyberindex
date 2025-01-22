@@ -41,16 +41,41 @@ class DancerViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def paths(self, request, pk=None):
         dancer = self.get_object()
-        serializer = DancePathSerializer(dancer.paths.all(), many=True)
+        serializer = DancePathSerializer(dancer.paths.all(), many=True, context={'request': request})
         return Response(serializer.data)
 
-    @action(detail=True, methods=['post'])
-    def add_path(self, request, pk=None):
-        dancer = self.get_object()
-        serializer = DancePathSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(dancer=dancer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class DancePathViewSet(viewsets.ModelViewSet):
+    """API endpoint that allows dance paths to be viewed or edited."""
+
+    queryset = DancePath.objects.all()
+    serializer_class = DancePathSerializer
+
+    def perform_create(self, serializer):
+        #look up the dancer by url in the serializer data
+        dancer = Dancer.objects.get(pk=serializer.validated_data['dancer'].id)
+        if dancer.session_id == self.request.session.session_key:
+            return super().perform_create(serializer)
+        else:
+            pass
+    
+    def perform_destroy(self, instance):
+        if instance.dancer.session_id == self.request.session.session_key:
+            return super().perform_destroy(instance)
+        else:
+            pass
+
+    def perform_update(self, serializer):
+        dancer = Dancer.objects.get(pk=serializer.validated_data['dancer'].id)
+        if dancer.session_id == self.request.session.session_key:
+            return super().perform_update(serializer)
+        else:
+            pass
+    
+    @action(detail=False, methods=['get'])
+    def my_paths(self, request):
+        session_id = request.session.session_key
+        paths = DancePath.objects.filter(dancer__session_id=session_id)
+        serializer = DancePathSerializer(paths, many=True, context={'request': request})
+        return Response(serializer.data)
   
