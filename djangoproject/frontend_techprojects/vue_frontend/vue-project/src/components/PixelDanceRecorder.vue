@@ -85,8 +85,6 @@ function move_pixel(event) {
     click_time_delta = event_time - pixel_log.value[pixel_log.value.length - 1].event_time
   }
 
-  console.log('click delta', click_time_delta)
-
   pixel_log.value.push(
     {
       start_x: start_x, 
@@ -99,8 +97,6 @@ function move_pixel(event) {
       click_time_delta: click_time_delta,
     }
   )
-
-  console.log('start moving pixel', pixel_log.value)
 
   //start the animation
   requestAnimationFrame(() => step(event_time, travel_duration, start_x, start_y, delta_x, delta_y, pixel_position))
@@ -131,7 +127,7 @@ function start_recording() {
 }
 
 function save_pixel_log() {
-  pixeldance_store.store_pixel_dance(
+  pixeldance_store.collect_recording(
     pixel_log.value,
     pixel_color.value,
   )
