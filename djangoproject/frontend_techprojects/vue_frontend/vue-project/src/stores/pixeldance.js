@@ -11,6 +11,23 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     const new_dancer_preview = ref({}) // next dancer object to be created
     const new_path_preview = ref({}) // next dance path object to be created
 
+    async function fetchDancers() {
+        if (next_page.value === null) {
+            console.log('no more pages to fetch')
+            return
+        }
+        console.log('fetching next page of dancers')
+        const response = await fetch(next_page.value, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': window.csrf_token,
+            },
+        })
+        const data = await response.json()
+        my_dancer_list.value.push(...data.results)
+        next_page.value = data.next
+    }
+
     async function createDancer() {
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -50,7 +67,9 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
         }
     }
 
-    async function store_pixel_dance(dance_paths, color) {
+    async function store_dance_from_db(dance_paths, color) { }
+
+    async function store_dance_from_recording(dance_paths, color) {
         const dance = {}
         dance.idx = pixeldance_list.value.length
         dance.color = color
@@ -63,7 +82,9 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
 
         pixeldance_list.value.push(dance)
         console.log(pixeldance_list.value)
+    }
 
+    async function save_dance_from_recording(dance_paths, color) {
         new_dancer_preview.value = {
             color: color,
         }
@@ -86,6 +107,11 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
                 await createDancePath()
             }
         }
+    }
+
+    async function collect_recording(dance_paths, color) {
+        store_dance_from_recording()
+        save_dance_from_recording()
     }
 
     function step(timestamp, dance) {
@@ -131,6 +157,6 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     }
 
     return {
-        pixeldance_list, store_pixel_dance, animate_dance, animate_all_dances
+        pixeldance_list, collect_recording, animate_dance, animate_all_dances
     }
 })
