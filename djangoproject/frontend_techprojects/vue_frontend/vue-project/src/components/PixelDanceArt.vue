@@ -4,7 +4,7 @@
             :style="{ width: `${stage_width}px`, height: `${stage_height}px` }" @click="play_pixel_dance">
             <div v-for="pixeldance in pixeldance_store.pixeldance_list" :key="pixeldance.id"
                 class="absolute w-4 h-4 opacity-80 rounded-full"
-                :style="{ left: `${pixeldance.x}px`, top: `${pixeldance.y}px`, backgroundColor: pixeldance.color}">
+                :style="{ left: `${pixeldance.x * (stage_width / 400)}px`, top: `${pixeldance.y * (stage_width / 400)}px`, backgroundColor: pixeldance.color}">
 
             </div>
         </div>
@@ -26,11 +26,7 @@ function play_pixel_dance() {
     stage_width.value = Math.min(window.innerHeight, window.innerWidth)
     stage_height.value = Math.min(window.innerHeight, window.innerWidth)
     
-    if (pixeldance_store.pixeldance_list.length == 0) {
-        console.log('No pixel dance data')
-        return
-    }
-
+    pixeldance_store.load_communal_dances_page()
     pixeldance_store.animate_all_dances()
 }
 
