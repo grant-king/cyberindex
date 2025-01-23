@@ -17,7 +17,7 @@ class SponsorProfile(models.Model):
     company_website = models.URLField(null=True, blank=True)
 
 
-class SponsorMessage(models.Model):
+class SponsorMessage(models.Model): # aka meditation from gen pop user perspective
     sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,4 +30,14 @@ class SponsorContribution(models.Model):
     sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class MeditationRead(models.Model):
+    sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE)
+    meditation = models.ForeignKey(SponsorMessage, on_delete=models.CASCADE)
+    read_at = models.DateTimeField(auto_now_add=True)
+    reader_session_key = models.CharField(max_length=40)
+
+    class Meta:
+        ordering = ['-read_at']
 
