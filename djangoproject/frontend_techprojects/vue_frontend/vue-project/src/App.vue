@@ -260,12 +260,8 @@ import {
 } from '@headlessui/vue'
 import {
   Bars3Icon,
-  BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
+  PuzzlePieceIcon,
   Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
   HomeIcon,
   UsersIcon,
   XMarkIcon,
@@ -278,6 +274,7 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 const router_navigation = [
   { name: 'Home', to: '/', icon: HomeIcon, current: false },
   { name: 'Project Registration', icon: FolderPlusIcon, to: '/projectadd', current: false },
+  { name: 'Community Center', to: '/community', icon: PuzzlePieceIcon, current: false},
   { name: 'About', to: '/about', icon: HandThumbUpIcon, current: false },
 ]
 
