@@ -8,6 +8,7 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     const next_page = ref(`${endpoint}?page=1`)
     const path_endpoint = `${base_url}/apiv1/dancepaths/`
     const communal_dancers = ref([]) // dancers with detail endpoint urls for fetching related dance paths
+    const my_dancer_list = ref([]) // dancers created by the user
     const dancer_load_hold = ref([]) // latest fetched dancers with that need related paths to be fetched and loaded for animation
     const dancer_paths_hold = ref([])
     const new_dancer_preview = ref({}) // next dancer object to be created
@@ -100,10 +101,10 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
             await fetchDancerPaths(dancer_data.url)
             // then wrangle that dance and paths into pixeldance_list for animation
             store_dance_from_db(dancer_paths_hold.value, dancer_data.color)
+            // clear the dancer_load_hold and dancer_paths_hold
+            dancer_load_hold.value = []
+            dancer_paths_hold.value = []
         }
-        // clear the dancer_load_hold and dancer_paths_hold
-        dancer_load_hold.value = []
-        dancer_paths_hold.value = []
     }
 
     async function store_dance_from_db(dance_paths, color) { 
