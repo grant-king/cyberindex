@@ -1,14 +1,11 @@
 <template>
     <div class="bg-white/50 py-24 sm:py-32">
         <div class="mx-auto">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-balance text-4xl font-semibold tracking-tight text-black sm:text-5xl">Civic Tech Index
-                    Results</h2>
-                <p class="mt-2 text-lg/8 text-black">Search and filter registered projects.</p>
+            <div class="bg-black">
+                <BasicHeader eyebrow="Welcome" title="Civic Tech Index Results" description="Where thine shalt discoverish." />
             </div>
             <div class="mx-auto mt-32 grid max-w-5xl grid-cols-1 gap-16">
-                <div v-for="project in projects_store.project_list" :key="project.url"
-                class="">
+                <div v-for="project in projects_store.project_list" :key="project.url" class="">
                     <ProjectBrief :project="project" />
                 </div>
             </div>
@@ -20,6 +17,7 @@
 import { ref, onMounted } from 'vue'
 import { useProjectsStore } from '@/stores/projects';
 import ProjectBrief from './ProjectBrief.vue';
+import BasicHeader from './BasicHeader.vue';
 
 const projects_store = useProjectsStore();
 
@@ -41,7 +39,7 @@ function getWordyStats(project) {
     return [
         { id: 4, name: 'Language', value: project.repo_details.language },
         { id: 5, name: 'License', value: project.repo_details.license.name },
-];
+    ];
 }
 
 </script>
