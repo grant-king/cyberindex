@@ -21,12 +21,12 @@ const pixeldance_store = usePixeldanceStore()
 const stage_width = ref(400)
 const stage_height = ref(400)
 
-function play_pixel_dance() {
+async function play_pixel_dance() {
     //set stage height and width to device width
     stage_width.value = Math.min(window.innerHeight, window.innerWidth)
     stage_height.value = Math.min(window.innerHeight, window.innerWidth)
     
-    pixeldance_store.load_communal_dances_page()
+    await pixeldance_store.load_communal_dances_page()
     pixeldance_store.animate_all_dances()
 }
 
