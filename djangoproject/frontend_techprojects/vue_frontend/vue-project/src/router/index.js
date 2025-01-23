@@ -38,6 +38,11 @@ const router = createRouter({
       name: 'onboarding',
       component: () => import('../views/SponsorOnboardingView.vue'),
     },
+    {
+      path: '/community',
+      name: 'community',
+      component: () => import('../views/CommunityView.vue'),
+    }
   ],
 })
 
