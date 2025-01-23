@@ -4,7 +4,13 @@ from rest_framework import permissions, status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication
-from .models import Sponsor, SponsorProfile, SponsorMessage, SponsorContribution
+from .models import (
+    Sponsor,
+    SponsorProfile,
+    SponsorMessage,
+    SponsorContribution,
+    MeditationRead,
+)
 
 from .serializers import LoginSerializer
 from .serializers import (
@@ -196,11 +202,20 @@ class SponsorMeditationView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
+        # check or create session key
+        if not request.session.session_key:
+            request.session.create()
+        # get a random meditation
         meditation = (
             SponsorMessage.objects.filter(sponsor__archived=False).order_by("?").first()
         )
-        sponsor = meditation.sponsor
         if meditation:
+            sponsor = meditation.sponsor
+            MeditationRead.objects.create(
+                sponsor=sponsor,
+                meditation=meditation,
+                reader_session_key=request.session.session_key,
+            )
             return Response(
                 {
                     "message": meditation.message,
