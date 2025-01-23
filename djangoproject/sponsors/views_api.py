@@ -221,6 +221,7 @@ class SponsorMeditationView(APIView):
                     "message": meditation.message,
                     "rep_name": sponsor.sponsorprofile.rep_name,
                     "rep_role": sponsor.sponsorprofile.rep_role,
+                    "rep_image_url": sponsor.sponsorprofile.rep_image_url,
                     "company_name": sponsor.sponsorprofile.company_name,
                     "company_logo_url": sponsor.sponsorprofile.company_logo_url,
                     "company_website": sponsor.sponsorprofile.company_website,
