@@ -197,9 +197,18 @@ class SponsorMeditationView(APIView):
 
     def get(self, request):
         meditation = (
-            SponsorMessage.objects.order_by("?").first()
+            SponsorMessage.objects.filter(sponsor__archived=False).order_by("?").first()
         )
         sponsor = meditation.sponsor
         if meditation:
-            return Response({"message": meditation.message})
+            return Response(
+                {
+                    "message": meditation.message,
+                    "rep_name": sponsor.sponsorprofile.rep_name,
+                    "rep_role": sponsor.sponsorprofile.rep_role,
+                    "company_name": sponsor.sponsorprofile.company_name,
+                    "company_logo_url": sponsor.sponsorprofile.company_logo_url,
+                    "company_website": sponsor.sponsorprofile.company_website,
+                }
+            )
         return Response({"message": "no messages available"})
