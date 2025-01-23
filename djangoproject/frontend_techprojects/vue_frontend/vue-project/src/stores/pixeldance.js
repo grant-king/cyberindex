@@ -46,7 +46,7 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
         })
         const data = await response.json()
         if(response.ok){
-            dancer_paths_hold.value.push(...data.results)
+            dancer_paths_hold.value.push(...data) // this action endpoint is a plain list
         } else {
             console.error('failed to fetch paths for dancer')
             console.error(response)
@@ -96,13 +96,33 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
         // load next page of dancers
         await fetchDancers()
         // for each dancer detail endpoint, fetch related dance paths
-        for (let dancer_data of dancer_load_hold){
+        for (let dancer_data of dancer_load_hold.value){
             await fetchDancerPaths(dancer_data.url)
             // then wrangle that dance and paths into pixeldance_list for animation
+            store_dance_from_db(dancer_paths_hold.value, dancer_data.color)
         }
+        // clear the dancer_load_hold and dancer_paths_hold
+        dancer_load_hold.value = []
+        dancer_paths_hold.value = []
     }
 
-    async function store_dance_from_db(dance_paths, color) { }
+    async function store_dance_from_db(dance_paths, color) { 
+        console.log(dance_paths)
+        console.log(color)
+
+        const dance = {}
+        dance.idx = pixeldance_list.value.length
+        dance.color = color
+        dance.x = dance_paths[0].start_x
+        dance.y = dance_paths[0].start_y
+        dance.current_path = 0
+        dance.start_timestamp = null
+        dance.total_paths = dance_paths.length
+        dance.paths = dance_paths
+    
+        pixeldance_list.value.push(dance)
+        console.log(pixeldance_list.value)
+    }
 
     async function store_dance_from_recording(dance_paths, color) {
         const dance = {}
@@ -192,6 +212,6 @@ export const usePixeldanceStore = defineStore('pixeldance', () => {
     }
 
     return {
-        pixeldance_list, communal_dancers, collect_recording, animate_dance, animate_all_dances
+        pixeldance_list, communal_dancers, load_communal_dances_page, collect_recording, animate_dance, animate_all_dances
     }
 })
