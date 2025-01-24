@@ -13,6 +13,7 @@
                 <h3 class="text-sm/4 font-semibold text-black/80">{{ box1.eyebrow }}</h3>
                 <p class="mt-2 text-lg font-medium tracking-tight text-black">{{ box1.title }}</p>
                 <p class="mt-2 max-w-lg text-sm/6 text-black">{{ box1.content }}</p>
+                <OnboardingCart />
               </div>
             </div>
             <div class="pointer-events-none absolute inset-px rounded-lg ring-1 shadow-sm ring-black/5 max-lg:rounded-t-[2rem] lg:rounded-tl-[2rem]" />
@@ -22,8 +23,8 @@
             <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] lg:rounded-tr-[calc(2rem+1px)]">
               <img class="h-80 object-cover object-left lg:object-right" :src=box2.image_src alt="" />
               <div class="p-10 pt-4">
-                <h3 class="text-sm/4 font-semibold text-indigo-600">{{ box2.eyebrow }}</h3>
-                <p class="mt-2 text-lg font-medium tracking-tight text-gray-950">{{ box2.title }}</p>
+                <h3 class="text-sm/4 font-semibold text-black/80">{{ box2.eyebrow }}</h3>
+                <p class="mt-2 text-lg font-medium tracking-tight text-black">{{ box2.title }}</p>
                 <p class="mt-2 max-w-lg text-sm/6 text-gray-600">{{ box2.content }}</p>
               </div>
             </div>
@@ -73,6 +74,8 @@
 <script setup>
 import { ref } from 'vue'
 
+import OnboardingCart from './OnboardingCart.vue'
+
 const eyebrow = ref('re-up')
 const heading_title = ref('Add some credits, yo')
 const title_bg = ref('https://unrolla.blob.core.windows.net/unrolla/images/P8220488.webp')
@@ -95,21 +98,21 @@ const box3 = ref({
     eyebrow: 'publication credits',
     title: 'How IT works',
     content: 'Each time a user chooses to read one of your messages, $0.10 will be deducted from your account balance.',
-    image_src: 'https://unrolla.blob.core.windows.net/unrolla/images/1000000108.webp'
+    image_src: 'https://unrolla.blob.core.windows.net/unrolla/images/PXL_20240414_025043816.webp'
 })
 
 const box4 = ref({
-    eyebrow: 'quality reads',
+    eyebrow: 'quality readers',
     title: 'How IT works',
     content: 'Users must intentionally request to read a message, one at a time. This ensures they are interested in learning and engaging.',
-    image_src: 'https://unrolla.blob.core.windows.net/unrolla/images/1000000108.webp'
+    image_src: 'https://unrolla.blob.core.windows.net/unrolla/images/PXL_20240414_025043816.webp'
 })
 
 const box5 = ref({
-    eyebrow: 'quality reads',
+    eyebrow: 'quality control',
     title: 'How IT works',
     content: 'It takes several clicks to get to the interactive community area where messages will be delivered to the interested users. Our infrastructure ensures messages are only delivered to requests with a very high probibility of maximum consumption quality.',
-    image_src: 'https://unrolla.blob.core.windows.net/unrolla/images/1000000108.webp'
+    image_src: 'https://unrolla.blob.core.windows.net/unrolla/images/PXL_20240414_025043816.webp'
 })
 
 </script>
