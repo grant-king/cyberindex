@@ -33,6 +33,7 @@ class CheckoutView(APIView):
             intent = update_payment_intent(intent_id, request.data["amount_pennies"])
             if intent:
                 payment.intent = intent
+                payment.update_amount()
         else:
             # create a payment intent and a new order
             intent = create_payment_intent(request.data["amount_pennies"])
