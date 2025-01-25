@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
-from cashier.models import StripePayment, Customer
+from cashier.models import StripePayment, Customer, Order
 from cashier.serializers import (
     StripePaymentSerializer,
     CustomerSerializer,
@@ -11,7 +11,7 @@ from cashier.serializers import (
     FundsCreditSerializer,
     FundsDebitSerializer,
 )
-from stripe_tools import create_payment_intent, update_payment_intent
+from cashier.stripe_tools import create_payment_intent, update_payment_intent
 
 
 class CheckoutView(APIView):
@@ -34,6 +34,7 @@ class CheckoutView(APIView):
             if intent:
                 payment.intent = intent
         else:
+            # create a payment intent and a new order
             intent = create_payment_intent(request.data["amount_pennies"])
             payment = StripePayment.objects.create(
                 intent=intent,
@@ -41,7 +42,7 @@ class CheckoutView(APIView):
                 amount_pennies=request.data["amount_pennies"],
                 session_key=request.session.session_key,
             )
-        payment.save()
+            order = Order.objects.create(payment=payment, customer=customer)
         return Response(
-            StripePaymentSerializer(payment).data, status=status.HTTP_201_CREATED
+            StripePaymentSerializer(payment).data, status=status.HTTP_200_OK
         )
