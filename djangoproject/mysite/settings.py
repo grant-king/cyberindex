@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'frontend_techprojects',
     'sponsors',
     'pixeldance',
+    'cashier',
 ]
 
 MIDDLEWARE = [
