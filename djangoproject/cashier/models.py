@@ -17,9 +17,10 @@ class StripePayment(models.Model):
 
 
 class Order(models.Model):
-    payment = models.OneToOneField(StripePayment, on_delete=models.CASCADE)
+    payment = models.OneToOneField(StripePayment, on_delete=models.CASCADE, related_name="order")
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     completed_at = models.DateTimeField(blank=True, null=True)
+    cancelled_at = models.DateTimeField(blank=True, null=True)
 
 
 class FundsCredit(models.Model):
