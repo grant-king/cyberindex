@@ -5,6 +5,15 @@ from django.utils import timezone
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    @property
+    def credit_balance(self):
+        return sum([credit.amount_pennies for credit in self.credits.all()]) - sum(
+            [debit.amount_pennies for debit in self.debits.all()]
+        )
+
+    def __str__(self):
+        return f'C{self.pk}: {self.credit_balance}'
+
 
 class StripePayment(models.Model):
     intent = models.JSONField()
