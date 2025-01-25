@@ -8,7 +8,7 @@
                 <div id="payment-element">
                     <!-- main stripe payment element will be inserted here -->
                 </div>
-                <div>
+                <div v-show="store.show_pay_button">
                     <button class="uppercase mt-8" @click="submit_payment" type="button">
                         <div
                             class="px-4 py-2 border-4 hover:bg-clip-border hover:bg-lime-200 hover:bg-white/20 hover:text-white/50 transition-all duration-1000 border-white/50 border-dotted rounded-lg">
@@ -37,6 +37,7 @@ const store = useCheckoutStore()
 
 const stripe = ref(null)
 const stripe_elements = ref(null)
+
 
 async function submit_payment() {
     // submit payment logic here
