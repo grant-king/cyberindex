@@ -32,7 +32,7 @@ class FundsCredit(models.Model):
 
 class FundsDebit(models.Model):
     customer = models.ForeignKey(
-        Customer, on_delete=models.CASCADE, related_name="credits"
+        Customer, on_delete=models.CASCADE, related_name="debits"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     amount_pennies = models.PositiveIntegerField()
