@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import datetime
 
 
 class Customer(models.Model):
@@ -30,6 +31,27 @@ class Order(models.Model):
     completed_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
 
+    def confirm_status(self):
+        if not self.completed_at and not self.cancelled_at:
+            self.update_status()
+
+    def update_status(self):
+        if self.payment.intent["status"] == "succeeded":
+            self.completed_at = datetime.now()
+            self.save()
+            self.add_funds()
+        if self.payment.intent["status"] == "cancelled":
+            self.cancelled_at = datetime.now()
+            self.save()
+
+    def add_funds(self):
+        if self.completed_at:
+            FundsCredit.objects.create(
+                customer=self.customer,
+                amount_pennies=self.payment.intent["amount_received"],
+                order=self,
+            )
+
 
 class FundsCredit(models.Model):
     customer = models.ForeignKey(
@@ -37,6 +59,9 @@ class FundsCredit(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     amount_pennies = models.PositiveIntegerField()
+    order = models.OneToOneField(
+        Order, blank=True, null=True, on_delete=models.CASCADE, related_name="credits"
+    )
 
 
 class FundsDebit(models.Model):
