@@ -6,7 +6,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class StripePayment(models.model):
+class StripePayment(models.Model):
     intent = models.JSONField()
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name="payments"
