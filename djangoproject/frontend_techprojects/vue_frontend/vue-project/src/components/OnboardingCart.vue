@@ -19,6 +19,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useCheckoutStore } from '@/stores/checkout'
+const store = useCheckoutStore()
 
 const selected_item = ref(null)
 
@@ -27,21 +29,33 @@ function select_item(item_idx) {
         packages.value[item].selected = false
         if (item == item_idx){
             packages.value[item].selected = true
+            selected_item.value = packages.value[item]
         }
     }
+    submit_amount()
+}
+
+async function submit_amount() {
+    if (selected_item.value == null) {
+        alert('Please select a package')
+        return
+    }
+    await store.submitCheckout(selected_item.value.amount_pennies)
 }
 
 const packages = ref([
     {
         selected: false,
         amount: '$40',
+        amount_pennies: 4000,
         subtext: 'small package',
         imageUrl:
             'https://unrolla.blob.core.windows.net/unrolla/images/P8220536.webp',
     },
     {
-        active: false,
+        selected: false,
         amount: '$200',
+        amount_pennies: 20000,
         subtext: 'big package',
         imageUrl:
             'https://unrolla.blob.core.windows.net/unrolla/images/P6080370.webp',
