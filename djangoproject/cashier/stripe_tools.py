@@ -33,3 +33,11 @@ def update_payment_intent(intent_id, amount_pennies):
     except Exception as e:
         print(f"error updating payment intent: {e}")
         return 0
+
+def retrieve_intent(client_secret):
+    try:
+        intent = stripe.PaymentIntent.retrieve(client_secret)
+        return intent
+    except Exception as e:
+        print(f"error retrieving payment intent: {e}")
+        return 0
