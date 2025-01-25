@@ -11,7 +11,8 @@ from cashier.serializers import (
     FundsCreditSerializer,
     FundsDebitSerializer,
 )
-from cashier.stripe_tools import create_payment_intent, update_payment_intent
+from cashier.stripe_tools import create_payment_intent, update_payment_intent, retrieve_intent
+from datetime import datetime
 
 
 class CheckoutView(APIView):
@@ -44,6 +45,30 @@ class CheckoutView(APIView):
                 session_key=request.session.session_key,
             )
             order = Order.objects.create(payment=payment, customer=customer)
+        return Response(
+            StripePaymentSerializer(payment).data, status=status.HTTP_200_OK
+        )
+
+class ConfirmPaymentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # get the payment from the session key
+        payment = StripePayment.objects.filter(
+            session_key=request.session.session_key
+        ).first()
+        client_secret = payment.intent["client_secret"]
+        intent = retrieve_intent(client_secret)
+        payment.intent = intent
+        payment.update_amount()
+        if intent["status"] == "succeeded":
+            order = payment.order
+            order.completed_at = datetime.now()
+            order.save()
+        if intent["status"] == "cancelled":
+            order = payment.order
+            order.cancelled_at = datetime.now()
+            order.save()
         return Response(
             StripePaymentSerializer(payment).data, status=status.HTTP_200_OK
         )
