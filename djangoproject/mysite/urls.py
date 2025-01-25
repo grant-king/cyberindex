@@ -54,4 +54,5 @@ urlpatterns = [
     # random meditation
     path('apiv1/meditation/', sponsors_views.SponsorMeditationView.as_view(), name='meditation'),
     path('apiv1/checkout/', cashier_views.CheckoutView.as_view(), name='checkout'),
+    path('apiv1/confirm_payment/', cashier_views.ConfirmPaymentView.as_view(), name='confirm_payment'),
 ]
