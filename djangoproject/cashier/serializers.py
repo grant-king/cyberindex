@@ -2,11 +2,12 @@ from rest_framework import serializers
 from cashier.models import StripePayment, Customer, Order, FundsCredit, FundsDebit
 
 
-class CustomerSerializer(serializers.ModelSerializer):
+class CustomerSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Customer
-        fields = ["user"]
+        fields = ["url", "user", "credit_balance"]
 
 
 class StripePaymentSerializer(serializers.ModelSerializer):
