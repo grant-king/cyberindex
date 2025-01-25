@@ -1,10 +1,8 @@
 from rest_framework import serializers
 from cashier.models import StripePayment, Customer
-from rest_framework.permissions import IsAuthenticated
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    permission_classes = [IsAuthenticated]
 
     class Meta:
         model = Customer
@@ -12,7 +10,6 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class StripePaymentSerializer(serializers.ModelSerializer):
-    permission_classes = [IsAuthenticated]
 
     class Meta:
         model = StripePayment
