@@ -52,7 +52,9 @@ async function submit_payment() {
     }
     store.current_payment.intent = confirmed_intent
     console.log('payment confirmed', confirmed_intent)
+    store.confirmOrderStatus()
     // trigger confirm and update order, payment with stored intent id on the back end
+    // elsewhere hide the payment form and only show current account balance whenever > $20
 }
 
 async function update_stripe_elements() {
