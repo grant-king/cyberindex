@@ -2,7 +2,11 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useCheckoutStore = defineStore('checkout', () => {
-    const current_payment = ref({'amount_pennies': 0 })
+    const current_payment = ref({
+        'intent': {
+            'amount': 0,
+        }
+    })
 
     async function submitCheckout(amount_pennies) {
         const response = await fetch('/apiv1/checkout/', {
