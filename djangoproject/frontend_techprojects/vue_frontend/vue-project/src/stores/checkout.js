@@ -2,11 +2,15 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useCheckoutStore = defineStore('checkout', () => {
-    const current_payment = ref({
+    const current_payment_default = {
         'intent': {
             'amount': 0,
         }
-    })
+    }
+    const current_payment = ref(current_payment_default)
+    const show_pay_button = ref(false)
+    const show_shop = ref(true)
+    const credit_balance = ref(0)
 
     async function submitCheckout(amount_pennies) {
         const response = await fetch('/apiv1/checkout/', {
@@ -21,6 +25,7 @@ export const useCheckoutStore = defineStore('checkout', () => {
             const data = await response.json()
             current_payment.value = data
             console.log(current_payment.value)
+            show_pay_button.value = true
             return data
         } else {
             console.error('failed to submit checkout')
@@ -29,6 +34,7 @@ export const useCheckoutStore = defineStore('checkout', () => {
     }
 
     async function confirmOrderStatus(){
+        show_pay_button.value = false
         const response = await fetch('/apiv1/confirm_payment/', {
             method: 'GET',
             headers: {
@@ -46,5 +52,5 @@ export const useCheckoutStore = defineStore('checkout', () => {
         }
     }
 
-    return { submitCheckout, confirmOrderStatus, current_payment }
+    return { submitCheckout, confirmOrderStatus, current_payment, show_pay_button }
 })
