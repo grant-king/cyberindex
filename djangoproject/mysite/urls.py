@@ -23,6 +23,7 @@ from frontend_techprojects.views import index as frontend_1_index
 from sponsors import views_api as sponsors_views
 from django.contrib.auth import views as auth_views
 from pixeldance import views_api as dance_views
+from cashier import views_api as cashier_views
 
 router = routers.DefaultRouter()
 router.register(r'locations', techprojects_views.LocationViewSet)
@@ -52,4 +53,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     # random meditation
     path('apiv1/meditation/', sponsors_views.SponsorMeditationView.as_view(), name='meditation'),
+    path('apiv1/checkout/', cashier_views.CheckoutView.as_view(), name='checkout'),
 ]
