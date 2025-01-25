@@ -1,3 +1,16 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
+class StripePayment(models.model):
+    intent = models.JSONField()
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name="payments"
+    )
+    amount_pennies = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    session_key = models.CharField(max_length=40)
