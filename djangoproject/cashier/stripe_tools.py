@@ -6,4 +6,16 @@ load_dotenv()
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
 def create_payment_intent(amount_pennies):
-    pass
+    if amount_pennies < 50 or amount_pennies > 50000:
+        print('invalid amount')
+        return 0
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=amount_pennies,
+            currency='usd'
+        )
+        print(f'created payment intent {intent}')
+        return intent
+    except Exception as e:
+        print(f'error creating payment intent: {e}')
+        return 0
