@@ -26,6 +26,7 @@
                 <h3 class="text-sm/4 font-semibold text-black/80">{{ box2.eyebrow }}</h3>
                 <p class="mt-2 text-lg font-medium tracking-tight text-black">{{ box2.title }}</p>
                 <p class="mt-2 max-w-lg text-sm/6 text-gray-600">{{ box2.content }}</p>
+                <OnboardingPayment />
               </div>
             </div>
             <div class="pointer-events-none absolute inset-px rounded-lg ring-1 shadow-sm ring-black/5 lg:rounded-tr-[2rem]" />
@@ -75,6 +76,7 @@
 import { ref } from 'vue'
 
 import OnboardingCart from './OnboardingCart.vue'
+import OnboardingPayment from './OnboardingPayment.vue'
 
 const eyebrow = ref('re-up')
 const heading_title = ref('Add some credits, yo')
