@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 stripe.api_key = os.environ.get("STRIPE_API_KEY")
+stripe_public_key = os.environ.get("STRIPE_PUBLIC_KEY")
 
 
 def create_payment_intent(amount_pennies):
@@ -12,6 +13,7 @@ def create_payment_intent(amount_pennies):
         return 0
     try:
         intent = stripe.PaymentIntent.create(amount=amount_pennies, currency="usd")
+        intent["public_key"] = stripe_public_key
         print(f"created payment intent {intent}")
         return intent
     except Exception as e:
@@ -25,6 +27,7 @@ def update_payment_intent(intent_id, amount_pennies):
         return 0
     try:
         intent = stripe.PaymentIntent.modify(intent_id, amount=amount_pennies)
+        intent["public_key"] = stripe_public_key
         print(f"updated payment intent {intent}")
         return intent
     except Exception as e:
