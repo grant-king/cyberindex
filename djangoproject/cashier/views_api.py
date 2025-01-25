@@ -27,8 +27,8 @@ class CheckoutView(APIView):
         # check if a StripePayment already exists for this session
         payment = StripePayment.objects.filter(
             session_key=request.session.session_key
-        ).first()
-        if payment:
+        ).last()
+        if payment and payment.intent["status"] == "requires_payment_method":
             intent_id = payment.intent["id"]
             # update the payment intent with the new amount
             intent = update_payment_intent(intent_id, request.data["amount_pennies"])
@@ -56,7 +56,7 @@ class ConfirmPaymentView(APIView):
         # get the payment from the session key
         payment = StripePayment.objects.filter(
             session_key=request.session.session_key
-        ).first()
+        ).last()
         intent_id = payment.intent["id"]
         intent = retrieve_intent(intent_id)
         payment.intent = intent
@@ -66,5 +66,6 @@ class ConfirmPaymentView(APIView):
         return Response(
             {
                 "order": OrderSerializer(order).data,
+                "credits": FundsCreditSerializer(order.credits).data
             }, status=status.HTTP_200_OK
         )
