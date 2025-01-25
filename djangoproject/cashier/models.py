@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.timezone import datetime
-
+from django.utils import timezone
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -37,11 +36,11 @@ class Order(models.Model):
 
     def update_status(self):
         if self.payment.intent["status"] == "succeeded":
-            self.completed_at = datetime.now()
+            self.completed_at = timezone.now()
             self.save()
             self.add_funds()
         if self.payment.intent["status"] == "cancelled":
-            self.cancelled_at = datetime.now()
+            self.cancelled_at = timezone.now()
             self.save()
 
     def add_funds(self):
