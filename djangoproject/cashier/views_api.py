@@ -11,7 +11,11 @@ from cashier.serializers import (
     FundsCreditSerializer,
     FundsDebitSerializer,
 )
-from cashier.stripe_tools import create_payment_intent, update_payment_intent, retrieve_intent
+from cashier.stripe_tools import (
+    create_payment_intent,
+    update_payment_intent,
+    retrieve_intent,
+)
 from datetime import datetime
 
 
@@ -49,6 +53,7 @@ class CheckoutView(APIView):
             StripePaymentSerializer(payment).data, status=status.HTTP_200_OK
         )
 
+
 class ConfirmPaymentView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -66,6 +71,32 @@ class ConfirmPaymentView(APIView):
         return Response(
             {
                 "order": OrderSerializer(order).data,
-                "credits": FundsCreditSerializer(order.credits).data
-            }, status=status.HTTP_200_OK
+                "credits": FundsCreditSerializer(order.credits).data,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class CustomerViewSet(viewsets.ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Customer.objects.filter(user=self.request.user)
+
+    @action(detail=True, methods=["get"])
+    def credits(self, request, pk=None):
+        customer = self.get_object()
+        return Response(
+            FundsCreditSerializer(customer.credits.all(), many=True).data,
+            status=status.HTTP_200_OK,
+        )
+
+    @action(detail=True, methods=["get"])
+    def debits(self, request, pk=None):
+        customer = self.get_object()
+        return Response(
+            FundsDebitSerializer(customer.debits.all(), many=True).data,
+            status=status.HTTP_200_OK,
         )
