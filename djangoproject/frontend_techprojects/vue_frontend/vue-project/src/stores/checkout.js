@@ -28,5 +28,23 @@ export const useCheckoutStore = defineStore('checkout', () => {
         }
     }
 
-    return { submitCheckout, current_payment }
+    async function confirmOrderStatus(){
+        const response = await fetch('/apiv1/confirm_payment/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': window.csrf_token,
+            }
+        })
+        if (response.ok) {
+            const data = await response.json()
+            console.log(data)
+            return data
+        } else {
+            console.error('failed to confirm payment')
+            console.error(response)
+        }
+    }
+
+    return { submitCheckout, confirmOrderStatus, current_payment }
 })
