@@ -57,18 +57,14 @@ class ConfirmPaymentView(APIView):
         payment = StripePayment.objects.filter(
             session_key=request.session.session_key
         ).first()
-        client_secret = payment.intent["client_secret"]
-        intent = retrieve_intent(client_secret)
+        intent_id = payment.intent["id"]
+        intent = retrieve_intent(intent_id)
         payment.intent = intent
-        payment.update_amount()
-        if intent["status"] == "succeeded":
-            order = payment.order
-            order.completed_at = datetime.now()
-            order.save()
-        if intent["status"] == "cancelled":
-            order = payment.order
-            order.cancelled_at = datetime.now()
-            order.save()
+        payment.save()
+        order = payment.order
+        order.confirm_status()
         return Response(
-            StripePaymentSerializer(payment).data, status=status.HTTP_200_OK
+            {
+                "order": OrderSerializer(order).data,
+            }, status=status.HTTP_200_OK
         )
