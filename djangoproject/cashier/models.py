@@ -15,9 +15,17 @@ class StripePayment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     session_key = models.CharField(max_length=40)
 
+    def update_amount(self):
+        # update the self.amount_pennies from the StripePayment intent object 'amount'
+        if self.amount_pennies != self.intent["amount"]:
+            self.amount_pennies = self.intent["amount"]
+            self.save()
+
 
 class Order(models.Model):
-    payment = models.OneToOneField(StripePayment, on_delete=models.CASCADE, related_name="order")
+    payment = models.OneToOneField(
+        StripePayment, on_delete=models.CASCADE, related_name="order"
+    )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     completed_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
