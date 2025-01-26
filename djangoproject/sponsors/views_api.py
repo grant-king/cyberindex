@@ -19,6 +19,7 @@ from .serializers import (
     SponsorSerializer,
     SponsorMessageSerializer,
     SponsorContributionSerializer,
+    MeditationReadSerializer,
 )
 from rest_framework.decorators import action
 
@@ -228,3 +229,16 @@ class SponsorMeditationView(APIView):
                 }
             )
         return Response({"message": "no messages available"})
+
+
+class MeditationReadViewSet(viewsets.ViewSet):
+    """
+    API endpoint that allows sponsor message reads to be viewed by the current sponsor.
+    """
+    queryset = MeditationRead.objects.all()
+
+    def list(self, request):
+        queryset = MeditationRead.objects.filter(sponsor__user=request.user)
+        serializer = MeditationReadSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+    
