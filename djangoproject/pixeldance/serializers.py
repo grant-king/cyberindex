@@ -5,7 +5,6 @@ class DancerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Dancer
         fields = ['url', 'id', 'color', 'session_id', 'created_at']
-        read_only_fields = ['session_id']
 
 
 class DancePathSerializer(serializers.HyperlinkedModelSerializer):
