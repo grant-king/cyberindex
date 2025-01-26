@@ -6,6 +6,7 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
     const endpoint = `${base_url}/apiv1/sponsormessages/`
     const next_page = ref(`${endpoint}?page=1`)
     const message_list = ref([])
+    const total_messages = ref(0)
     const new_message_template = {
         message: 'They said, "Dance like this so we can find you, spin and twist until you fly". And so he started to dance and twist, just like this. He started to dance and spin. They found him well; together, they danced a spell. In a moment while spinning, he began to fly.',
     }
@@ -42,11 +43,13 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
         })
         if (response.ok) {
             const data = await response.json()
+            total_messages.value = data.count
+            console.log('total messages:', total_messages.value)
             message_list.value.push(...data.results)
             next_page.value = data.next
         }
     }
-    
+
     async function createSponsorMessage() {
         // POST to endpoint with new_message_preview
         const response = await fetch(endpoint, {
@@ -68,6 +71,6 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
             console.error(response)
         }
     }
-    
-    return { fetchSponsormessages, createSponsorMessage, get_random_message, random_message, message_list, new_message_preview }    
+
+    return { fetchSponsormessages, createSponsorMessage, get_random_message, random_message, message_list, new_message_preview, total_messages }
 })
