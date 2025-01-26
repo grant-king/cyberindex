@@ -1,9 +1,10 @@
 <template>
+    <BasicHeader eyebrow="Contribute" title="Submit Your Project" description="paste a github link, maybe add a location, save to the index." />
     <div class="bg-white/50">
         <div class="space-y-12 px-8 py-16">
             <div class="border-b border-black/10 pb-12">
                 <!-- Title Section -->
-                <div class="text-center">
+                <div class="">
                     <h2 class="text-lg font-semibold text-black">Register a new open source civic project</h2>
                     <p class="mt-1 text-sm text-black">Use this form to add any open source project on GitHub to our
                         index.</p>
@@ -65,6 +66,7 @@
 import { ref } from 'vue';
 import { useProjectsStore } from '@/stores/projects';
 import ProjectBrief from './ProjectBrief.vue';
+import BasicHeader from './BasicHeader.vue';
 
 const github_url = ref('');
 const projects_store = useProjectsStore();
