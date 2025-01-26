@@ -8,14 +8,14 @@
           :style="{ backgroundImage: `url(${title_bg})` }">{{ heading_title }}</p>
       </div>
 
-      <div v-else>
+      <div v-if="!store.show_shop" class="pb-4">
         <h2 class="text-base/7 font-semibold text-black/80">CREDITS {{ store.credit_balance }}</h2>
         <p class="mt-2 max-w-lg text-4xl font-bold tracking-tight text-pretty text-black/80 sm:text-5xl bg-clip-text bg-cover"
           :style="{ backgroundImage: `url(${title_bg})` }">{{ store.credit_balance }} CREDITS</p>
       </div>
 
       <div v-show="store.show_shop">
-        <div class="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
+        <div class="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-1">
           <div class="relative lg:col-span-3">
             <div class="absolute inset-px rounded-lg bg-indigo-200/5 max-lg:rounded-t-[2rem] lg:rounded-tl-[2rem]" />
             <div
@@ -49,8 +49,12 @@
         </div>
       </div>
 
+      <div class="mt-2">
+        <BasicStats :stgrp_idx=0 />
+      </div>
+
       <div>
-        <div class="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
+        <div class="mt-4 grid grid-cols-1 gap-4 sm:mt-4 lg:grid-cols-6 lg:grid-rows-1">
           <div class="relative lg:col-span-2">
             <div class="absolute inset-px rounded-lg bg-white lg:rounded-bl-[2rem]" />
             <div
@@ -103,11 +107,17 @@ import { ref } from 'vue'
 
 import OnboardingCart from './OnboardingCart.vue'
 import OnboardingPayment from './OnboardingPayment.vue'
+import BasicStats from './BasicStats.vue'
 
 import { useCheckoutStore } from '@/stores/checkout'
+import { useStatsStore } from '@/stores/stats'
+import { useSponsormessagesStore } from '@/stores/sponsormessages'
 
 const store = useCheckoutStore()
 store.getCreditBalance()
+
+const stats_store = useStatsStore()
+const message_store = useSponsormessagesStore()
 
 const eyebrow = ref('re-up')
 const heading_title = ref('Add some credits, yo')
@@ -116,6 +126,13 @@ const eyebrow2 = ref('your credits')
 const heading_title2 = ref('Add some credits, yo')
 
 const title_bg = ref('https://unrolla.blob.core.windows.net/unrolla/images/P8220488.webp')
+
+const stats = ref([
+  { id: 1, name: 'messages on the platform', value: '12,456' },
+  { id: 2, name: 'message delivery fee', value: '10 credits' },
+  { id: 3, name: 'your messages', value:  message_store.total_messages},
+  { id: 4, name: 'your all-time reads', value: '2280' },
+])
 
 const box1 = ref({
   eyebrow: 'select amount',
