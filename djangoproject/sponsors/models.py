@@ -26,6 +26,10 @@ class SponsorMessage(models.Model): # aka meditation from gen pop user perspecti
     class Meta:
         ordering = ['-created_at']
 
+    @property
+    def total_reads(self):
+        return MeditationRead.objects.filter(meditation=self).count()
+
 
 class SponsorContribution(models.Model):
     sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE)
