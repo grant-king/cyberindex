@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Sponsor, SponsorProfile, SponsorMessage, SponsorContribution
+from .models import Sponsor, SponsorProfile, SponsorMessage, SponsorContribution, MeditationRead
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -40,4 +40,10 @@ class SponsorContributionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SponsorContribution
         fields = ['amount', 'created_at']
+
+
+class MeditationReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MeditationRead
+        fields = ['sponsor', 'meditation', 'read_at', 'consumer_key']
         
