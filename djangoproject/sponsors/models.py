@@ -21,6 +21,7 @@ class SponsorMessage(models.Model): # aka meditation from gen pop user perspecti
     sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    archived = models.BooleanField(default=False, db_index=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -40,4 +41,9 @@ class MeditationRead(models.Model):
 
     class Meta:
         ordering = ['-read_at']
+
+    @property
+    def consumer_key(self):
+        # return a hash of the reader_session_key
+        return hash(self.reader_session_key)
 
