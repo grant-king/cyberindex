@@ -8,7 +8,7 @@
                 </div>
                 <dl
                     class="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-                    <div v-for="stat in stats" :key="stat.id" class="flex flex-col bg-white/5 p-8">
+                    <div v-for="stat in stats_store.stats_groups[stgrp_idx]" :key="stat.id" class="flex flex-col bg-white/5 p-8">
                         <dt class="text-sm/6 font-semibold text-gray-600">{{ stat.name }}</dt>
                         <dd class="order-first text-3xl font-semibold tracking-tight text-black">{{ stat.value }}
                         </dd>
@@ -17,17 +17,23 @@
             </div>
         </div>
     </div>
+    {{ message_store.total_messages }}
 </template>
 
 <script setup>
 
+import { useSponsormessagesStore } from '@/stores/sponsormessages';
+import { useStatsStore } from '@/stores/stats';
+import { ref } from 'vue'
+
+const message_store = useSponsormessagesStore()
+const stats_store = useStatsStore()
+
 const title = 'Sponsorship Stats'
 const subheading = '::::::::::: :::::'
 
-const stats = [
-    { id: 1, name: 'messages on the platform', value: '12,456' },
-    { id: 2, name: 'message delivery fee', value: '10 credits' },
-    { id: 3, name: 'your messages', value: '48' },
-    { id: 4, name: 'your all-time reads', value: '2280' },
-]
+// get stat group index from props
+const props = defineProps({
+    stgrp_idx: Number
+})
 </script>
