@@ -23,6 +23,9 @@ class ProjectRegistration(models.Model):
     def __str__(self):
         return self.name
     
+    class Meta:
+        ordering = ['-last_updated']
+    
 
 class ProjectResourceLink(models.Model): # additional links to resources like documentation, demo, etc.
     project = models.ForeignKey(ProjectRegistration, on_delete=models.CASCADE, related_name='resource_links')
