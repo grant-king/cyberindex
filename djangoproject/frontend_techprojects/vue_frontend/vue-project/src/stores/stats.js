@@ -14,11 +14,14 @@ export const useStatsStore = defineStore('stats', () => {
     const stats_groups = ref([])
 
     const stats1 = ref([
-        { id: 0, name: 'messages on the platform', value: '12,456' },
-        { id: 1, name: 'message delivery fee', value: '10 credits' },
-        { id: 2, name: 'your messages', value:  messages_store.total_messages},
+        { id: 0, name: 'meditations on the platform', value: '12,456' },
+        { id: 1, name: 'meditation delivery fee', value: '10 credits' },
+        { id: 2, name: 'authored by you', value:  messages_store.total_messages},
         { id: 3, name: 'your all-time reads', value: '2280' },
       ])
+
+      // stats idea: total time on screen for read messages, maxes out at 100 seconds
+      // calculate on backend using subsequent message read requests per session
 
       stats_groups.value.push(stats1.value)
       
