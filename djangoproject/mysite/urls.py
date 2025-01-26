@@ -36,6 +36,7 @@ router.register(r'sponsorcontributions', sponsors_views.SponsorContributionViewS
 router.register(r'dancers', dance_views.DancerViewSet)
 router.register(r'dancepaths', dance_views.DancePathViewSet)
 router.register(r'customers', cashier_views.CustomerViewSet)
+router.register(r'meditationreads', sponsors_views.MeditationReadViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
