@@ -33,7 +33,7 @@ class SponsorProfileOwnerSerializer(serializers.HyperlinkedModelSerializer):
 class SponsorMessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SponsorMessage
-        fields = ['url', 'message', 'created_at']
+        fields = ['url', 'message', 'created_at', 'archived', 'total_reads']
     
 
 class SponsorContributionSerializer(serializers.ModelSerializer):
@@ -43,6 +43,11 @@ class SponsorContributionSerializer(serializers.ModelSerializer):
 
 
 class MeditationReadSerializer(serializers.ModelSerializer):
+    # get url for message/meditation
+    meditation = serializers.HyperlinkedRelatedField(
+        view_name='sponsormessage-detail',
+        read_only=True,
+    )
     class Meta:
         model = MeditationRead
         fields = ['sponsor', 'meditation', 'read_at', 'consumer_key']
