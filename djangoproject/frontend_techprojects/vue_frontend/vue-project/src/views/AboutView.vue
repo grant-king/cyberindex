@@ -1,4 +1,5 @@
 <template>
+  <BasicHeader eyebrow="About" title="Technodex" description="Technodex is a community platform for connecting resources to individuals who are working on community civic tehnology projects." />
   <div class="min-h-32 bg-gradient-to-b from-black via-black to-white/50"></div>
   <div class="bg-white/50">
     <div class="pb-32">
@@ -12,8 +13,10 @@
     <div class="border-dotted border-t-8 border-b-4 min-h-16"></div>
     <div class="pb-32">
       <AboutHeader :heading_content="heading_7" />
+      <AboutHeader :heading_content="heading_7b" />
       <AboutHeader :heading_content="heading_8" />
       <AboutHeader :heading_content="heading_9" />
+      <AboutHeader :heading_content="heading_10" />
     </div>
   </div>
 </template>
@@ -21,6 +24,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import AboutHeader from '@/components/AboutHeader.vue';
+import BasicHeader from '@/components/BasicHeader.vue';
 
 const heading_1 = {
   eyebrow: 'connecting the dots',
@@ -64,16 +68,28 @@ const heading_7 = {
   description: 'Adding your project is straightforward - just share your GitHub repository URL. Our system automatically extracts project details, metrics, and documentation. No account required for basic submissions, though sponsors gain access to advanced tools for managing multiple projects and organizations.'
 }
 
+const heading_7b = {
+  eyebrow: 'simple process',
+  title: 'No accounts, no logins',
+  description: 'This platform doesn’t provide persistant accounts for everyday users. It still provides a customized experience for all, by storing a temporary key on your device (cookies).'
+}
+
 const heading_8 = {
   eyebrow: 'powerful tools',
   title: 'Features for Organizations',
-  description: 'Sponsors and organizations gain access to specialized tools including bulk project registration, custom organization pages, and enhanced project analytics. Our sponsor program helps established civic tech organizations increase their impact while supporting the index\'s core mission.'
+  description: 'Sponsors and organizations gain access to specialized tools including public message publication, dynamic sponsor account control interface, and customized analytics.'
 }
 
 const heading_9 = {
   eyebrow: 'technical details',
   title: 'Integration & Access',
   description: 'Access our index through our web interface or API. We maintain current GitHub metrics, project health indicators, and engagement statistics. Developers can integrate our API into their own platforms, creating specialized civic tech discovery experiences for their communities.'
+}
+
+const heading_10 = {
+  eyebrow: 'how IT works',
+  title: 'Project Locations',
+  description: 'You are encouraged to use a location or locations for your project. This will help our system organize projects in a super simple way that is most useful to users.'
 }
 
 </script>
