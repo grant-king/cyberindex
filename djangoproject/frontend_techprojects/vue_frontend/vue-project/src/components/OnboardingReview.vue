@@ -20,6 +20,9 @@
             </div>
         </div>
     </div>
+    <div>
+        <OnboardingReviewMessages />
+    </div>
 </template>
 
 <script setup>
@@ -28,6 +31,7 @@ import { useSponsormessagesStore } from '@/stores/sponsormessages';
 import SponsorWidget1 from './SponsorWidget1.vue';
 import SponsorWidget2 from './SponsorWidget2.vue';
 import SponsorWidget3 from './SponsorWidget3.vue';
+import OnboardingReviewMessages from './OnboardingReviewMessages.vue';
 
 const sponsorprofiles_store = useSponsorprofilesStore();
 const sponsormessages_store = useSponsormessagesStore();
