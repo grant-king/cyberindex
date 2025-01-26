@@ -12,13 +12,9 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
     }
     const new_message_preview = ref(structuredClone(new_message_template))
 
-    // computed property to get a random message from message_list
-    const random_message = computed(() => {
-        if (message_list.value.length === 0) {
-            return new_message_preview.value
-        }
-        const random_index = Math.floor(Math.random() * message_list.value.length)
-        return message_list.value[random_index]
+    // computed property 
+    const xx = computed(() => {
+        
     })
 
     function get_random_message() {
@@ -72,5 +68,5 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
         }
     }
 
-    return { fetchSponsormessages, createSponsorMessage, get_random_message, random_message, message_list, new_message_preview, total_messages }
+    return { fetchSponsormessages, createSponsorMessage, get_random_message, message_list, new_message_preview, total_messages }
 })
