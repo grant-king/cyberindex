@@ -4,9 +4,12 @@
       <div class="mx-auto max-w-2xl lg:mx-0">
         <h2 class="text-4xl font-semibold tracking-tight text-pretty text-black sm:text-5xl">{{ title }}</h2>
         <p class="mt-2 text-lg/8 text-black/80">{{ subheading }}</p>
+        <button @click="toggleExpanded" class="mt-8 px-3.5 py-2.5 text-lg font-bold font-mono text-lime-400/40 hover:text-lime-400/80 border-dotted border-t-4 border-l-2 rounded-sm border-lime-400/80">
+          {{ expanded ? 'Collapse' : 'Expand' }}
+        </button>
       </div>
-      <div
-        class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+      <div v-if="expanded"
+        class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-black pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
         <article v-for="message in messages_store.message_list" :key="message.url"
           class="flex max-w-xl flex-col items-start justify-between">
           <div class="flex items-center gap-x-4 text-xs">
@@ -51,6 +54,11 @@
             </div>
           </div>
         </article>
+        <button @click="messages_store.fetchSponsormessages" v-show="messages_store.next_page">
+          <div class="flex items-center justify-center font-mono w-full h-20 bg-lime-400/40 rounded-lg">
+            LOAD MORE
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -59,6 +67,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useSponsormessagesStore } from '@/stores/sponsormessages';
+
+const expanded = ref(false);
+
+function toggleExpanded() {
+  expanded.value = !expanded.value;
+}
 
 const messages_store = useSponsormessagesStore();
 
