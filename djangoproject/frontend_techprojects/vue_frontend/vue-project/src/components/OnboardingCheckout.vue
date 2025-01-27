@@ -127,12 +127,7 @@ const heading_title2 = ref('Add some credits, yo')
 
 const title_bg = ref('https://unrolla.blob.core.windows.net/unrolla/images/P8220488.webp')
 
-const stats = ref([
-  { id: 1, name: 'messages on the platform', value: '12,456' },
-  { id: 2, name: 'message delivery fee', value: '10 credits' },
-  { id: 3, name: 'your messages', value:  message_store.total_messages},
-  { id: 4, name: 'your all-time reads', value: '2280' },
-])
+
 
 const box1 = ref({
   eyebrow: 'select amount',
