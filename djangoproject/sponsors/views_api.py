@@ -167,7 +167,8 @@ class SponsorMessageViewSet(viewsets.ModelViewSet):
 
     def perform_destroy(self, instance):
         if instance.sponsor.user == self.request.user:
-            instance.delete()
+            instance.archived = True
+            instance.save()
         else:
             pass
 
