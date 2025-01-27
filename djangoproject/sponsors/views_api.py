@@ -255,3 +255,26 @@ class MeditationReadViewSet(viewsets.ViewSet):
         serializer = MeditationReadSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
     
+
+class StatsView(APIView):
+    """
+    API endpoint to retrieve stats for a sponsor.
+    """
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        sponsor = request.user.sponsor
+        user_messages = SponsorMessage.objects.filter(sponsor=sponsor, archived=False).count()
+        user_reads = MeditationRead.objects.filter(sponsor=sponsor).count()
+        platform_messages = SponsorMessage.objects.filter(sponsor__archived=False, archived=False).count()
+        platform_reads = MeditationRead.objects.filter().count()
+        return Response(
+            {
+                "my_meditations": user_messages,
+                "my_reflections": user_reads,
+                "platform_meditations": platform_messages,
+                "platform_reflections": platform_reads,
+            }
+        ) 
+    
