@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white/10 rounded-lg py-24 sm:py-32">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl lg:max-w-none">
+            <div class="mx-auto max-w-2xl lg:max-w-none" @click="stats_store.fetchStats">
                 <div class="font-mono">
                     <h2 class="text-balance text-2xl font-semibold tracking-tight text-black">{{ title }}</h2>
                     <p class="mt-4 text-lg/8 text-black/80">{{ subheading }}</p>
@@ -17,7 +17,6 @@
             </div>
         </div>
     </div>
-    {{ message_store.total_messages }}
 </template>
 
 <script setup>
@@ -28,6 +27,8 @@ import { ref } from 'vue'
 
 const message_store = useSponsormessagesStore()
 const stats_store = useStatsStore()
+
+stats_store.fetchStats()
 
 const title = 'Sponsorship Stats'
 const subheading = '::::::::::: :::::'
