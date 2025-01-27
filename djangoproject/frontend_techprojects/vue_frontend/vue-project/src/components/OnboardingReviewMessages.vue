@@ -11,9 +11,9 @@
           class="flex max-w-xl flex-col items-start justify-between">
           <div class="flex items-center gap-x-4 text-xs">
             <time :datetime="message.created_at" class="text-black/80">{{ message.created_at }}</time>
-            <a :href="message.url"
-              class="relative z-10 rounded-full bg-white/80 px-3 py-1.5 font-medium text-black/80 hover:bg-white/50">{{
-                message.archived ? 'ARCHIVED': 'ACTIVE' }}</a>
+            <div
+              class="relative z-10 rounded-full bg-white/80 px-3 py-1.5 font-medium text-black/80">{{
+                message.archived ? 'ARCHIVED': 'ACTIVE' }}</div>
           </div>
           <div class="group relative">
             <h3 class="mt-3 text-lg/6 font-semibold text-black">
@@ -24,7 +24,8 @@
             </h3>
             <p class="mt-5 line-clamp-3 text-sm/6 text-black">{{ message.message }}</p>
           </div>
-          <div class="relative mt-8 flex items-center gap-x-4">
+          <div class="relative mt-8 flex items-center gap-x-4"
+          @click="messages_store.toggleMessageArchiveStatus(message)">
             <img :src="temp_img" alt="" class="size-10 rounded-full bg-gray-50" />
             <div class="text-sm/6">
               <p class="text-red-950 font-thin">
