@@ -93,7 +93,7 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
         if (response.ok) {
             // save the response message to the message_list
             const new_message = await response.json()
-            message_list.value.push(new_message)
+            message_list.value.unshift(new_message)
             console.log('Message created successfully')
         }
         else {
