@@ -10,7 +10,7 @@
         <article v-for="message in messages_store.message_list" :key="message.url"
           class="flex max-w-xl flex-col items-start justify-between">
           <div class="flex items-center gap-x-4 text-xs">
-            <time :datetime="message.created_at" class="text-black/80">{{ message.created_at }}</time>
+            <time :datetime="message.created_at" class="text-black/80">{{ new Date(message.created_at).toLocaleString() }}</time>
             <div v-if="message.archived" class="relative z-10 rounded-full bg-indigo-800/40 px-3 py-1.5 font-medium text-black/80">
               ARCHIVED
             </div>
