@@ -221,7 +221,7 @@ class SponsorMeditationView(APIView):
             request.session.create()
         # get a random meditation
         meditation = (
-            SponsorMessage.objects.filter(sponsor__archived=False).order_by("?").first()
+            SponsorMessage.objects.filter(sponsor__archived=False, archived=False).order_by("?").first()
         )
         if meditation:
             sponsor = meditation.sponsor
