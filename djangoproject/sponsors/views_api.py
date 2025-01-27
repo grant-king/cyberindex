@@ -170,6 +170,9 @@ class SponsorMessageViewSet(viewsets.ModelViewSet):
                 sponsor=self.request.user.sponsor,
                 message=serializer.validated_data["message"],
             )
+            # set the current message to archived
+            serializer.instance.archived = True
+            serializer.instance.save()
         else:
             serializer.save(sponsor=self.request.user.sponsor)
 
