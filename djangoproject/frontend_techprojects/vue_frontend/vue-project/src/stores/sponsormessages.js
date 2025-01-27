@@ -14,8 +14,42 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
 
     // computed property 
     const xx = computed(() => {
-        
+
     })
+
+    async function toggleMessageArchiveStatus(message) {
+        const store_message = message_list.value.find(m => m.url === message.url)
+        if (store_message.archived) {
+            console.log('unarchiving message')
+            setMessageArchiveStatus(message.url, false)
+        }
+        else {
+            console.log('archiving message')
+            setMessageArchiveStatus(message.url, true)
+        }
+    }
+
+    async function setMessageArchiveStatus(message_url, status) {
+        const response = await fetch(message_url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': window.csrf_token,
+            },
+            body: JSON.stringify({ archived: status }),
+        })
+        if (response.ok) {
+            console.log('Message archived successfully')
+            const updated_message = await response.json()
+            const index = message_list.value.findIndex(m => m.url === message_url)
+            message_list.value[index] = updated_message
+        }
+        else {
+            console.error('Failed to archive message')
+            console.error(response)
+        }
+    }
+
 
     function get_random_message() {
         if (message_list.value.length === 0) {
@@ -68,5 +102,8 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
         }
     }
 
-    return { fetchSponsormessages, createSponsorMessage, get_random_message, message_list, new_message_preview, total_messages }
+    return {
+        fetchSponsormessages, createSponsorMessage, get_random_message, toggleMessageArchiveStatus,
+        message_list, new_message_preview, total_messages
+    }
 })
