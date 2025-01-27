@@ -163,7 +163,16 @@ class SponsorMessageViewSet(viewsets.ModelViewSet):
         serializer.save(sponsor=sponsor)
 
     def perform_update(self, serializer):
-        serializer.save(sponsor=self.request.user.sponsor)
+        # if message has changed, save a new instance of the message
+        # otherwise, just update the archived status
+        if "message" in serializer.validated_data:
+            SponsorMessage.objects.create(
+                sponsor=self.request.user.sponsor,
+                message=serializer.validated_data["message"],
+            )
+        else:
+            serializer.save(sponsor=self.request.user.sponsor)
+
 
     def perform_destroy(self, instance):
         if instance.sponsor.user == self.request.user:
