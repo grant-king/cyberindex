@@ -11,9 +11,12 @@
           class="flex max-w-xl flex-col items-start justify-between">
           <div class="flex items-center gap-x-4 text-xs">
             <time :datetime="message.created_at" class="text-black/80">{{ message.created_at }}</time>
-            <div
-              class="relative z-10 rounded-full bg-white/80 px-3 py-1.5 font-medium text-black/80">{{
-                message.archived ? 'ARCHIVED': 'ACTIVE' }}</div>
+            <div v-if="message.archived" class="relative z-10 rounded-full bg-indigo-800/40 px-3 py-1.5 font-medium text-black/80">
+              ARCHIVED
+            </div>
+            <div v-else class="relative z-10 rounded-full bg-lime-100/80 px-3 py-1.5 font-medium text-black/80">
+              ACTIVE
+            </div>
           </div>
           <div class="group relative">
             <h3 class="mt-3 text-lg/6 font-semibold text-black">
@@ -25,16 +28,26 @@
             <p class="mt-5 line-clamp-3 text-sm/6 text-black">{{ message.message }}</p>
           </div>
           <div class="relative mt-8 flex items-center gap-x-4"
-          @click="messages_store.toggleMessageArchiveStatus(message)">
-            <img :src="temp_img" alt="" class="size-10 rounded-full bg-gray-50" />
-            <div class="text-sm/6">
-              <p class="text-red-950 font-thin">
-                <div>
-                  <span class="absolute inset-0" />
-                  {{ message.archived ? 'PUBLISH': 'UNPUBLISH' }}
-                </div>
+            @click="messages_store.toggleMessageArchiveStatus(message)">
+            <img v-if="message.archived" :src="temp_img" alt="" class="size-10 rounded-full bg-gray-50" />
+            <img v-else :src="temp_img2" alt="" class="size-10 rounded-full bg-gray-50" />
+            <div v-if="message.archived" class="text-sm/6">
+              <p class="text-red-950">
+              <div>
+                <span class="absolute inset-0" />
+                PUBLISH
+              </div>
               </p>
-              <p class="text-black/80">{{ message.archived ? 'unarchive this message': 'archive this message' }}</p>
+              <p class="text-black/80">unarchive this message</p>
+            </div>
+            <div v-else class="text-sm/6">
+              <p class="text-lime-950">
+              <div>
+                <span class="absolute inset-0" />
+                UNPUBLISH
+              </div>
+              </p>
+              <p class="text-black/80">archive this message</p>
             </div>
           </div>
         </article>
@@ -52,5 +65,6 @@ const messages_store = useSponsormessagesStore();
 const title = 'Your Meditations'
 const subheading = 'analyze, archive, and meditate on your messages to the community'
 const temp_img = 'https://unrolla.blob.core.windows.net/unrolla/images/P6080353.webp'
+const temp_img2 = 'https://unrolla.blob.core.windows.net/unrolla/images/P6200036_iKu7weu.webp'
 
 </script>
