@@ -1,6 +1,6 @@
 <template>
     <div class="relative isolate bg-white/50 px-6 py-24 sm:py-32 lg:px-8">
-        <svg class="absolute inset-0 -z-10 size-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+        <svg class="absolute inset-0 -z-10 size-full stroke-white/20 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
             aria-hidden="true">
             <defs>
                 <pattern id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527" width="200" height="200" x="50%" y="-64"
@@ -8,7 +8,7 @@
                     <path d="M100 200V.5M.5 .5H200" fill="none" />
                 </pattern>
             </defs>
-            <svg x="50%" y="-64" class="overflow-visible fill-gray-50">
+            <svg x="50%" y="-64" class="overflow-visible fill-white/5">
                 <path
                     d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M299.5 800h201v201h-201Z"
                     stroke-width="0" />
@@ -43,7 +43,7 @@ import { useSponsormessagesStore } from '@/stores/sponsormessages';
 const sponsorprofiles_store = useSponsorprofilesStore();
 const sponsormessages_store = useSponsormessagesStore();
 
-const title_1 = 'Let’s get your sponsorship details in order.'
-const subtitle_1 = 'This information will be used to create your sponsorship profile.'
+const title_1 = 'Update your sponsor profile';
+const subtitle_1 = 'This information will adorn your sponsorship messages.';
 
 </script>
