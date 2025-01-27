@@ -104,6 +104,6 @@ export const useSponsormessagesStore = defineStore('sponsormessages', () => {
 
     return {
         fetchSponsormessages, createSponsorMessage, get_random_message, toggleMessageArchiveStatus,
-        message_list, new_message_preview, total_messages
+        message_list, new_message_preview, total_messages, next_page
     }
 })
