@@ -296,7 +296,6 @@ const userNavigation = computed(() => {
   } else {
     return [
       { name: 'Sponsor Login', to: '/login' },
-      { name: 'Sponsor Signup', to: '/signup' },
     ]
   }
 })	
