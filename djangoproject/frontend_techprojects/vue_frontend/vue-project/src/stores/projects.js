@@ -88,6 +88,9 @@ export const useProjectsStore = defineStore('projects', () => {
       if (fetched_details.license) {
         new_object_preview.value.repo_details.license = fetched_details.license
       }
+      else {
+        new_object_preview.value.repo_details.license = { name: 'No License' }
+      }
     }
   }
 
@@ -110,7 +113,7 @@ export const useProjectsStore = defineStore('projects', () => {
       console.log('Project submitted successfully')
       // save the response project to the project_list
       const new_project = await response.json()
-      project_list.value.push(new_project)
+      project_list.value.unshift(new_project)
       // reset the new_object_preview
       new_object_preview.value = structuredClone(new_object_template)
       show_preview.value = false
