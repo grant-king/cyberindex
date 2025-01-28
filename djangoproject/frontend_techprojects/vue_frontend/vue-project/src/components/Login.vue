@@ -10,7 +10,7 @@
           <div>
             <label for="email" class="block text-sm/6 font-medium text-black">Email address</label>
             <div class="mt-2">
-              <input v-model="username" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm/6" />
+              <input v-model="username" autocomplete="email" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm/6" />
             </div>
           </div>
   
@@ -32,11 +32,18 @@
         </form>
   
         <p class="mt-20 text-center text-sm/6 text-black">
-          Not a sponsor?
+          Not a sponsor? Read our
+          {{ ' ' }}
+          <RouterLink to="/about"
+          class="font-semibold hover:text-black/80 text-black bg-clip-text bg-gradient-to-b from-black/20 via-lime-700/80 to-black/20 rounded-sm">
+          about page to learn more
+          </RouterLink>
+          {{ ' ' }}
+          or you can 
           {{ ' ' }}
           <RouterLink to="/register"
           class="font-semibold hover:text-black/80 text-black bg-clip-text bg-gradient-to-b from-black/20 via-lime-700/80 to-black/20 rounded-sm">
-          Register as an alpha sponsor for $200
+          register now with $40 or $200.
           </RouterLink>
         </p>
       </div>
