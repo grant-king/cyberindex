@@ -54,8 +54,8 @@
         <div class="mt-10">
             <button type="button"
             @click="submit_profile()"
-                class="block w-full rounded-md bg-lime-200 px-3.5 py-2.5 text-center text-sm font-bold text-white/20 bg-clip-text border-4 border-dotted border-black shadow-sm hover:bg-lime-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">Create
-                Sponsorship Profile</button>
+                class="block w-full rounded-md bg-lime-200 px-3.5 py-2.5 text-center text-sm font-bold text-white/20 bg-clip-text border-4 border-dotted border-black shadow-sm hover:bg-lime-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">
+                Update Sponsorship Profile</button>
         </div>
         <p class="mt-4 text-sm/6 text-black">By submitting this form, I {{ sponsorprofiles_store.new_object_preview.rep_name }} agree to the <a href="#"
                 class="font-semibold hover:text-lime-950">privacy&nbsp;policy</a>.</p>
