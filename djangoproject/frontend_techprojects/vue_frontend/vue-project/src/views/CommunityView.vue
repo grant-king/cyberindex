@@ -14,6 +14,11 @@
         </div>
         <div class="min-h-32 bg-white/50">
         </div>
+        <div class="">
+            <SessionConsole />
+        </div>
+        <div class="min-h-32 bg-white/50">
+        </div>
     </div>
 </template>
 
@@ -21,5 +26,6 @@
 import PixelDanceArt from '@/components/PixelDanceArt.vue';
 import BasicHeader from '@/components/BasicHeader.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
+import SessionConsole from '@/components/SessionConsole.vue';
 
 </script>
