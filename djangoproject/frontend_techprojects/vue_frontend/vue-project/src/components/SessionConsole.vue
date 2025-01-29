@@ -15,11 +15,21 @@
                     <div class="my-4">
                         <input :v-model="image_name" type="file" accept="image/png" @change="handle_file_change" />
                     </div>
-                    <div>
-                        <button>Submit {{ image_name }}</button>
-                    </div>
-                    <div>
-                        <img :src="image_preview" />
+                    <div v-if="image_name">
+                        <div class="mx-auto max-w-2xl">
+                            <div class="">
+                                <div class="flex justify-center">
+                                    <img class="border-white border-2 border-dotted rounded-md" :src="image_preview" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-4">
+                            <div class="">
+                                <button class="border-dotted border-4 rounded-md bg-clip-border text-black font-bold px-3 py-2">
+                                    Submit {{ image_name }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -51,8 +61,8 @@ import BasicHeader from './BasicHeader.vue'
 import SessionStats from './SessionStats.vue'
 
 const temp_img = 'https://via.placeholder.com/150'
-const image_name = ref('')
-const image_preview = ref('')
+const image_name = ref(null)
+const image_preview = ref(null)
 
 function handle_file_change(event) {
     const file = event.target.files[0]
