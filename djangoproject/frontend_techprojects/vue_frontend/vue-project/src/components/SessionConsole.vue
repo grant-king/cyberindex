@@ -19,7 +19,7 @@
                         <div class="mx-auto max-w-2xl">
                             <div class="">
                                 <div class="flex justify-center">
-                                    <img class="border-white border-2 border-dotted rounded-md" :src="image_preview" />
+                                    <img class="border-white border-2 border-dotted rounded-md" :src="avatarcreate.image_upload_preview" />
                                 </div>
                             </div>
                         </div>
@@ -59,20 +59,23 @@
 import { ref } from 'vue'
 import BasicHeader from './BasicHeader.vue'
 import SessionStats from './SessionStats.vue'
+import { useAvatarCreateStore } from '@/stores/avatarcreate'
+
+const avatarcreate = useAvatarCreateStore()
 
 const temp_img = 'https://via.placeholder.com/150'
 const image_name = ref(null)
 const image_preview = ref(null)
 
 function handle_file_change(event) {
-    const file = event.target.files[0]
-    image_name.value = file.name
+    avatarcreate.original_image_file = event.target.files[0]
+    image_name.value = avatarcreate.original_image_file.name
     const reader = new FileReader()
     reader.onload = (e) => {
         console.log(e.target.result)
-        image_preview.value = e.target.result
+        avatarcreate.image_upload_preview = e.target.result
     }
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(avatarcreate.original_image_file)
 }
 
 </script>
