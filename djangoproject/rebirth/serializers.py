@@ -9,8 +9,7 @@ class AvatarSerializer(serializers.ModelSerializer):
 
 class AvatarCreateSerializer(serializers.ModelSerializer):
     original_hash = serializers.CharField(write_only=True)
-    stored_hash = serializers.ReadOnlyField()
 
     class Meta:
         model = Avatar
-        fields = ['original_hash', 'stored_hash']
+        fields = ['original_hash', 'public_image']
