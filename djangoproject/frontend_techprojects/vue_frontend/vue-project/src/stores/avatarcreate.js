@@ -9,20 +9,21 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
   const image_upload_preview = ref({}) // next avatar object to be created
 
   async function createAvatar() {
-    calculateChecksum()
-    convertImageToWebP()
+    await calculateChecksum()
+    //await convertImageToWebP()
+    const form_data = new FormData()
+    form_data.append('original_hash', original_image_hash.value)
+    console.log('original_file', original_image_file.value)
+    form_data.append('public_image', original_image_file.value)
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'X-CSRFToken': window.csrf_token,
       },
-      body: JSON.stringify({
-        original_hash: original_image_hash.value,
-        public_image: image_upload_preview.value
-      })
+      body: form_data,
     })
     const data = await response.json()
-    if(response.ok){
+    if (response.ok) {
       console.log('created avatar', data)
     } else {
       console.error('failed to create avatar')
@@ -49,22 +50,39 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
       console.error('no file selected')
       return
     }
-    const image = new Image()
-    image.src = URL.createObjectURL(file)
-    image.onload = () => {
-      const canvas = document.createElement('canvas')
-      canvas.height = 400
-      canvas.width = 400 * (image.width / image.height)
-      const context = canvas.getContext('2d')
-      context.drawImage(image, 0, 0)
-      canvas.toBlob((blob) => {
-        const newFile = new File([blob], 'image.webp', {type: 'image/webp'})
-        image_upload_preview.value = newFile
-      }, 'image/webp')
+    console.log('converting image to webp')
+    return new Promise((resolve, reject) => {
+      const image = new Image()
+      console.log('creting object url')
+      image.src = URL.createObjectURL(file)
+      console.log('waiting for image to load')
+      image.onload = () => {
+        console.log('converting image')
+        const canvas = document.createElement('canvas')
+        canvas.height = 400
+        canvas.width = 400 * (image.width / image.height)
+        const context = canvas.getContext('2d')
+        context.drawImage(image, 0, 0)
+        console.log('drawing image')
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const newFile = new File([blob], 'image.webp', { type: 'image/webp' })
+            image_upload_preview.value = newFile
+            resolve(newFile)
+          } else {
+            reject('failed to convert image')
+          }
+        }, 'image/webp')
+      }
+      image.onerror = (error) => {
+        console.error('failed to load image')
+        console.error(error)
+      }
+      image.src = URL.createObjectURL(file)
     }
+    )
   }
-    
-  
 
-  return { createAvatar, original_image_file, image_upload_preview }
+
+  return { createAvatar, convertImageToWebP, original_image_file, image_upload_preview }
 })
