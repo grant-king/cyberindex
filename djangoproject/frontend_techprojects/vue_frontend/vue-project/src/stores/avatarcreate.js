@@ -10,11 +10,11 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
 
   async function createAvatar() {
     await calculateChecksum()
-    //await convertImageToWebP()
+    await convertImageToWebP()
     const form_data = new FormData()
     form_data.append('original_hash', original_image_hash.value)
-    console.log('original_file', original_image_file.value)
-    form_data.append('public_image', original_image_file.value)
+    console.log('converted file', image_upload_preview.value)
+    form_data.append('public_image', image_upload_preview.value)
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -59,8 +59,8 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
       image.onload = () => {
         console.log('converting image')
         const canvas = document.createElement('canvas')
-        canvas.height = 400
-        canvas.width = 400 * (image.width / image.height)
+        canvas.height = image.height
+        canvas.width = image.width
         const context = canvas.getContext('2d')
         context.drawImage(image, 0, 0)
         console.log('drawing image')
