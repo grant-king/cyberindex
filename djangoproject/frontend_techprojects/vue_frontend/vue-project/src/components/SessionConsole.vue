@@ -19,13 +19,14 @@
                         <div class="mx-auto max-w-2xl">
                             <div class="">
                                 <div class="flex justify-center">
-                                    <img class="border-white border-2 border-dotted rounded-md" :src="avatarcreate.image_upload_preview" />
+                                    <img class="border-white border-2 border-dotted rounded-md" :src="image_preview" />
                                 </div>
                             </div>
                         </div>
                         <div class="my-4">
                             <div class="">
-                                <button class="border-dotted border-4 rounded-md bg-clip-border text-black font-bold px-3 py-2">
+                                <button class="border-dotted border-4 rounded-md bg-clip-border text-black font-bold px-3 py-2"
+                                @click="avatarcreate.createAvatar">
                                     Submit {{ image_name }}
                                 </button>
                             </div>
@@ -67,15 +68,17 @@ const temp_img = 'https://via.placeholder.com/150'
 const image_name = ref(null)
 const image_preview = ref(null)
 
-function handle_file_change(event) {
-    avatarcreate.original_image_file = event.target.files[0]
-    image_name.value = avatarcreate.original_image_file.name
+async function handle_file_change(event) {
+    const file = event.target.files[0]
+    image_name.value = file.name
+    //await avatarcreate.convertImageToWebP()
     const reader = new FileReader()
     reader.onload = (e) => {
         console.log(e.target.result)
-        avatarcreate.image_upload_preview = e.target.result
+        image_preview.value = e.target.result
     }
-    reader.readAsDataURL(avatarcreate.original_image_file)
+    reader.readAsDataURL(file)
+    avatarcreate.original_image_file = file
 }
 
 </script>
