@@ -24,6 +24,7 @@ from sponsors import views_api as sponsors_views
 from django.contrib.auth import views as auth_views
 from pixeldance import views_api as dance_views
 from cashier import views_api as cashier_views
+from rebirth import views_api as rebirth_views
 
 router = routers.DefaultRouter()
 router.register(r'locations', techprojects_views.LocationViewSet)
@@ -37,6 +38,7 @@ router.register(r'dancers', dance_views.DancerViewSet)
 router.register(r'dancepaths', dance_views.DancePathViewSet)
 router.register(r'customers', cashier_views.CustomerViewSet)
 router.register(r'meditationreads', sponsors_views.MeditationReadViewSet)
+router.register(r'avatars', rebirth_views.AvatarViewSet, basename='avatar')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
