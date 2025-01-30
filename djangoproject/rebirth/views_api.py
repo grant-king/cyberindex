@@ -49,4 +49,6 @@ class AvatarViewSet(viewsets.ViewSet):
 
         serializer.save(session_key=session_key, public_hash=public_hash)
 
+        return Response(serializer.data)
+
     
