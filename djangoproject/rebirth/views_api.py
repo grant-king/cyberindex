@@ -46,6 +46,8 @@ class AvatarViewSet(viewsets.ViewSet):
             hashlib.sha256,
         ).hexdigest()
 
+        # rename file to public hash
+        serializer.validated_data['public_image'].name = public_hash + '.webp'
 
         serializer.save(session_key=session_key, public_hash=public_hash)
 
