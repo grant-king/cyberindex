@@ -1,0 +1,70 @@
+import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
+
+export const useAvatarCreateStore = defineStore('avatarcreate', () => {
+  const base_url = window.location.origin
+  const endpoint = `${base_url}/apiv1/avatars/`
+  const original_image_file = ref(null)
+  const original_image_hash = ref(null)
+  const image_upload_preview = ref({}) // next avatar object to be created
+
+  async function createAvatar() {
+    calculateChecksum()
+    convertImageToWebP()
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': window.csrf_token,
+      },
+      body: JSON.stringify({
+        original_hash: original_image_hash.value,
+        public_image: image_upload_preview.value
+      })
+    })
+    const data = await response.json()
+    if(response.ok){
+      console.log('created avatar', data)
+    } else {
+      console.error('failed to create avatar')
+      console.error(response)
+    }
+  }
+
+  async function calculateChecksum() {
+    const file = original_image_file.value
+    if (file === null) {
+      console.error('no file selected')
+      return
+    }
+    const arrayBuffer = await file.arrayBuffer()
+    const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+    original_image_hash.value = hashHex
+  }
+
+  async function convertImageToWebP() {
+    const file = original_image_file.value
+    if (file === null) {
+      console.error('no file selected')
+      return
+    }
+    const image = new Image()
+    image.src = URL.createObjectURL(file)
+    image.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.height = 400
+      canvas.width = 400 * (image.width / image.height)
+      const context = canvas.getContext('2d')
+      context.drawImage(image, 0, 0)
+      canvas.toBlob((blob) => {
+        const newFile = new File([blob], 'image.webp', {type: 'image/webp'})
+        image_upload_preview.value = newFile
+      }, 'image/webp')
+    }
+  }
+    
+  
+
+  return { createAvatar, original_image_file, image_upload_preview }
+})
