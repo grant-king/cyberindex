@@ -13,7 +13,7 @@ import dotenv
 # models from other apps with session key - for session stats and linked avatar stats
 from techprojects.models import ProjectRegistration
 from pixeldance.models import Dancer
-from sponsors.models import MeditationRead
+from sponsors.models import MeditationRead, SponsorMessage
 
 
 class AvatarViewSet(viewsets.ViewSet):
@@ -66,16 +66,16 @@ class AvatarViewSet(viewsets.ViewSet):
     @action(detail=False, methods=["get"])
     def session_stats(self, request):
         session_key = self.request.session.session_key
-        avatars = Avatar.objects.filter(session_key=session_key)
+        platform_dancers = Dancer.objects.all()
         dancers = Dancer.objects.filter(session_key=session_key)
+        platform_reflections = MeditationRead.objects.all()
         reflections = MeditationRead.objects.filter(reader_session_key=session_key)
         return Response(
             {
-                "avatars": {
-                    "public_images": [avatar.public_image.url for avatar in avatars],
-                },
-                "dancers": len(dancers),
-                "reflections": len(reflections),
+                "platform dancers": len(platform_dancers),
+                "session dancers": len(dancers),
+                "platform reflections": len(platform_reflections),
+                "session reflections": len(reflections),
             }
         )
     
@@ -100,5 +100,14 @@ class AvatarViewSet(viewsets.ViewSet):
                     },
                 "linked_dancers": len(linked_dancers),
                 "linked_reflections": len(linked_reflections),
+            }
+        )
+    
+    @action(detail=False, methods=["get"])
+    def all_images(self, request):
+        avatars = Avatar.objects.all()
+        return Response(
+            {
+                "public_images": [avatar.public_image.url for avatar in avatars],
             }
         )
