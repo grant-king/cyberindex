@@ -47,9 +47,7 @@
                     session stats associated with image: ''
                     <SessionStats stgrp_idx="0" title="Linked Session Stats" />
                 </div>
-                <div>
-                    session image quilt
-                </div>
+
             </div>
 
         </div>
