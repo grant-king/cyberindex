@@ -53,17 +53,13 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
     console.log('converting image to webp')
     return new Promise((resolve, reject) => {
       const image = new Image()
-      console.log('creting object url')
       image.src = URL.createObjectURL(file)
-      console.log('waiting for image to load')
       image.onload = () => {
-        console.log('converting image')
         const canvas = document.createElement('canvas')
         canvas.height = image.height
         canvas.width = image.width
         const context = canvas.getContext('2d')
         context.drawImage(image, 0, 0)
-        console.log('drawing image')
         canvas.toBlob((blob) => {
           if (blob) {
             const newFile = new File([blob], 'image.webp', { type: 'image/webp' })
@@ -78,7 +74,6 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
         console.error('failed to load image')
         console.error(error)
       }
-      image.src = URL.createObjectURL(file)
     }
     )
   }
