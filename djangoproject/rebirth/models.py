@@ -11,3 +11,6 @@ class Avatar(models.Model):
     @property
     def session_id(self):
         return hash(self.session_key)
+    
+    class Meta:
+        ordering = ["-created_at"]
