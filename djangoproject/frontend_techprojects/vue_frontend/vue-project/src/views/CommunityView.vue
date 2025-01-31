@@ -19,13 +19,19 @@
         </div>
         <div class="min-h-32 bg-white/50">
         </div>
+        <div class="">
+            <SessionImageQuilt />
+        </div>
+        <div class="min-h-32 bg-white/50">
+        </div>
     </div>
 </template>
 
 <script setup>
-import PixelDanceArt from '@/components/PixelDanceArt.vue';
-import BasicHeader from '@/components/BasicHeader.vue';
-import SponsorCarousel from '@/components/SponsorCarousel.vue';
-import SessionConsole from '@/components/SessionConsole.vue';
+import PixelDanceArt from '@/components/PixelDanceArt.vue'
+import BasicHeader from '@/components/BasicHeader.vue'
+import SponsorCarousel from '@/components/SponsorCarousel.vue'
+import SessionConsole from '@/components/SessionConsole.vue'
+import SessionImageQuilt from '@/components/SessionImageQuilt.vue'
 
 </script>
