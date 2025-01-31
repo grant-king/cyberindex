@@ -25,6 +25,8 @@ from django.contrib.auth import views as auth_views
 from pixeldance import views_api as dance_views
 from cashier import views_api as cashier_views
 from rebirth import views_api as rebirth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'locations', techprojects_views.LocationViewSet)
@@ -61,3 +63,6 @@ urlpatterns = [
     path('apiv1/confirm_payment/', cashier_views.ConfirmPaymentView.as_view(), name='confirm_payment'),
     path('apiv1/stats/', sponsors_views.StatsView.as_view(), name='stats'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
