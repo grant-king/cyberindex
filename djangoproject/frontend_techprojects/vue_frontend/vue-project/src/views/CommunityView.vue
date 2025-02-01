@@ -20,6 +20,11 @@
         <div class="min-h-32 bg-white/50">
         </div>
         <div class="">
+            <SessionImageAdd />
+        </div>
+        <div class="min-h-32 bg-white/50">
+        </div>
+        <div class="">
             <SessionConsole />
         </div>
         <div class="min-h-32 bg-white/50">
@@ -38,6 +43,7 @@ import BasicHeader from '@/components/BasicHeader.vue'
 import SponsorCarousel from '@/components/SponsorCarousel.vue'
 import SessionConsole from '@/components/SessionConsole.vue'
 import SessionImageQuilt from '@/components/SessionImageQuilt.vue'
+import SessionImageAdd from '@/components/SessionImageAdd.vue'
 import ThreeDemo from '@/components/ThreeDemo.vue'
 
 </script>
