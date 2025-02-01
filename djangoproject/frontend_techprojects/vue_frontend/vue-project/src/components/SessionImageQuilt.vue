@@ -1,14 +1,13 @@
 <template>
-    <div class="bg-white/50 p-8" @click="stats_store.fetchAllImages">
+    <div class="bg-white/50 p-8" @click="avatarcreate.fetchAllImages">
         <div class="text-2xl my-8">
             Session Image Quilt
         </div>
         <div class="flex flex-wrap">
-            <div v-for="(image, idx) in stats_store.all_images" :key="idx" class="">
+            <div v-for="(image, idx) in avatarcreate.all_images" :key="idx" class="">
                 <div class="h-16 w-16 border-white border-2 border-dotted rounded-md">
-                    <img class="aspect-square object-cover blur-sm border-white border-2 border-dotted rounded-md" :src="image" />
+                    <img class="aspect-square object-cover blur-sm hover:blur-0 border-white border-2 border-dotted rounded-md" :src="image" />
                 </div>
-                
             </div>
         </div>
     </div>
@@ -17,9 +16,11 @@
 
 <script setup>
 import { useAvatarStatsStore } from '@/stores/avatarstats'
+import { useAvatarCreateStore } from '@/stores/avatarcreate';
 import { ref } from 'vue'
 
 const stats_store = useAvatarStatsStore()
-//stats_store.fetchAllImages()
+const avatarcreate = useAvatarCreateStore()
+avatarcreate.fetchAllImages()
 
 </script>
