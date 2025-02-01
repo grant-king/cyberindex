@@ -1,8 +1,7 @@
 <template>
-    <div class="bg-white/50 p-8">
+    <div class="">
         <div class="">
             <div class="my-8">
-
                 <div class="">
                     connect this session to other sessions...
                 </div>
