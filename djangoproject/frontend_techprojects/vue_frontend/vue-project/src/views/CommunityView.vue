@@ -15,12 +15,12 @@
         <div class="min-h-32 bg-white/50">
         </div>
         <div class="">
-            <SessionConsole />
+            <SessionImageQuilt />
         </div>
         <div class="min-h-32 bg-white/50">
         </div>
         <div class="">
-            <SessionImageQuilt />
+            <SessionConsole />
         </div>
         <div class="min-h-32 bg-white/50">
         </div>
