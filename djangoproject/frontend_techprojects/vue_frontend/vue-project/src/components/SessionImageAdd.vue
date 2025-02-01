@@ -8,7 +8,7 @@
                 <input :v-model="image_name" type="file" accept="image/png" @change="handle_file_change" />
             </div>
             <div v-if="image_name">
-                <div class="mx-auto max-w-xl">
+                <div class="max-w-64">
                     <div class="">
                         <div class="flex justify-center">
                             <img class="aspect-square object-cover border-white border-2 border-dotted rounded-md" :src="image_preview" />
