@@ -15,4 +15,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  build: {
+    outDir: fileURLToPath(new URL('../../static/buildforge', import.meta.url)),
+    emptyOutDir: true,
+  },
+  base: '/static/buildforge/',
 })
