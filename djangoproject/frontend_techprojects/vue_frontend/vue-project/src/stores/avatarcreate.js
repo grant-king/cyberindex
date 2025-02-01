@@ -7,6 +7,25 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
   const original_image_file = ref(null)
   const original_image_hash = ref(null)
   const image_upload_preview = ref({}) // next avatar object to be created
+  const all_images_endpoint = `${endpoint}all_images/`
+  const all_images = ref([])
+
+  async function fetchAllImages() {
+    const response = await fetch(all_images_endpoint, {
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': window.csrf_token,
+      },
+    })
+    const data = await response.json()
+    if (response.ok) {
+      console.log('all images', data)
+      all_images.value = data.public_images
+    } else {
+      console.error('failed to fetch all images')
+      console.error(response)
+    }
+  } 
 
   async function createAvatar() {
     await calculateChecksum()
@@ -25,6 +44,7 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
     const data = await response.json()
     if (response.ok) {
       console.log('created avatar', data)
+      all_images.value.unshift(data.public_image)
     } else {
       console.error('failed to create avatar')
       console.error(response)
@@ -79,5 +99,5 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
   }
 
 
-  return { createAvatar, convertImageToWebP, original_image_file, image_upload_preview }
+  return { createAvatar, convertImageToWebP, fetchAllImages, all_images, original_image_file, image_upload_preview }
 })
