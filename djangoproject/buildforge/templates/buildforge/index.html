@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BUILDFORGE APP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'buildforge/logo.png' %}">
+</head>
+
+<body class="bg-black">
+    <script>
+        window.csrf_token = "{{ csrf_token }}";
+        window.user_id = "{{ user.id }}";
+    </script>
+    <div id="app">
+        BUILDFORGE APP APP
+    </div>
+    <script type="module" src="{% static 'buildforge/assets/index-tempfile.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'buildforge/assets/index-tempfile.css' %}">
+</body>
