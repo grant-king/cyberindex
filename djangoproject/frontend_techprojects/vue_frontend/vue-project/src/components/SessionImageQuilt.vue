@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white/50 p-8" @click="avatarcreate.fetchAllImages">
+    <div class="" @click="avatarcreate.fetchAllImages">
         <div class="text-2xl my-8">
             Session Image Quilt
         </div>
