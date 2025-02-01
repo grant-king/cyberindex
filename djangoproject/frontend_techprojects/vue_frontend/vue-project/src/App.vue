@@ -275,6 +275,7 @@ const router_navigation = [
   { name: 'Home', to: '/', icon: HomeIcon, current: false },
   { name: 'Project Registration', icon: FolderPlusIcon, to: '/projectadd', current: false },
   { name: 'Community Center', to: '/community', icon: PuzzlePieceIcon, current: false},
+  { name: 'Virtual Zone', to: '/virtual', icon: HandThumbUpIcon, current: false },
   { name: 'About', to: '/about', icon: HandThumbUpIcon, current: false },
 ]
 
