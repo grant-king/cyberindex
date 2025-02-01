@@ -20,6 +20,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
 from techprojects import views_api as techprojects_views
 from frontend_techprojects.views import index as frontend_1_index
+from buildforge.views import index as buildforge_index
 from sponsors import views_api as sponsors_views
 from django.contrib.auth import views as auth_views
 from pixeldance import views_api as dance_views
@@ -49,6 +50,7 @@ urlpatterns = [
     path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('apiv1/', include(router.urls)),
     path('', frontend_1_index, name='index'),
+    path('buildforge/', buildforge_index, name='buildforge'),
     # sponsors accounts
     path('login/', sponsors_views.LoginView.as_view(), name='login'),
     path('logout/', sponsors_views.LogoutView.as_view(), name='logout'),
