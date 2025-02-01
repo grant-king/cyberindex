@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'pixeldance',
     'cashier',
     'rebirth',
+    'buildforge',
 ]
 
 MIDDLEWARE = [
