@@ -15,16 +15,6 @@
         <div class="min-h-32 bg-white/50">
         </div>
         <div class="">
-            <SessionImageQuilt />
-        </div>
-        <div class="min-h-32 bg-white/50">
-        </div>
-        <div class="">
-            <SessionImageAdd />
-        </div>
-        <div class="min-h-32 bg-white/50">
-        </div>
-        <div class="">
             <SessionConsole />
         </div>
         <div class="min-h-32 bg-white/50">
