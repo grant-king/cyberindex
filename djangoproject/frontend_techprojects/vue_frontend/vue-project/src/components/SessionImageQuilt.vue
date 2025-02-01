@@ -5,8 +5,8 @@
         </div>
         <div class="flex flex-wrap">
             <div v-for="(image, idx) in stats_store.all_images" :key="idx" class="">
-                <div class="h-24 w-24">
-                    <img class="aspect-square object-cover border-white border-2 border-dotted rounded-md" :src="image" />
+                <div class="h-16 w-16 border-white border-2 border-dotted rounded-md">
+                    <img class="aspect-square object-cover blur-sm border-white border-2 border-dotted rounded-md" :src="image" />
                 </div>
                 
             </div>
