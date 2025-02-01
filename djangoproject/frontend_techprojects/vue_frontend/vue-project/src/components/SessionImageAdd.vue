@@ -1,9 +1,22 @@
 <template>
     <div class="bg-white/50 p-8">
+        <div class="">
+            <div class="my-8">
 
-        <div class="mt-8">
-            Want to connect this session to other sessions?
-            submit a session image
+                <div class="">
+                    connect this session to other sessions...
+                </div>
+                <div class="text-4xl">
+                    submit a session image
+                </div>
+                <div>
+                    <button
+                        class="border-dotted text-xs border-b-2 border-r-4 rounded-sm bg-clip-border text-black font-bold px-3 py-2"
+                        @click="show_about = !show_about">
+                        About Session Image
+                    </button>
+                </div>
+            </div>
             <div class="my-4">
                 <input :v-model="image_name" type="file" accept="image/png" @change="handle_file_change" />
             </div>
@@ -11,32 +24,51 @@
                 <div class="max-w-64">
                     <div class="">
                         <div class="flex justify-center">
-                            <img class="aspect-square object-cover border-white border-2 border-dotted rounded-md" :src="image_preview" />
+                            <img class="aspect-square object-cover border-white border-2 border-dotted rounded-md"
+                                :src="image_preview" />
                         </div>
                     </div>
                 </div>
                 <div class="my-4">
                     <div class="">
                         <button class="border-dotted border-4 rounded-md bg-clip-border text-black font-bold px-3 py-2"
-                        @click="avatarcreate.createAvatar">
-                        Submit {{ image_name }}
-                    </button>
+                            @click="avatarcreate.createAvatar">
+                            Submit {{ image_name }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
+
+        <div v-show="show_about" class="my-8">
+            <div>
+                Submitting an original image allows you to securely track your progress across sessions.
+            </div>
+            <div>
+                Think of this like login credentials, except you only have to resubmit them when your session expires.
+            </div>
+            <div>
+                If you want the same data on different devices, all you have to do is submit the same image on each device to link the sessions.
+            </div>
+            <div>
+                The data in the orignal image will be hashed, then converted to webp. The hash and the converted image
+                will be stored in our database. The original image is not stored in our database.
+            </div>
+            <div>
+                You must submit the original PNG image in order to associate this session with other sessions that
+                also submitted the original image. 
+            </div>
+            <div>
+                The hash is used to link sessions for aggregated stats and to provide a greater level of persistence
+                for users who don't want to lose platform progress.
+            </div>
+            <div>
+                The converted image will be used in things like our community session quilt, check it out above!
+            </div>
+        </div>
+
     </div>
-    <div>
-        It will be hashed, converted to webp, then uploaded along with the hash for the origninal image
-        You must submit the original PNG image in order to associate this session with other sessions that
-        also submitted the original image
-    </div>
-    <div>
-        The hash is used to link sessions for aggregated stats and to provide a greater level of persistence
-        for users who don't wan tto lose platform progress.
-        The converted image is used to build our community session quilt, check it out below.
-    </div>
-    
-</div>
 </template>
 
 <script setup>
@@ -44,6 +76,7 @@ import { ref } from 'vue'
 import { useAvatarCreateStore } from '@/stores/avatarcreate'
 
 const avatarcreate = useAvatarCreateStore()
+const show_about = ref(false)
 
 const temp_img = 'https://via.placeholder.com/150'
 const image_name = ref(null)
