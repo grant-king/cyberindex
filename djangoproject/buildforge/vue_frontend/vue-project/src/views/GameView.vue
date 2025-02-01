@@ -1,9 +1,11 @@
 <template>
     <div>
-        <ThreeDemo />
+        <MainRenderScene />
+        <MainCamera />
     </div>
 </template>
 
 <script setup>
-import ThreeDemo from '@/components/ThreeDemo.vue';
+import MainRenderScene from '@/components/MainRenderScene.vue';
+import MainCamera from '@/components/MainCamera.vue';
 </script>
