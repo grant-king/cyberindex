@@ -1,5 +1,5 @@
 <template>
-    <figure class="mt-10">
+    <figure class="my-10">
         <blockquote class="text-xl bg-clip-text bg-[url(https://unrolla.blob.core.windows.net/unrolla/images/P8220521.webp)]">
             <div class="text-transparent bg-clip-text bg-black/80 font-bold">
                 <p>“{{ message }}”</p>
