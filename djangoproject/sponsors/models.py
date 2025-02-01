@@ -23,6 +23,9 @@ class SponsorMessage(models.Model): # aka meditation from gen pop user perspecti
     created_at = models.DateTimeField(auto_now_add=True)
     archived = models.BooleanField(default=False, db_index=True)
 
+    def __str__(self):
+        return f'{self.message[:20]}...' if len(self.message) > 20 else self.message
+
     class Meta:
         ordering = ['-created_at']
 
