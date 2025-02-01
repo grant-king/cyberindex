@@ -1,3 +1,4 @@
 
 djangoproject/.env
 *.pyc
+/djangoproject/media
