@@ -5,6 +5,10 @@ import * as THREE from 'three'
 export const useSceneStore = defineStore('scene', () => {
   const current_scene = ref(null)
 
+  const render_scene = computed(() => {
+    return current_scene.value.clone()
+  })
+
   function initScene() {
     console.log('init scene')
     if (current_scene.value === null) {
@@ -20,5 +24,5 @@ export const useSceneStore = defineStore('scene', () => {
     current_scene.value.add(obj)
   }
 
-  return { initScene, current_scene, add  }
+  return { initScene, current_scene, render_scene, add  }
 })
