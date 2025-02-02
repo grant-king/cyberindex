@@ -12,7 +12,7 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   const velocity = ref(new THREE.Vector3())
   const acceleration = ref(new THREE.Vector3())
   const pointer_controls = ref(null)
-  const acceleration_constant = 0.0001
+  const acceleration_constant = 8
   const keys_pressed = ref({
     forward: false,
     backward: false,
@@ -37,6 +37,7 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     velocity.value.add(acceleration.value.clone().multiplyScalar(delta_time))
     position.value.add(velocity.value.clone().multiplyScalar(delta_time))
     camera_store.camera.position.copy(position.value)
+    dampening()
   }
 
   function updateOrientation() {
@@ -55,14 +56,17 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     }
   }
 
+  function dampening() {
+    velocity.value.multiplyScalar(0.9)
+    acceleration.value.multiplyScalar(0.9)
+  }
+
   function onKeyDown(event){
     console.log('key pressed', event.code)
     switch(event.code){
       case 'KeyW':
       case 'ArrowUp':
         keys_pressed.value.forward = true
-        //acceleration.value.add(relative_orientation.value.clone().multiplyScalar(acceleration_constant))
-        //acceleration.value.add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera_store.camera.quaternion).multiplyScalar(acceleration_constant))
         break
       case 'KeyS':
       case 'ArrowDown':
