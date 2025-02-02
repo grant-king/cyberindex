@@ -14,8 +14,8 @@ const voxel_store = useVoxelStore()
 
 onMounted(() => {
     createSun()
-    createLand()
-    createTower()
+    createLand(32, 32)
+    createRandomTowers(16, 16)
     buildScene()
 })
 
@@ -24,26 +24,34 @@ function createSun() {
     light_store.createLight(-4, 8, 16)
 }
 
-function createLand() {
+function createLand(plane_width, plane_depth) {
     const voxel_store = useVoxelStore()
-    for (let i = -16; i < 16; i++) {
+    for (let i = -1*plane_width; i < plane_width; i++) {
         for (let j = -1; j < 0; j++) {
-            for (let k = -16; k < 16; k++) {
+            for (let k = -1*plane_depth; k < plane_depth; k++) {
                 voxel_store.createVoxel(i, j, k)
             }
         }
     }
 }
 
-function createTower() {
+function createTower(x, z, height) {
     const voxel_store = useVoxelStore()
-    for (let i = -2; i < 2; i++) {
-        for (let j = 0; j < 20; j++) {
-            for (let k = -2; k < 2; k++) {
-                voxel_store.createVoxel(i, j, k)
-            }
+
+    for (let j = 0; j < height; j++){
+        voxel_store.createVoxel(x, j, z)
+    }
+    
+}
+
+function createRandomTowers(plane_width, plane_depth) {
+    for (let i = -1*plane_width; i < plane_width; i+=4) {
+        for (let k = -1*plane_depth; k < plane_depth; k+=4) {
+            const height = Math.floor(Math.random() * 16)
+            createTower(i, k, height)
         }
     }
+
 }
 
 function buildScene() {
@@ -58,7 +66,6 @@ function buildScene() {
         scene_store.add(voxel_copy)
     }
 }
-
 
 
 </script>
