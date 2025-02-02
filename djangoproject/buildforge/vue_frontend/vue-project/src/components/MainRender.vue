@@ -12,9 +12,11 @@ import { useCameraStore } from '@/stores/camera'
 import { useSceneStore } from '@/stores/scene'
 import * as THREE from 'three'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
+import { useCameracontrolStore } from '@/stores/cameracontrol'
 
 const camera_store = useCameraStore()
 const scene_store = useSceneStore()
+const cameracontrol_store = useCameracontrolStore()
 
 onMounted(() => {
     main()
@@ -32,8 +34,11 @@ function main() {
         controls.lock()
     })
 
-    function render(time) {
-        time *= 0.001
+    function render(delta_time) {
+
+        if (controls.isLocked === true) {
+            cameracontrol_store.updateCameraPosition(delta_time / 1000)
+        }
 
         renderer.render(scene_store.render_scene, camera_store.camera)
 
