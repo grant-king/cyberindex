@@ -26,7 +26,7 @@ function main() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
     renderer.setSize(window.innerWidth, window.innerHeight)
 
-    cameracontrol_store.initPointerControls()
+    cameracontrol_store.initControls() // can move to MainCamera.vue
 
     function render(delta_time) {
         if (cameracontrol_store.pointer_controls.isLocked === true) {
