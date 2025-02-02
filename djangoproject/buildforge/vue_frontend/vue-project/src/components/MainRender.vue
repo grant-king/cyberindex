@@ -16,6 +16,7 @@ import { useCameracontrolStore } from '@/stores/cameracontrol'
 const camera_store = useCameraStore()
 const scene_store = useSceneStore()
 const cameracontrol_store = useCameracontrolStore()
+const clock = new THREE.Clock()
 
 onMounted(() => {
     main()
@@ -28,9 +29,9 @@ function main() {
 
     cameracontrol_store.initControls() // can move to MainCamera.vue
 
-    function render(delta_time) {
+    function render(start_time) {
         if (cameracontrol_store.pointer_controls.isLocked === true) {
-            cameracontrol_store.updateCameraPosition(delta_time / 1000)
+            cameracontrol_store.updateCameraPosition(clock.getDelta())
         }
         renderer.render(scene_store.render_scene, camera_store.camera)
         requestAnimationFrame(render)
