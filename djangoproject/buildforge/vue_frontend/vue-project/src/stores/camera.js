@@ -11,8 +11,11 @@ export const useCameraStore = defineStore('camera', () => {
   const camera = ref(null)
 
   function createCamera() {
-    camera.value = new THREE.PerspectiveCamera(fov.value, aspect.value, near.value, far.value)
-    camera.value.position.z = z_position.value
+    if (camera.value === null) {
+      camera.value = new THREE.PerspectiveCamera(fov.value, aspect.value, near.value, far.value)
+      camera.value.position.z = z_position.value
+    }
+    return camera.value
   }
 
   function updatePosition(dx, dy, dz) {
