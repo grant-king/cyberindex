@@ -1,11 +1,12 @@
 <template>
     <div>
-        <MainRenderScene />
+        <MainRender />
         <MainCamera />
     </div>
 </template>
 
 <script setup>
-import MainRenderScene from '@/components/MainRenderScene.vue';
+import MainRender from '@/components/MainRender.vue';
 import MainCamera from '@/components/MainCamera.vue';
+//import MainScene from '@/components/MainScene.vue';
 </script>
