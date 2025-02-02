@@ -24,16 +24,16 @@ function handleCameraControls(event) {
     if (event.key === 'd') {
         camera_store.updatePosition(1, 0, 0)
     }
-    if (event.key === 'w') {
+    if (event.key === 'e') {
         camera_store.updatePosition(0, 1, 0)
     }
-    if (event.key === 's') {
+    if (event.key === 'q') {
         camera_store.updatePosition(0, -1, 0)
     }
-    if (event.key === 'e') {
+    if (event.key === 'w') {
         camera_store.updatePosition(0, 0, -1)
     }
-    if (event.key === 'q') {
+    if (event.key === 's') {
         camera_store.updatePosition(0, 0, 1)
     }
 }
