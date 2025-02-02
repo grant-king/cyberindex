@@ -27,26 +27,25 @@ function main() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
     renderer.setSize(window.innerWidth, window.innerHeight)
 
-    const scene = new THREE.Scene()
+    //const scene = new THREE.Scene()
 
-    for (let i = -20; i < 20; i++) {
-        for (let j = -20; j < 20; j++) {
+    for (let i = -10; i < 10; i++) {
+        for (let j = -10; j < 10; j++) {
             for (let k = 0; k < 1; k++) {
                 voxel_store.createVoxel(i, j, k)
             }
         }
     }
     for (let voxel of voxel_store.voxel_list){
-        console.log(voxel)
         const voxel_copy = voxel.clone()
-        scene.add(voxel_copy)
+        scene_store.add(voxel_copy)
     }
 
 
     function render(time) {
         time *= 0.001
 
-        renderer.render(scene, camera_store.camera)
+        renderer.render(scene_store.current_scene.clone(), camera_store.camera)
 
         requestAnimationFrame(render)
     }
