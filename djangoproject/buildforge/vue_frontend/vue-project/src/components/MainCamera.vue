@@ -18,22 +18,22 @@ onMounted(() => {
 })
 
 function handleCameraControls(event) {
-    if (event.key === 'a') {
+    if (event.key === 'a' || event.key === 'ArrowLeft') {
         camera_store.updatePosition(-1, 0, 0)
     }
-    if (event.key === 'd') {
+    if (event.key === 'd' || event.key === 'ArrowRight') {
         camera_store.updatePosition(1, 0, 0)
     }
-    if (event.key === 'e') {
+    if (event.key === 'e' || event.key === 'Shift') {
         camera_store.updatePosition(0, 1, 0)
     }
-    if (event.key === 'q') {
+    if (event.key === 'q' || event.key === 'Control') {
         camera_store.updatePosition(0, -1, 0)
     }
-    if (event.key === 'w') {
+    if (event.key === 'w' || event.key === 'ArrowUp') {
         camera_store.updatePosition(0, 0, -1)
     }
-    if (event.key === 's') {
+    if (event.key === 's' || event.key === 'ArrowDown') {
         camera_store.updatePosition(0, 0, 1)
     }
 }
