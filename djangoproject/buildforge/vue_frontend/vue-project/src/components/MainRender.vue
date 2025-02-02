@@ -10,13 +10,10 @@ import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { useCameraStore } from '@/stores/camera'
 import { useSceneStore } from '@/stores/scene'
-import { useVoxelStore } from '@/stores/voxel'
 import * as THREE from 'three'
 
 const camera_store = useCameraStore()
 const scene_store = useSceneStore()
-const voxel_store = useVoxelStore()
-
 
 onMounted(() => {
     main()
@@ -31,7 +28,7 @@ function main() {
     function render(time) {
         time *= 0.001
 
-        renderer.render(scene_store.current_scene.clone(), camera_store.camera)
+        renderer.render(scene_store.render_scene, camera_store.camera)
 
         requestAnimationFrame(render)
     }
