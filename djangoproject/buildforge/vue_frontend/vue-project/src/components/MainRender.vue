@@ -11,7 +11,6 @@ import { onMounted } from 'vue'
 import { useCameraStore } from '@/stores/camera'
 import { useSceneStore } from '@/stores/scene'
 import * as THREE from 'three'
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
 import { useCameracontrolStore } from '@/stores/cameracontrol'
 
 const camera_store = useCameraStore()
@@ -27,21 +26,13 @@ function main() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
     renderer.setSize(window.innerWidth, window.innerHeight)
 
-    const controls = new PointerLockControls(camera_store.createCamera(), renderer.domElement)
-    camera_store.camera = controls.object
-
-    renderer.domElement.addEventListener('click', () => {
-        controls.lock()
-    })
+    cameracontrol_store.initPointerControls()
 
     function render(delta_time) {
-
-        if (controls.isLocked === true) {
+        if (cameracontrol_store.pointer_controls.isLocked === true) {
             cameracontrol_store.updateCameraPosition(delta_time / 1000)
         }
-
         renderer.render(scene_store.render_scene, camera_store.camera)
-
         requestAnimationFrame(render)
     }
 
