@@ -8,7 +8,7 @@ export const useVoxelStore = defineStore('voxel', () => {
   function createVoxel(x, y, z) {
     const geometry = new THREE.BoxGeometry(1, 1, 1)
     const color = Math.random() * 0xffffff
-    const material = new THREE.MeshBasicMaterial({ color: color })
+    const material = new THREE.MeshPhongMaterial({ color: color })
     const voxel = new THREE.Mesh(geometry, material)
     voxel.position.set(x, y, z)
     voxel_list.value.push(voxel)
