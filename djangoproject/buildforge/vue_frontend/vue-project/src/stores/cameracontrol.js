@@ -51,6 +51,7 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       relative_orientation.value.normalize()
       relative_orientation.value.applyQuaternion(camera_store.camera.quaternion)
       acceleration.value.copy(relative_orientation.value).multiplyScalar(acceleration_constant)
+      relative_orientation.value.set(0, 0, 0)
     }
   }
 
