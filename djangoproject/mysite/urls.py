@@ -26,6 +26,7 @@ from django.contrib.auth import views as auth_views
 from pixeldance import views_api as dance_views
 from cashier import views_api as cashier_views
 from rebirth import views_api as rebirth_views
+from buildforge import views_api as buildforge_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -42,6 +43,7 @@ router.register(r'dancepaths', dance_views.DancePathViewSet)
 router.register(r'customers', cashier_views.CustomerViewSet)
 router.register(r'meditationreads', sponsors_views.MeditationReadViewSet)
 router.register(r'avatars', rebirth_views.AvatarViewSet, basename='avatar')
+router.register(r'voxels', buildforge_views.VoxelViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
