@@ -60,5 +60,5 @@ export const useVoxelStore = defineStore('voxel', () => {
 
 
 
-  return { voxel_mesh_list, drawVoxels, fetchVoxels }
+  return { voxel_mesh_list, voxel_list, drawVoxels, fetchVoxels }
 })
