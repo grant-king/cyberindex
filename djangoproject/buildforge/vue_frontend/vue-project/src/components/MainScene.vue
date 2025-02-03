@@ -22,6 +22,7 @@ onMounted(() => {
 function createSun() {
     light_store.createLight(4, 8, 16)
     light_store.createLight(-4, 8, 16)
+    light_store.createLight(0, 50, -2)
 }
 
 function createLand(plane_width, plane_depth) {
