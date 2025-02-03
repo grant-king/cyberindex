@@ -19,6 +19,7 @@ const cameracontrol_store = useCameracontrolStore()
 const clock = new THREE.Clock()
 
 onMounted(() => {
+    scene_store.initScene()
     main()
 })
 
@@ -33,8 +34,10 @@ function main() {
         if (cameracontrol_store.pointer_controls.isLocked === true) {
             cameracontrol_store.updateCameraPosition(clock.getDelta())
         }
+
         renderer.render(scene_store.render_scene, camera_store.camera)
         requestAnimationFrame(render)
+
     }
 
     requestAnimationFrame(render)
