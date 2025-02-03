@@ -12,11 +12,13 @@ const scene_store = useSceneStore()
 const light_store = useLightStore()
 const voxel_store = useVoxelStore()
 
-onMounted(() => {
+onMounted(async () => {
+    await voxel_store.fetchVoxels()
+    await voxel_store.drawVoxels()
     createSun()
-    createLand(32, 32)
-    createRandomTowers(16, 16)
-    buildScene()
+    //createLand(32, 32)
+    //createRandomTowers(16, 16)
+    await buildScene()
 })
 
 function createSun() {
@@ -55,14 +57,15 @@ function createRandomTowers(plane_width, plane_depth) {
 
 }
 
-function buildScene() {
+async function buildScene() {
     // add lights
     for (let light of light_store.light_list) {
         const light_copy = light.clone()
         scene_store.add(light_copy)
     }
     // add voxels
-    for (let voxel of voxel_store.voxel_list) {
+    for (let voxel of voxel_store.voxel_mesh_list) {
+        console.log('build scene voxel:', voxel)
         const voxel_copy = voxel.clone()
         scene_store.add(voxel_copy)
     }
