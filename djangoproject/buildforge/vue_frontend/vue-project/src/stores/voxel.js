@@ -12,13 +12,13 @@ export const useVoxelStore = defineStore('voxel', () => {
 
   async function drawVoxels() {
     for (const voxel of voxel_list.value) {
-      drawVoxel(voxel.x, voxel.y, voxel.z)
+      drawVoxel(voxel.x, voxel.y, voxel.z, `#${voxel.color}`)
     }
   }
 
-  function drawVoxel(x, y, z) {
+  function drawVoxel(x, y, z, color) {
     const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const color = Math.random() * 0xffffff
+    //const color = Math.random() * 0xffffff
     //const alpha_map = new THREE.TextureLoader().load(alphaMapUrl)
     //const material = new THREE.MeshPhongMaterial({ color: color, alphaMap: alpha_map, combine: THREE.MixOperation, transparent: true })
     const material = new THREE.MeshPhongMaterial({ color: color})
