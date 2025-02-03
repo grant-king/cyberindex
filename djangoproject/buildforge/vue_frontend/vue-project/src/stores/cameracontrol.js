@@ -58,8 +58,8 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
 
   function dampening(delta_time) {
     const dampening_temporal = 1 - delta_time
-    velocity.value.multiplyScalar(dampening_temporal)
-    acceleration.value.multiplyScalar(dampening_temporal)
+    velocity.value.multiplyScalar(0.9)
+    acceleration.value.multiplyScalar(0.9)
   }
 
   function onKeyDown(event){
