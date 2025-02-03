@@ -7,13 +7,16 @@ import { ref, onMounted } from 'vue';
 import { useSceneStore } from '@/stores/scene';
 import { useVoxelStore } from '@/stores/voxel';
 import { useLightStore } from '@/stores/light';
+import { useCollectorStore } from '@/stores/collector';
 
 const scene_store = useSceneStore()
 const light_store = useLightStore()
 const voxel_store = useVoxelStore()
+const collector_store = useCollectorStore()
 
 onMounted(async () => {
     await voxel_store.fetchVoxels()
+    collector_store.buildHashMap(voxel_store.voxel_list)
     await voxel_store.drawVoxels()
     createSun()
     //createLand(32, 32)
@@ -65,7 +68,6 @@ async function buildScene() {
     }
     // add voxels
     for (let voxel of voxel_store.voxel_mesh_list) {
-        console.log('build scene voxel:', voxel)
         const voxel_copy = voxel.clone()
         scene_store.add(voxel_copy)
     }
