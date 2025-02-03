@@ -33,20 +33,20 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   }
 
   function updateCameraPosition(delta_time) {
-    updateOrientation()
+    updateOrientation(delta_time)
     velocity.value.add(acceleration.value.clone().multiplyScalar(delta_time))
     position.value.add(velocity.value.clone().multiplyScalar(delta_time))
     camera_store.camera.position.copy(position.value)
-    dampening()
+    dampening(delta_time)
   }
 
-  function updateOrientation() {
-    if (keys_pressed.value.forward) relative_orientation.value.z -= 1
-    if (keys_pressed.value.backward) relative_orientation.value.z += 1
-    if (keys_pressed.value.left) relative_orientation.value.x -= 1
-    if (keys_pressed.value.right) relative_orientation.value.x += 1
-    if (keys_pressed.value.up) relative_orientation.value.y += 1
-    if (keys_pressed.value.down) relative_orientation.value.y -= 1
+  function updateOrientation(delta_time) {
+    if (keys_pressed.value.forward) relative_orientation.value.z -= delta_time
+    if (keys_pressed.value.backward) relative_orientation.value.z += delta_time
+    if (keys_pressed.value.left) relative_orientation.value.x -= delta_time
+    if (keys_pressed.value.right) relative_orientation.value.x += delta_time
+    if (keys_pressed.value.up) relative_orientation.value.y += delta_time
+    if (keys_pressed.value.down) relative_orientation.value.y -= delta_time
 
     if (relative_orientation.value.lengthSq() > 0) {
       relative_orientation.value.normalize()
@@ -56,9 +56,10 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     }
   }
 
-  function dampening() {
-    velocity.value.multiplyScalar(0.9)
-    acceleration.value.multiplyScalar(0.9)
+  function dampening(delta_time) {
+    const dampening_temporal = 1 - delta_time
+    velocity.value.multiplyScalar(dampening_temporal)
+    acceleration.value.multiplyScalar(dampening_temporal)
   }
 
   function onKeyDown(event){
