@@ -32,7 +32,7 @@ export const useVoxelStore = defineStore('voxel', () => {
     )
 
     voxel_mesh_list.value.push(voxel)
-    console.log('voxel mesh:', voxel)
+    //console.log('voxel mesh:', voxel)
     return voxel
   }
 
