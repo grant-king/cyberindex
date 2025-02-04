@@ -24,5 +24,12 @@ export const useSceneStore = defineStore('scene', () => {
     current_scene.value.add(obj)
   }
 
-  return { initScene, current_scene, render_scene, add  }
+  function remove(obj) {
+    if (current_scene.value === null) {
+      initScene()
+    }
+    current_scene.value.remove(obj)
+  }
+
+  return { initScene, current_scene, render_scene, add, remove  }
 })
