@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, toRaw } from 'vue'
 import { defineStore } from 'pinia'
 import * as THREE from 'three'
 
@@ -22,14 +22,19 @@ export const useSceneStore = defineStore('scene', () => {
       initScene()
     }
     current_scene.value.add(obj)
+    //current_scene.value.needsUpdate = true
   }
 
   function remove(obj) {
     if (current_scene.value === null) {
       initScene()
     }
-    console.log('removing object', obj)
-    current_scene.value.remove(obj)
+    const raw_obj = toRaw(obj)
+    console.log('current scene', current_scene.value)
+    console.log('removing object', raw_obj)
+    current_scene.value.remove(raw_obj)
+    console.log('current scene', current_scene.value)
+    current_scene.value.updateWorldMatrix()
   }
 
   return { initScene, current_scene, render_scene, add, remove  }
