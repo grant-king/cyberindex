@@ -4,6 +4,12 @@ import { defineStore } from 'pinia'
 export const useCollectorStore = defineStore('collector', () => {
     const collection_queue = ref([])
     const collectibles_hash_map = ref({}) // { 'locationhash': collectible_obj.url }
+    const base_url = window.location.origin
+    const claims_endpoint = `${base_url}/apiv1/claims/`
+
+    // set interval to check for recent claims from other players in this region, use these to update visual state
+    // somewhere set interval to get newly placed voxels in this region, use these to update visual state
+    // figure out how to load voxels in chunks as player moves across world, then selectively apply above logic to voxels in this current region
 
     function getRegionKey(x, y, z, region_size = 1) {
         const x_plane = Math.floor(x / region_size)
@@ -37,5 +43,25 @@ export const useCollectorStore = defineStore('collector', () => {
         }
     }
 
-    return { buildHashMap, getCollectiblesInRegion, collection_queue }
+    async function createClaim(voxel_pk) {
+        const form_data = new FormData()
+        form_data.append('voxel', voxel_pk)
+        form_data.append('is_holding', true)
+        const response = await fetch(claims_endpoint, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': window.csrf_token,
+            },
+            body: form_data,
+        })
+        const data = await response.json()
+        if (response.ok) {
+            console.log('created claim', data)
+        } else {
+            console.error('failed to create claim')
+            console.error(response)
+        }
+    }
+
+    return { createClaim, buildHashMap, getCollectiblesInRegion, collection_queue }
 })
