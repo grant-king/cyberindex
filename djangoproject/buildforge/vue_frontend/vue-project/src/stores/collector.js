@@ -46,6 +46,7 @@ export const useCollectorStore = defineStore('collector', () => {
         for (const collectible of current_collectibles) {
             if (!collection_queue.value.includes(collectible)) {
                 collection_queue.value.push(collectible)
+                delete collectibles_hash_map.value[region_key]
                 console.log('collectible added to queue:', collectible)
             }
         }
