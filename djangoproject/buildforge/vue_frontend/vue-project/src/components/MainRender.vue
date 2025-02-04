@@ -26,24 +26,26 @@ onMounted(() => {
     main()
 })
 
-function render(start_time) {
+function main() {
+    const canvas = document.querySelector('#three-canvas')
+    renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    
+    cameracontrol_store.initControls() // can move to MainCamera.vue
+    
+    // request first frame and start loop
+    requestAnimationFrame(rendering_loop)
+    
+}
+
+function rendering_loop(start_time) {
     if (cameracontrol_store.pointer_controls.isLocked === true) {
         cameracontrol_store.updateCameraPosition(clock.getDelta())
     }
     
     renderer.render(scene_store.render_scene, camera_store.camera)
-    requestAnimationFrame(render)
+    requestAnimationFrame(rendering_loop)
     
-}
-function main() {
-    const canvas = document.querySelector('#three-canvas')
-    renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-
-    cameracontrol_store.initControls() // can move to MainCamera.vue
-
-    requestAnimationFrame(render)
-
 }
 //watch(() => scene_store.current_scene, () => {
 //    console.log('scene changed')
