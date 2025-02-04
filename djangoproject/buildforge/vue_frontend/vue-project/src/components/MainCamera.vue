@@ -55,6 +55,8 @@ function processQueue() {
             scene_store.remove(obj_3d)
             // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
             collector_store.createClaim(collectible.pk)
+            // rebuild hashmap with latest voxel_list
+            collector_store.rebuildHashMap(voxel_store.voxel_list)
         }
     }
     collector_store.collection_queue = []
