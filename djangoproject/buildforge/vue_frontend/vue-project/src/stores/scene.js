@@ -6,7 +6,7 @@ export const useSceneStore = defineStore('scene', () => {
   const current_scene = ref(null)
 
   const render_scene = computed(() => {
-    return current_scene.value.clone()
+    return toRaw(current_scene.value)
   })
 
   function initScene() {
