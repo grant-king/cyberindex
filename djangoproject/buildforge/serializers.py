@@ -6,7 +6,7 @@ class VoxelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Voxel
-        fields = ["color", "x", "y", "z"]
+        fields = ["pk", "color", "x", "y", "z"]
 
 
 class ClaimSerializer(serializers.ModelSerializer):
