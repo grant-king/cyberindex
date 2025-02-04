@@ -47,10 +47,4 @@ function rendering_loop(start_time) {
     requestAnimationFrame(rendering_loop)
     
 }
-//watch(() => scene_store.current_scene, () => {
-//    console.log('scene changed')
-//    renderer.render(scene_store.render_scene, camera_store.camera)
-//    requestAnimationFrame(render)
-
-//})
 </script>
