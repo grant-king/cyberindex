@@ -12,7 +12,7 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   const velocity = ref(new THREE.Vector3())
   const acceleration = ref(new THREE.Vector3())
   const pointer_controls = ref(null)
-  const acceleration_constant = 8
+  const acceleration_constant = 2
   const keys_pressed = ref({
     forward: false,
     backward: false,
@@ -57,9 +57,9 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   }
 
   function dampening(delta_time) {
-    const dampening_temporal = 1 - delta_time
-    velocity.value.multiplyScalar(0.9)
-    acceleration.value.multiplyScalar(0.9)
+    const dampening_temporal = Math.abs(1 - delta_time)
+    velocity.value.multiplyScalar(dampening_temporal)
+    acceleration.value.multiplyScalar(0.9 - dampening_temporal)
   }
 
   function onKeyDown(event){
@@ -123,5 +123,5 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
    
   
 
-  return { updateCameraPosition, initControls, pointer_controls }
+  return { updateCameraPosition, initControls, pointer_controls, dampening }
 })
