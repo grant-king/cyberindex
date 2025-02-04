@@ -47,13 +47,15 @@ function measureCollector() {
 // for now fine here with this component
 function processQueue() {
     for (let collectible of collector_store.collection_queue) {
-        // remove voxel from collection_queue
-        collector_store.collection_queue.pop(collectible)
         // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
+        collector_store.createClaim(collectible.pk)
         // remove voxel from voxel_list
+        const obj_3d = voxel_store.pullVoxelMesh(collectible.pk)
         // remove voxel from voxel_mesh_list
         // remove voxel from scene
+        scene_store.remove(obj_3d)
     }
+    collector_store.collection_queue = []
 }
 
 </script>
