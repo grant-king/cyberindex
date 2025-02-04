@@ -58,7 +58,22 @@ export const useVoxelStore = defineStore('voxel', () => {
     }
   }
 
+  function pullVoxelMesh(voxel_pk) {
+    console.log('removing voxel and returning mesh', voxel_pk)
+    // find index of voxel with matching pk in data list
+    const index = voxel_list.value.findIndex(voxel => voxel.pk === voxel_pk)
+    console.log('index', index)
+    if (index > -1) {
+      // remove from data list
+      voxel_list.value.splice(index, 1)
+      // remove from mesh list
+      const voxel_mesh = voxel_mesh_list.value[index]
+      voxel_mesh_list.value.splice(index, 1)
+      return voxel_mesh
+    }
+  }
 
 
-  return { voxel_mesh_list, voxel_list, drawVoxels, fetchVoxels }
+
+  return { voxel_mesh_list, pullVoxelMesh, voxel_list, drawVoxels, fetchVoxels }
 })
