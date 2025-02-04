@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useCollectorStore = defineStore('collector', () => {
     const collection_queue = ref([])
+    const claim_queue = ref([])
     const collectibles_hash_map = ref({}) // { 'locationhash': collectible_obj.url }
     const base_url = window.location.origin
     const claims_endpoint = `${base_url}/apiv1/claims/`
@@ -70,5 +71,5 @@ export const useCollectorStore = defineStore('collector', () => {
         }
     }
 
-    return { createClaim, buildHashMap, rebuildHashMap, getCollectiblesInRegion, collection_queue }
+    return { createClaim, buildHashMap, rebuildHashMap, getCollectiblesInRegion, collection_queue, claim_queue }
 })
