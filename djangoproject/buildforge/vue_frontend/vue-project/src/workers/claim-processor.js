@@ -1,5 +1,5 @@
 onmessage = (e) => {
-    const { claim } = e.data;
+    const claim  = e.data;
     const result = processClaim(claim);
     postMessage(result);
     };
