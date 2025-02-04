@@ -12,10 +12,12 @@ import { useCameraStore } from '@/stores/camera'
 import { useSceneStore } from '@/stores/scene'
 import * as THREE from 'three'
 import { useCameracontrolStore } from '@/stores/cameracontrol'
+import { useCollectorStore } from '@/stores/collector'
 
 const camera_store = useCameraStore()
 const scene_store = useSceneStore()
 const cameracontrol_store = useCameracontrolStore()
+const collector_store = useCollectorStore()
 const clock = new THREE.Clock()
 
 onMounted(() => {
