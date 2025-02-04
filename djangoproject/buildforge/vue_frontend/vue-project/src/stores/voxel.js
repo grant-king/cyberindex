@@ -69,7 +69,7 @@ export const useVoxelStore = defineStore('voxel', () => {
       // remove from mesh list
       //const voxel_mesh = voxel_mesh_list.value[index]
       const voxel_mesh = voxel_mesh_list.value.splice(index, 1)
-      return voxel_mesh
+      return voxel_mesh[0]
     }
   }
 
