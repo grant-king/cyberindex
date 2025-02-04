@@ -21,7 +21,7 @@ export const useVoxelStore = defineStore('voxel', () => {
     //const color = Math.random() * 0xffffff
     //const alpha_map = new THREE.TextureLoader().load(alphaMapUrl)
     //const material = new THREE.MeshPhongMaterial({ color: color, alphaMap: alpha_map, combine: THREE.MixOperation, transparent: true })
-    const material = new THREE.MeshPhongMaterial({ color: color})
+    const material = new THREE.MeshPhongMaterial({ color: color })
     const voxel = new THREE.Mesh(geometry, material)
     voxel.position.set(x, y, z)
     // add a very slight random rotation
@@ -30,7 +30,7 @@ export const useVoxelStore = defineStore('voxel', () => {
       Math.random() * 0.01,
       Math.random() * 0.01
     )
-    
+
     voxel_mesh_list.value.push(voxel)
     console.log('voxel mesh:', voxel)
     return voxel
@@ -67,8 +67,8 @@ export const useVoxelStore = defineStore('voxel', () => {
       // remove from data list
       voxel_list.value.splice(index, 1)
       // remove from mesh list
-      const voxel_mesh = voxel_mesh_list.value[index]
-      voxel_mesh_list.value.splice(index, 1)
+      //const voxel_mesh = voxel_mesh_list.value[index]
+      const voxel_mesh = voxel_mesh_list.value.splice(index, 1)
       return voxel_mesh
     }
   }
