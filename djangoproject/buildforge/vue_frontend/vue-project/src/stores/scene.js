@@ -28,6 +28,7 @@ export const useSceneStore = defineStore('scene', () => {
     if (current_scene.value === null) {
       initScene()
     }
+    console.log('removing object', obj)
     current_scene.value.remove(obj)
   }
 
