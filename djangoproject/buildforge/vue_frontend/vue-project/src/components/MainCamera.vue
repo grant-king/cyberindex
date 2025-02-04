@@ -15,11 +15,13 @@ import { useCameraStore } from '@/stores/camera'
 import { useCollectorStore } from '@/stores/collector'
 import { useSceneStore } from '@/stores/scene'
 import { useVoxelStore } from '@/stores/voxel'
+import { useCameracontrolStore } from '@/stores/cameracontrol'
 
 import { onMounted, onUnmounted } from 'vue'
 import { ref, watch } from 'vue'
 
 const camera_store = useCameraStore()
+const control_store = useCameracontrolStore()
 const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
@@ -32,7 +34,7 @@ worker.onmessage = (e) => {
 let measure_interval_id, visual_interval_id, claim_interval_id
 
 onMounted(() => {
-    measure_interval_id = setInterval(measureCollector, 100)
+    measure_interval_id = setInterval(measureCollector, 200)
     visual_interval_id = setInterval(processVisualQueue, 400)
     claim_interval_id = setInterval(processClaimQueue, 800)
 })
@@ -61,8 +63,11 @@ function processVisualQueue() {
         // remove voxel from voxel_mesh_list
         const obj_3d = voxel_store.pullVoxelMesh(collectible.pk)
         if (obj_3d) {
+            // dampen camera velocity
+            control_store.dampening(0.8)
             // remove voxel from scene
             scene_store.remove(obj_3d)
+            
             // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
             collector_store.claim_queue.push(collectible)
         }
