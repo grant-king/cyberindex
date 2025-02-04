@@ -68,7 +68,8 @@ async function buildScene() {
     }
     // add voxels
     for (let voxel of voxel_store.voxel_mesh_list) {
-        const voxel_copy = voxel.clone()
+        //const voxel_copy = voxel.clone()
+        const voxel_copy = voxel
         scene_store.add(voxel_copy)
     }
 }
