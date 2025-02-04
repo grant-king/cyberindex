@@ -74,8 +74,9 @@ async function processClaimQueue() {
     for (let collectible of collector_store.claim_queue) {
         // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
         //collector_store.createClaim(collectible.pk)
-        console.log("sending pk to worker:", collectible.pk)
-        worker.postMessage(collectible.pk)
+        const wkr_message = [collectible.pk, '/apiv1/claims/', window.csrf_token]
+        console.log("sending pk to worker:", wkr_message)
+        worker.postMessage(wkr_message)
     }
     collector_store.claim_queue = []
 }
