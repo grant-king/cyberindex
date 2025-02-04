@@ -25,8 +25,9 @@ const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
 
 onMounted(() => {
-    setInterval(measureCollector, 1000)
-    setInterval(processQueue, 900)
+    setInterval(measureCollector, 200)
+    setInterval(processVisualQueue, 400)
+    setInterval(processClaimQueue, 1000)
 })
 
 onUnmounted(() => {
@@ -45,7 +46,7 @@ function measureCollector() {
 // as there could be multiple collectors in the scene that only need to
 // process the global collection queue once
 // for now fine here with this component
-function processQueue() {
+function processVisualQueue() {
     for (let collectible of collector_store.collection_queue) {
         // remove voxel from voxel_list
         // remove voxel from voxel_mesh_list
@@ -54,12 +55,20 @@ function processQueue() {
             // remove voxel from scene
             scene_store.remove(obj_3d)
             // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
-            collector_store.createClaim(collectible.pk)
+            collector_store.claim_queue.push(collectible)
             // rebuild hashmap with latest voxel_list
             collector_store.rebuildHashMap(voxel_store.voxel_list)
         }
     }
     collector_store.collection_queue = []
+}
+
+async function processClaimQueue() {
+    for (let collectible of collector_store.claim_queue) {
+        // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
+        await collector_store.createClaim(collectible.pk)
+    }
+    collector_store.claim_queue = []
 }
 
 </script>
