@@ -26,9 +26,9 @@ export const useVoxelStore = defineStore('voxel', () => {
     voxel.position.set(x, y, z)
     // add a very slight random rotation
     voxel.rotation.set(
-      Math.random() * 0.01,
-      Math.random() * 0.01,
-      Math.random() * 0.01
+      Math.random() * 0.04,
+      Math.random() * 0.04,
+      Math.random() * 0.04
     )
 
     voxel_mesh_list.value.push(voxel)
