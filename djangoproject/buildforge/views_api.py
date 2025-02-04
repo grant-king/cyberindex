@@ -16,7 +16,7 @@ from buildforge.serializers import (
 )
 
 class LargeResultsSetPagination(PageNumberPagination):
-    page_size = 2000
+    page_size = 10000
     page_size_query_param = 'page_size'
     max_page_size = 10000
 
@@ -36,11 +36,11 @@ class VoxelViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get']) # add 8x1xN plane of voxels
     def plane(self, request):
-        for x in range(-16, 16):
-            for y in range(-2, -1):
-                for z in range(-32, -8):
+        for x in range(-128, 128):
+            for y in range(-6, -5):
+                for z in range(-4, 4):
                     random_color = "%06x" % random.randint(0, 0xFFFFFF)
-                    Voxel.objects.create(x=x, y=y, z=z, color=random_color)
+                    #Voxel.objects.create(x=x, y=y, z=z, color=random_color)
         return Response(status=status.HTTP_201_CREATED)
     
     @action(detail=False, methods=['get']) # add 1xNx1 tower of voxels
