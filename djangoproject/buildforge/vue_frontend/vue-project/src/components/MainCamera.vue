@@ -24,14 +24,26 @@ const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
 
+if (window.Worker) {
+    const worker = new Worker(new URL('@/workers/claim-processor.js', import.meta.url))
+    worker.postMessage('Hello from MainCamera.vue')
+    worker.onmessage = (e) => {
+        console.log(e.data)
+    }
+}
+
+let measure_interval_id, visual_interval_id, claim_interval_id
+
 onMounted(() => {
-    setInterval(measureCollector, 100)
-    setInterval(processVisualQueue, 400)
-    setInterval(processClaimQueue, 800)
+    measure_interval_id = setInterval(measureCollector, 100)
+    visual_interval_id = setInterval(processVisualQueue, 400)
+    claim_interval_id = setInterval(processClaimQueue, 800)
 })
 
 onUnmounted(() => {
-    clearInterval(measureCollector)
+    clearInterval(measure_interval_id)
+    clearInterval(visual_interval_id)
+    clearInterval(claim_interval_id)
 })
 
 function measureCollector() {
