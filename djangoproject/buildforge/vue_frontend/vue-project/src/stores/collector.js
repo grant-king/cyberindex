@@ -19,6 +19,7 @@ export const useCollectorStore = defineStore('collector', () => {
     }
 
     function buildHashMap(all_collectibles) {
+        //build or add to hashmap of collectibles by region
         for (const collectible of all_collectibles) {
             const region_key = getRegionKey(collectible.x, collectible.y, collectible.z)
             if (collectibles_hash_map.value[region_key] === undefined) {
@@ -26,6 +27,12 @@ export const useCollectorStore = defineStore('collector', () => {
             }
             collectibles_hash_map.value[region_key].push(collectible)
         }
+    }
+
+    function rebuildHashMap(all_collectibles) {
+        // clear hashmap and rebuild
+        collectibles_hash_map.value = {}
+        buildHashMap(all_collectibles)
     }
 
     function getCollectiblesInRegion(x, y, z, region_size = 1) {
@@ -63,5 +70,5 @@ export const useCollectorStore = defineStore('collector', () => {
         }
     }
 
-    return { createClaim, buildHashMap, getCollectiblesInRegion, collection_queue }
+    return { createClaim, buildHashMap, rebuildHashMap, getCollectiblesInRegion, collection_queue }
 })
