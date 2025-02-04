@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 import random
 from rest_framework.pagination import PageNumberPagination
+
 # import Q
 from django.db.models import Q
 
@@ -15,10 +16,11 @@ from buildforge.serializers import (
     BuilderSerializer,
 )
 
+
 class LargeResultsSetPagination(PageNumberPagination):
-    page_size = 10000
-    page_size_query_param = 'page_size'
-    max_page_size = 10000
+    page_size = 30000
+    page_size_query_param = "page_size"
+    max_page_size = 60000
 
 
 class VoxelViewSet(viewsets.ModelViewSet):
@@ -32,32 +34,63 @@ class VoxelViewSet(viewsets.ModelViewSet):
         # or with claim and is_holding = False
 
         return Voxel.objects.filter(Q(claim__isnull=True) | Q(claim__is_holding=False))
-        
 
-    @action(detail=False, methods=['get']) # add 8x1xN plane of voxels
+    @action(detail=False, methods=["get"])  # clear all
+    def clear_all(self, request):
+        Voxel.objects.all().delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=["get"])  # add 8x1xN plane of voxels
     def plane(self, request):
-        for x in range(-128, 128):
-            for y in range(-6, -5):
-                for z in range(-4, 4):
+        for x in range(-16, 16):
+            for y in range(0, 1):
+                for z in range(-16, 16):
                     random_color = "%06x" % random.randint(0, 0xFFFFFF)
-                    #Voxel.objects.create(x=x, y=y, z=z, color=random_color)
+                    Voxel.objects.create(x=x, y=y, z=z, color=random_color)
         return Response(status=status.HTTP_201_CREATED)
-    
-    @action(detail=False, methods=['get']) # add 1xNx1 tower of voxels
+
+    @action(detail=False, methods=["get"])  # add 1xNx1 tower of voxels
     def tower(self, request):
-        random_x = random.randint(-8, 8)
-        random_z = random.randint(-32, -8)
+        random_x = random.randint(-16, 16)
+        random_z = random.randint(-16, 16)
         random_y = random.randint(1, 16)
         for x in range(1):
             for y in range(1, random_y):
                 for z in range(1):
                     random_color = "%06x" % random.randint(0, 0xFFFFFF)
-                    Voxel.objects.create(x=random_x, y=y, z=random_z, color=random_color)
+                    Voxel.objects.create(
+                        x=random_x, y=y, z=random_z, color=random_color
+                    )
         return Response(status=status.HTTP_201_CREATED)
-    
+
+    @action(
+        detail=False, methods=["get"]
+    )  # build a hollow cube of voxels from walls of 32 square
+    def cube(self, request):
+        for x in range(-32, 32):
+            for y in range(-32, 32):
+                for z in range(-32, 32):
+                    if (
+                        x == -32
+                        or x == 31
+                        or y == -32
+                        or y == 31
+                        or z == -32
+                        or z == 31
+                    ):
+                        random_color = "%06x" % random.randint(0, 0xFFFFFF)
+                        # Voxel.objects.create(x=x, y=y, z=z, color=random_color)
+        return Response(status=status.HTTP_201_CREATED)
+
+
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
 
     def perform_create(self, serializer):
         serializer.save(session_key=self.request.session.session_key)
+
+    @action(detail=False, methods=["get"])
+    def clear_all(self, request):
+        Claim.objects.all().delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
