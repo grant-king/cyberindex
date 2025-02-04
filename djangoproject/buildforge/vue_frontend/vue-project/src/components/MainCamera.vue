@@ -38,7 +38,7 @@ function measureCollector() {
     const cam_y = camera_store.camera.position.y
     const cam_z = camera_store.camera.position.z
     collector_store.getCollectiblesInRegion(cam_x, cam_y, cam_z)
-    console.log(collector_store.collection_queue)
+    //console.log(collector_store.collection_queue)
 }
 
 // processQueue could be a method of another dedicated component
@@ -47,13 +47,15 @@ function measureCollector() {
 // for now fine here with this component
 function processQueue() {
     for (let collectible of collector_store.collection_queue) {
-        // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
-        collector_store.createClaim(collectible.pk)
         // remove voxel from voxel_list
-        const obj_3d = voxel_store.pullVoxelMesh(collectible.pk)
         // remove voxel from voxel_mesh_list
-        // remove voxel from scene
-        scene_store.remove(obj_3d)
+        const obj_3d = voxel_store.pullVoxelMesh(collectible.pk)
+        if (obj_3d) {
+            // remove voxel from scene
+            scene_store.remove(obj_3d)
+            // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
+            collector_store.createClaim(collectible.pk)
+        }
     }
     collector_store.collection_queue = []
 }
