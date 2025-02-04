@@ -23,13 +23,10 @@ const camera_store = useCameraStore()
 const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
+const worker = new Worker(new URL('@/workers/claim-processor.js', import.meta.url))
 
-if (window.Worker) {
-    const worker = new Worker(new URL('@/workers/claim-processor.js', import.meta.url))
-    worker.postMessage('Hello from MainCamera.vue')
-    worker.onmessage = (e) => {
-        console.log(e.data)
-    }
+worker.onmessage = (e) => {
+    console.log(e.data)
 }
 
 let measure_interval_id, visual_interval_id, claim_interval_id
@@ -76,7 +73,9 @@ function processVisualQueue() {
 async function processClaimQueue() {
     for (let collectible of collector_store.claim_queue) {
         // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
-        collector_store.createClaim(collectible.pk)
+        //collector_store.createClaim(collectible.pk)
+        console.log("sending pk to worker:", collectible.pk)
+        worker.postMessage(collectible.pk)
     }
     collector_store.claim_queue = []
 }
