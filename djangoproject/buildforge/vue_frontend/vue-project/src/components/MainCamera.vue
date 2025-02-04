@@ -25,9 +25,9 @@ const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
 
 onMounted(() => {
-    setInterval(measureCollector, 200)
+    setInterval(measureCollector, 100)
     setInterval(processVisualQueue, 400)
-    setInterval(processClaimQueue, 1000)
+    setInterval(processClaimQueue, 800)
 })
 
 onUnmounted(() => {
@@ -56,8 +56,6 @@ function processVisualQueue() {
             scene_store.remove(obj_3d)
             // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
             collector_store.claim_queue.push(collectible)
-            // rebuild hashmap with latest voxel_list
-            collector_store.rebuildHashMap(voxel_store.voxel_list)
         }
     }
     collector_store.collection_queue = []
@@ -66,7 +64,7 @@ function processVisualQueue() {
 async function processClaimQueue() {
     for (let collectible of collector_store.claim_queue) {
         // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
-        await collector_store.createClaim(collectible.pk)
+        collector_store.createClaim(collectible.pk)
     }
     collector_store.claim_queue = []
 }
