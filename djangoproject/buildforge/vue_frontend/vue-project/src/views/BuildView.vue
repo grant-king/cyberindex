@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useCollectorStore } from '@/stores/collector';
 import { useBuilderStore } from '@/stores/builder';
 import { useVoxelStore } from '@/stores/voxel';
@@ -102,6 +102,24 @@ onMounted(async () => {
     await collector_store.fetchClaims()
     advanceCurrentColor()
     await builder_store.fetchMyBuilder()
+    await redrawSlice()
+    
+})
+
+watch(() => builder_store.my_builder.x, async () => {
+    await redrawSlice()
+})
+watch(() => builder_store.my_builder.y, async () => {
+    await redrawSlice()
+})
+watch(() => builder_store.my_builder.z, async () => {
+    await redrawSlice()
+})
+watch(() => builder_store.my_builder.edit_plane, async () => {
+    await redrawSlice()
+})
+
+async function redrawSlice() {
     current_world_slice_voxels.value = await voxel_store.fetchVoxelsInSlice(
         builder_store.my_builder.x, 
         builder_store.my_builder.y, 
@@ -112,9 +130,8 @@ onMounted(async () => {
     console.log('original', current_world_slice_voxels.value)
     console.log('relative', relative_voxels)
     slot_colors.value = mapSliceVoxelsTo1DGrid(relative_voxels)
-    
 
-})
+}
 
 function paintSlot(slot) {
     slot_colors.value[slot] = current_color.value
