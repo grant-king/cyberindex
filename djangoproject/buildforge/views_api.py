@@ -118,6 +118,43 @@ class VoxelViewSet(viewsets.ModelViewSet):
         serializer = VoxelSerializer(voxels, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=["get"]) # get NxN plane of voxels from an origin a slice plane xy, yz, zx
+    def slice(self, request):
+        x = int(request.query_params.get("x", 0))
+        y = int(request.query_params.get("y", 0))
+        z = int(request.query_params.get("z", 0))
+        plane = request.query_params.get("plane", "xy")
+        square_size = int(request.query_params.get("size", 8))
+
+        half_size = square_size // 2
+
+        if plane == "xy":
+            voxels = Voxel.objects.filter(
+                x__in=range(x, x + square_size),
+                y__in=range(y, y + square_size),
+                z=z,
+            )
+
+        elif plane == "yz":
+            voxels = Voxel.objects.filter(
+                x=x,
+                y__in=range(y, y + square_size),
+                z__in=range(z, z + square_size),
+            )
+
+        elif plane == "zx":
+            voxels = Voxel.objects.filter(
+                x__in=range(x, x + square_size),
+                y=y,
+                z__in=range(z, z + square_size),
+            )
+
+        serializer = VoxelSerializer(voxels, many=True)
+        return Response(serializer.data)
+
+
+
+
 
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
