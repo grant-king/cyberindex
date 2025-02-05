@@ -26,10 +26,11 @@ class PlacementPromise(models.Model):
     # used for visually planning where a voxel will be placed, what's around it
     voxel = models.ForeignKey(Voxel, on_delete=models.CASCADE)
     session_key = models.CharField(max_length=64, db_index=True)
+    # starts relative, then converted to world coordinates using builder location when placed
     x = models.IntegerField()
     y = models.IntegerField()
-    z = models.IntegerField()
-    # if voxel is placed and time has passed, it can be collected
+    z = models.IntegerField(default=0)
+    # if voxel is placed it is in world. If time has passed since claim, it can be collected
     is_placed = models.BooleanField(default=False, db_index=True)
 
     @property
@@ -52,3 +53,4 @@ class Builder(models.Model):
     @property
     def session_id(self):
         return hash(self.session_key)
+
