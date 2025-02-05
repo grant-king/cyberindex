@@ -48,9 +48,9 @@ class Builder(models.Model):
     # will select the current editing plane for the 2d placement promise UI
     # for persisting the user's current location in the world
     session_key = models.CharField(max_length=64, db_index=True)
-    x = models.IntegerField()
-    y = models.IntegerField()
-    z = models.IntegerField()
+    x = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
+    z = models.IntegerField(default=0)
     edit_plane = models.CharField(max_length=2, default="xy")
 
     @property
