@@ -45,18 +45,21 @@
                 <label for="xy"
                 class="mr-2">select xy</label>
                 <input type="radio" id="xy" value="xy" name="plane"
+                v-model="builder_store.my_builder.edit_plane"
                 class="h-8 w-8 rounded-sm"/>
             </div>
             <div class="p-2 flex objects-center">
                 <label for="yz"
                 class="mr-2">select yz</label>
                 <input type="radio" id="yz" value="yz" name="plane"
+                v-model="builder_store.my_builder.edit_plane"
                 class="h-8 w-8 rounded-sm"/>
             </div>
             <div class="p-2 flex objects-center">
                 <label for="zx"
                 class="mr-2">select zx</label>
                 <input type="radio" id="zx" value="zx" name="plane"
+                v-model="builder_store.my_builder.edit_plane"
                 class="h-8 w-8 rounded-sm"/>
             </div>
         </div>
@@ -81,18 +84,33 @@
 import { ref, onMounted } from 'vue';
 import { useCollectorStore } from '@/stores/collector';
 import { useBuilderStore } from '@/stores/builder';
+import { useVoxelStore } from '@/stores/voxel';
 
 const collector_store = useCollectorStore()
 const builder_store = useBuilderStore()
+const voxel_store = useVoxelStore()
 
 const current_color = ref('001100')
 const next_color_idx = ref(0)
+const current_world_slice_voxels = ref({})
+const translated_world_slice_voxels = ref({})
 
 //async onmounted
 onMounted(async () => {
     await collector_store.fetchClaims()
     advanceCurrentColor()
     await builder_store.fetchMyBuilder()
+    current_world_slice_voxels.value = await voxel_store.fetchVoxelsInSlice(
+        builder_store.my_builder.x, 
+        builder_store.my_builder.y, 
+        builder_store.my_builder.z,
+        8,
+        builder_store.my_builder.edit_plane)
+    const relative_voxels = convertSliceWorldCoordsToRelative2D(current_world_slice_voxels.value)
+    console.log('original', current_world_slice_voxels.value)
+    console.log('relative', relative_voxels)
+    
+
 })
 
 const grid_slots = ref(Array.from({ length: 64 }, (_, idx) => idx))
@@ -106,5 +124,26 @@ function paintSlot(slot) {
 function advanceCurrentColor(){
     current_color.value = collector_store.claim_list[next_color_idx.value].voxel.color
     next_color_idx.value = (next_color_idx.value + 1) % collector_store.claim_list.length
+}
+
+function convertSliceWorldCoordsToRelative2D(slice_voxels) {
+    const relative_voxels = slice_voxels.map(voxel => {
+        return {
+            x: voxel.x - builder_store.my_builder.x,
+            y: voxel.y - builder_store.my_builder.y,
+            z: voxel.z - builder_store.my_builder.z,
+            color: voxel.color
+        }
+    })
+    return relative_voxels
+}
+
+function mapSliceVoxelsTo1DGrid(slice_voxels) {
+    const grid = Array.from({ length: 64 }, (_, idx) => '000200')
+    for (let voxel of slice_voxels) {
+        const idx = voxel.x + voxel.y * 8
+        grid[idx] = voxel.color
+    }
+    return grid
 }
 </script>
