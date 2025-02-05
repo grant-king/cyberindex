@@ -124,9 +124,13 @@ class ClaimViewSet(viewsets.ModelViewSet):
     serializer_class = ClaimSerializer
 
     def perform_create(self, serializer):
+        if self.request.session.session_key is None:
+            self.request.session.create()
         serializer.save(session_key=self.request.session.session_key)
 
     def get_queryset(self):
+        if self.request.session.session_key is None:
+            self.request.session.create()
         session_query = Q(session_key=self.request.session.session_key)
         is_holding_query = Q(is_holding=True)
         return super().get_queryset().filter(session_query & is_holding_query)
@@ -156,8 +160,9 @@ class BuilderViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"])
     def my_builder(self, request):
-        builder = Builder.objects.filter(session_key=self.request.session.session_key)
-        serializer = BuilderSerializer(builder, many=True)
+        builder, created = Builder.objects.get_or_create(
+                session_key=self.request.session.session_key)
+        serializer = BuilderSerializer(builder, many=False)
         return Response(serializer.data)
 
 
