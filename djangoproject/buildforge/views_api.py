@@ -119,6 +119,11 @@ class ClaimViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(session_key=self.request.session.session_key)
 
+    def get_queryset(self):
+        session_query = Q(session_key=self.request.session.session_key)
+        is_holding_query = Q(is_holding=True)
+        return super().get_queryset().filter(session_query & is_holding_query)
+
     @action(detail=False, methods=["get"])
     def clear_all(self, request):
         Claim.objects.all().delete()
