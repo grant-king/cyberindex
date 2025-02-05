@@ -23,17 +23,20 @@
             <div class="p-2">
                 <label for="x"
                 class="mr-2">set x</label>
-                <input type="number" id="x" class="bg-white/50 h-8 w-16 rounded-sm"/>
+                <input type="number" id="x" class="bg-white/50 h-8 w-16 rounded-sm"
+                v-model="builder_store.my_builder.x"/>
             </div>
             <div class="p-2">
                 <label for="y"
                 class="mr-2">set y</label>
-                <input type="number" id="y" class="bg-white/50 h-8 w-16 rounded-sm"/>
+                <input type="number" id="y" class="bg-white/50 h-8 w-16 rounded-sm"
+                v-model="builder_store.my_builder.y"/>
             </div>
             <div class="p-2">
                 <label for="z"
                 class="mr-2">set z</label>
-                <input type="number" id="z" class="bg-white/50 h-8 w-16 rounded-sm"/>
+                <input type="number" id="z" class="bg-white/50 h-8 w-16 rounded-sm"
+                v-model="builder_store.my_builder.z"/>
             </div>
         </div>
         <div class="p-4 text-white">
@@ -77,9 +80,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useCollectorStore } from '@/stores/collector';
+import { useBuilderStore } from '@/stores/builder';
 
 const collector_store = useCollectorStore()
-collector_store.fetchClaims()
+const builder_store = useBuilderStore()
 
 const current_color = ref('001100')
 const next_color_idx = ref(0)
@@ -88,6 +92,7 @@ const next_color_idx = ref(0)
 onMounted(async () => {
     await collector_store.fetchClaims()
     advanceCurrentColor()
+    await builder_store.fetchMyBuilder()
 })
 
 const grid_slots = ref(Array.from({ length: 64 }, (_, idx) => idx))
