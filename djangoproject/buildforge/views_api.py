@@ -12,6 +12,7 @@ from buildforge.models import Voxel, Claim, PlacementPromise, Builder
 from buildforge.serializers import (
     VoxelSerializer,
     ClaimSerializer,
+    ClaimReadSerializer,
     PlacementPromiseSerializer,
     BuilderSerializer,
 )
@@ -21,6 +22,12 @@ class LargeResultsSetPagination(PageNumberPagination):
     page_size = 30000
     page_size_query_param = "page_size"
     max_page_size = 60000
+
+
+class HeftyResultsSetPagination(PageNumberPagination):
+    page_size = 600
+    page_size_query_param = "page_size"
+    max_page_size = 3000
 
 
 class VoxelViewSet(viewsets.ModelViewSet):
@@ -126,8 +133,18 @@ class ClaimViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"])
     def clear_all(self, request):
-        Claim.objects.all().delete()
+        Claim.objects.filter(session_key=self.request.session.session_key).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=["get"], pagination_class=HeftyResultsSetPagination)
+    def my_claims(self, request):
+        claims = self.get_queryset()
+        page = self.paginate_queryset(claims)
+        if page is not None:
+            serializer = ClaimReadSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = ClaimReadSerializer(claims, many=True)
+        return Response(serializer.data)
 
 
 class BuilderViewSet(viewsets.ModelViewSet):
@@ -152,4 +169,6 @@ class PlacementPromiseViewSet(viewsets.ModelViewSet):
         serializer.save(session_key=self.request.session.session_key)
 
     def get_queryset(self):
-        return super().get_queryset().filter(session_key=self.request.session.session_key)
+        return (
+            super().get_queryset().filter(session_key=self.request.session.session_key)
+        )
