@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Voxel(models.Model):
-    color = models.CharField(max_length=6)
+    color = models.CharField(max_length=6, blank=True)
     x = models.IntegerField(db_index=True)
     y = models.IntegerField(db_index=True)
     z = models.IntegerField(db_index=True)
