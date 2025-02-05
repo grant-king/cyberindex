@@ -7,6 +7,7 @@ export const useCollectorStore = defineStore('collector', () => {
     const collectibles_hash_map = ref({}) // { 'locationhash': collectible_obj.url }
     const base_url = window.location.origin
     const claims_endpoint = `${base_url}/apiv1/claims/`
+    const my_claims_endpoint = `${claims_endpoint}my_claims/`
     const claim_list = ref([])
 
     // set interval to check for recent claims from other players in this region, use these to update visual state
@@ -76,7 +77,7 @@ export const useCollectorStore = defineStore('collector', () => {
     }
 
     async function fetchClaims() {
-        const response = await fetch(claims_endpoint, {
+        const response = await fetch(my_claims_endpoint, {
             method: 'GET',
             headers: {
                 'X-CSRFToken': window.csrf_token,
@@ -94,6 +95,7 @@ export const useCollectorStore = defineStore('collector', () => {
 
     return { 
         fetchClaims, createClaim, buildHashMap, rebuildHashMap, 
-        getCollectiblesInRegion, collection_queue, claim_queue 
+        getCollectiblesInRegion, collection_queue, claim_queue,
+        claim_list
     }
 })
