@@ -125,28 +125,32 @@ class VoxelViewSet(viewsets.ModelViewSet):
         z = int(request.query_params.get("z", 0))
         plane = request.query_params.get("plane", "xy")
         square_size = int(request.query_params.get("size", 8))
-
-        half_size = square_size // 2
+        unclaimed_query = Q(claim__isnull=True)
+        holding_query = Q(claim__is_holding=False)
 
         if plane == "xy":
+            x_query = Q(x__in=range(x, x + square_size))
+            y_query = Q(y__in=range(y, y + square_size))
             voxels = Voxel.objects.filter(
-                x__in=range(x, x + square_size),
-                y__in=range(y, y + square_size),
+                x_query & y_query & (unclaimed_query | holding_query),
                 z=z,
             )
 
         elif plane == "yz":
+            y_query = Q(y__in=range(y, y + square_size))
+            z_query = Q(z__in=range(z, z + square_size))
             voxels = Voxel.objects.filter(
+                y_query & z_query & (unclaimed_query | holding_query),
                 x=x,
-                y__in=range(y, y + square_size),
-                z__in=range(z, z + square_size),
             )
+            
 
         elif plane == "zx":
+            z_query = Q(z__in=range(z, z + square_size))
+            x_query = Q(x__in=range(x, x + square_size))
             voxels = Voxel.objects.filter(
-                x__in=range(x, x + square_size),
+                z_query & x_query & (unclaimed_query | holding_query),
                 y=y,
-                z__in=range(z, z + square_size),
             )
 
         serializer = VoxelSerializer(voxels, many=True)
