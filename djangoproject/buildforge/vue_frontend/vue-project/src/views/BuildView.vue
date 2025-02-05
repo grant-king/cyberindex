@@ -112,12 +112,15 @@ watch(() => builder_store.my_builder.x, async () => {
 })
 watch(() => builder_store.my_builder.y, async () => {
     await redrawSlice()
+    await builder_store.updateBuilder()
 })
 watch(() => builder_store.my_builder.z, async () => {
     await redrawSlice()
+    await builder_store.updateBuilder()
 })
 watch(() => builder_store.my_builder.edit_plane, async () => {
     await redrawSlice()
+    await builder_store.updateBuilder()
 })
 
 async function redrawSlice() {
