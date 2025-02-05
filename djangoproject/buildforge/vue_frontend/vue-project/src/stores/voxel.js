@@ -9,6 +9,8 @@ export const useVoxelStore = defineStore('voxel', () => {
   const base_url = window.location.origin
   const endpoint = `${base_url}/apiv1/voxels/`
   const next_page = ref(`${endpoint}?page=1`)
+  const slice_endpoint = `${endpoint}slice/`
+  const slice_cache = {}
 
   async function drawVoxels() {
     for (const voxel of voxel_list.value) {
@@ -73,7 +75,38 @@ export const useVoxelStore = defineStore('voxel', () => {
     }
   }
 
+  async function fetchVoxelsInSlice(x, y, z, size = 8, plane = 'xy') {
+    if (slice_cache[`${x},${y},${z},${size},${plane}`] !== undefined) {
+      console.log('slice cache hit')
+      return slice_cache[`${x},${y},${z},${size},${plane}`]
+    }
+    const query_params = new URLSearchParams({
+      x: x,
+      y: y,
+      z: z,
+      size: size,
+      plane: plane,
+    })
+    const response = await fetch(`${slice_endpoint}?${query_params}`, {
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': window.csrf_token,
+      },
+    })
+    if (response.ok) {
+      const data = await response.json()
+      console.log('slice', data)
+      slice_cache[`${x},${y},${z},${size},${plane}`] = data
+      return data
+    } else {
+      console.error('failed to fetch slice')
+      console.error(response)
+    }
+
+  }
 
 
-  return { voxel_mesh_list, pullVoxelMesh, voxel_list, drawVoxels, fetchVoxels }
+
+
+  return { voxel_mesh_list, pullVoxelMesh, voxel_list, drawVoxels, fetchVoxels, fetchVoxelsInSlice }
 })
