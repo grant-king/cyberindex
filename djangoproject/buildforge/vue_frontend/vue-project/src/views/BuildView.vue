@@ -108,6 +108,7 @@ onMounted(async () => {
 
 watch(() => builder_store.my_builder.x, async () => {
     await redrawSlice()
+    await builder_store.updateBuilder()
 })
 watch(() => builder_store.my_builder.y, async () => {
     await redrawSlice()
