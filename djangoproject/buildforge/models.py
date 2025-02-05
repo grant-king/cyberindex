@@ -19,6 +19,9 @@ class Claim(models.Model):
     @property
     def session_id(self):
         return hash(self.session_key)
+    
+    class Meta:
+        ordering = ["-timestamp"]
 
 
 class PlacementPromise(models.Model):
@@ -48,7 +51,7 @@ class Builder(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
-    edit_plane = models.CharField(max_length=1, default="x")
+    edit_plane = models.CharField(max_length=2, default="xy")
 
     @property
     def session_id(self):
