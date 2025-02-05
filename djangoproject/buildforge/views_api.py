@@ -63,9 +63,7 @@ class VoxelViewSet(viewsets.ModelViewSet):
                     )
         return Response(status=status.HTTP_201_CREATED)
 
-    @action(
-        detail=False, methods=["get"]
-    )  # build a hollow cube of voxels from walls of 32 square
+    @action(detail=False, methods=["get"])  # build a hollow cube of voxels
     def cube(self, request):
         for x in range(-32, 32):
             for y in range(-32, 32):
@@ -82,6 +80,36 @@ class VoxelViewSet(viewsets.ModelViewSet):
                         # Voxel.objects.create(x=x, y=y, z=z, color=random_color)
         return Response(status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=["get"])  # build a hollow sphere of voxels
+    def sphere(self, request):
+        for x in range(-8, 8):
+            for y in range(-8, 8):
+                for z in range(-8, 8):
+                    if x ** 2 + y ** 2 + z ** 2 < 8 ** 2:
+                        #make hollow
+                        if x ** 2 + y ** 2 + z ** 2 > 6 ** 2:
+                            random_color = "%06x" % random.randint(0, 0xFFFFFF)
+                            #Voxel.objects.create(x=x, y=y, z=z, color=random_color)
+        return Response(status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=["get"])  # get narest 256 voxels to a point
+    def nearest(self, request):
+        x = int(request.query_params.get("x", 0))
+        y = int(request.query_params.get("y", 0))
+        z = int(request.query_params.get("z", 0))
+        voxel_coord_list = []
+        # build list of coords for nearest 256 voxels
+        for x_friend in range(x-8, x+8):
+            for y_friend in range(y-8, y+8):
+                for z_friend in range(z-8, z+8):
+                    voxel_coord_list.append((x_friend, y_friend, z_friend))
+        voxels = Voxel.objects.filter(
+            x__in=[x for x, y, z in voxel_coord_list],
+            y__in=[y for x, y, z in voxel_coord_list],
+            z__in=[z for x, y, z in voxel_coord_list],
+        )
+        serializer = VoxelSerializer(voxels, many=True)
+        return Response(serializer.data)
 
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
@@ -94,3 +122,10 @@ class ClaimViewSet(viewsets.ModelViewSet):
     def clear_all(self, request):
         Claim.objects.all().delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class BuilderViewSet(viewsets.ModelViewSet):
+    queryset = Builder.objects.all()
+    serializer_class = BuilderSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(session_key=self.request.session.session_key)
