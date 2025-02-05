@@ -35,5 +35,28 @@ export const useBuilderStore = defineStore('builder', () => {
     }
   }
 
-  return { fetchMyBuilder, my_builder }
+  async function updateBuilder() {
+    const form_data = new FormData()
+    form_data.append('x', my_builder.value.x)
+    form_data.append('y', my_builder.value.y)
+    form_data.append('z', my_builder.value.z)
+    form_data.append('edit_plane', my_builder.value.edit_plane)
+    const response = await fetch(my_builder_endpoint, {
+      method: 'PUT',
+      headers: {
+        'X-CSRFToken': window.csrf_token,
+      },
+      body: form_data,
+    })
+    const data = await response.json()
+    if (response.ok) {
+      console.log('updated builder', data)
+      my_builder.value = data
+    } else {
+      console.error('failed to update builder')
+      console.error(response)
+    }
+  }
+
+  return { fetchMyBuilder, my_builder, updateBuilder }
 })
