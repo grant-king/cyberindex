@@ -134,17 +134,32 @@ async function redrawSlice() {
     console.log('original', current_world_slice_voxels.value)
     console.log('relative', relative_voxels)
     slot_colors.value = mapSliceVoxelsTo1DGrid(relative_voxels)
-
 }
 
 function paintSlot(slot) {
     slot_colors.value[slot] = current_color.value
+    const claim = collector_store.claim_list.shift()
+    voxel_store.placeVoxel(
+        claim.voxel.pk,
+        builder_store.my_builder.x + 0,
+        builder_store.my_builder.y + 0,
+        builder_store.my_builder.z + 0,
+        claim.voxel.color
+    )
+    collector_store.unholdClaim(claim.pk, claim.voxel.pk)
     advanceCurrentColor()
 }
 
 function advanceCurrentColor(){
-    current_color.value = collector_store.claim_list[next_color_idx.value].voxel.color
-    next_color_idx.value = (next_color_idx.value + 1) % collector_store.claim_list.length
+    if(collector_store.claim_list.length === 0){
+        collector_store.fetchClaims()
+    }
+    if(collector_store.claim_list.length > 0){
+        current_color.value = collector_store.claim_list[0].voxel.color
+    }
+    else{
+        current_color.value = '000200'
+    }
 }
 
 function convertSliceWorldCoordsToRelative2D(slice_voxels) {
