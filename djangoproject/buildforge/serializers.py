@@ -13,7 +13,7 @@ class ClaimSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Claim
-        fields = ["voxel", "session_id", "timestamp", "is_holding"]
+        fields = ["pk", "voxel", "session_id", "timestamp", "is_holding"]
 
 
 class ClaimReadSerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class ClaimReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Claim
-        fields = ["voxel", "session_id", "timestamp", "is_holding"]
+        fields = ["pk", "voxel", "session_id", "timestamp", "is_holding"]
 
 
 class PlacementPromiseSerializer(serializers.ModelSerializer):
