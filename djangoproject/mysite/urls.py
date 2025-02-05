@@ -46,7 +46,7 @@ router.register(r'avatars', rebirth_views.AvatarViewSet, basename='avatar')
 router.register(r'voxels', buildforge_views.VoxelViewSet)
 router.register(r'claims', buildforge_views.ClaimViewSet)
 router.register(r'builders', buildforge_views.BuilderViewSet)
-router.register(r'placementpromises', buildforge_views.PlacementPromiseViewSet)
+router.register(r'placements', buildforge_views.PlacementPromiseViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
