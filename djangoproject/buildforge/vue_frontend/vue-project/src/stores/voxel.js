@@ -105,8 +105,42 @@ export const useVoxelStore = defineStore('voxel', () => {
 
   }
 
+  async function placeVoxel(voxel_pk, x, y, z, color){
+    await updateVoxel(voxel_pk, x, y, z, color)
+  }
+
+  async function updateVoxel(voxel_pk, x, y, z, color) {
+    const form_data = new FormData()
+    form_data.append('voxel', voxel_pk)
+    form_data.append('x', x)
+    form_data.append('y', y)
+    form_data.append('z', z)
+    form_data.append('color', color)
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': window.csrf_token,
+      },
+      body: form_data,
+    })
+    const data = await response.json()
+    if (response.ok) {
+      console.log('placed voxel', data)
+      voxel_list.value.push(data)
+      drawVoxel(data.x, data.y, data.z, `#${data.color}`)
+      return data
+    } else {
+      console.error('failed to place voxel')
+      console.error(response)
+    }
+  }
 
 
 
-  return { voxel_mesh_list, pullVoxelMesh, voxel_list, drawVoxels, fetchVoxels, fetchVoxelsInSlice }
+
+  return { 
+    voxel_mesh_list, pullVoxelMesh, voxel_list, 
+    drawVoxels, fetchVoxels, fetchVoxelsInSlice,
+    placeVoxel 
+  }
 })
