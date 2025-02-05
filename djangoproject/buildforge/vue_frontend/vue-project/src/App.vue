@@ -4,10 +4,9 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <div>
-    <RouterLink to="/">Main Menu</RouterLink>
-  </div>
-  <div>
-    <RouterLink to="/game">Game</RouterLink>
+    <RouterLink to="/">::Main Menu::</RouterLink>
+    <RouterLink to="/game">::Game::</RouterLink>
+    <RouterLink to="/build">::Build::</RouterLink>
   </div>
   <div>
     <RouterView />
