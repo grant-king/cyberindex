@@ -14,6 +14,23 @@
             </div>
         </div>
     </div>
+    <!-- Builder Navigator -->
+    <div></div>
+    <div></div>
+    <div class="flex flex-wrap justify-center object-center">
+        <div class="p-4 text-white">
+            <div>set builder origin</div>
+            <div>set x</div>
+            <div>set y</div>
+            <div>set z</div>
+        </div>
+        <div class="p-4 text-white">
+            <div>set build plane</div>
+            <div>set xy</div>
+            <div>set yz</div>
+            <div>set zx</div>
+        </div>
+    </div>
     <!-- Paint Stack -->
     <div class="mx-auto">
         <div class="flex-wrap flex p-4">
