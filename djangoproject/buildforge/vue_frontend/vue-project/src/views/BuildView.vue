@@ -20,15 +20,42 @@
     <div class="flex flex-wrap justify-center object-center">
         <div class="p-4 text-white">
             <div>set builder origin</div>
-            <div>set x</div>
-            <div>set y</div>
-            <div>set z</div>
+            <div class="p-2">
+                <label for="x"
+                class="mr-2">set x</label>
+                <input type="number" id="x" class="bg-white/50 h-8 w-16 rounded-sm"/>
+            </div>
+            <div class="p-2">
+                <label for="y"
+                class="mr-2">set y</label>
+                <input type="number" id="y" class="bg-white/50 h-8 w-16 rounded-sm"/>
+            </div>
+            <div class="p-2">
+                <label for="z"
+                class="mr-2">set z</label>
+                <input type="number" id="z" class="bg-white/50 h-8 w-16 rounded-sm"/>
+            </div>
         </div>
         <div class="p-4 text-white">
             <div>set build plane</div>
-            <div>set xy</div>
-            <div>set yz</div>
-            <div>set zx</div>
+            <div class="p-2 flex objects-center">
+                <label for="xy"
+                class="mr-2">select xy</label>
+                <input type="radio" id="xy" value="xy" name="plane"
+                class="h-8 w-8 rounded-sm"/>
+            </div>
+            <div class="p-2 flex objects-center">
+                <label for="yz"
+                class="mr-2">select yz</label>
+                <input type="radio" id="yz" value="yz" name="plane"
+                class="h-8 w-8 rounded-sm"/>
+            </div>
+            <div class="p-2 flex objects-center">
+                <label for="zx"
+                class="mr-2">select zx</label>
+                <input type="radio" id="zx" value="zx" name="plane"
+                class="h-8 w-8 rounded-sm"/>
+            </div>
         </div>
     </div>
     <!-- Paint Stack -->
