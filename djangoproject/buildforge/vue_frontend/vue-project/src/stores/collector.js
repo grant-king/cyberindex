@@ -93,9 +93,29 @@ export const useCollectorStore = defineStore('collector', () => {
         }
     }
 
+    async function unholdClaim(claim_pk, voxel_pk) {
+        const form_data = new FormData()
+        form_data.append('is_holding', false)
+        form_data.append('voxel', Number(voxel_pk))
+        const response = await fetch(`${claims_endpoint}${claim_pk}/`, {
+            method: 'PUT',
+            headers: {
+                'X-CSRFToken': window.csrf_token,
+            },
+            body: form_data,
+        })
+        const data = await response.json()
+        if (response.ok) {
+            console.log('unheld claim', data)
+        } else {
+            console.error('failed to unhold claim')
+            console.error(response)
+        }
+    }
+
     return { 
         fetchClaims, createClaim, buildHashMap, rebuildHashMap, 
         getCollectiblesInRegion, collection_queue, claim_queue,
-        claim_list
+        claim_list, unholdClaim
     }
 })
