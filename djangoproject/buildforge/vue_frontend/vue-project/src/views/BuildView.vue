@@ -139,15 +139,40 @@ async function redrawSlice() {
 function paintSlot(slot) {
     slot_colors.value[slot] = current_color.value
     const claim = collector_store.claim_list.shift()
+    const { off_x, off_y, off_z } = slotIdxToWorldCoords(slot)
+    console.log(off_x, off_y, off_z)
     voxel_store.placeVoxel(
         claim.voxel.pk,
-        builder_store.my_builder.x + 0,
-        builder_store.my_builder.y + 0,
-        builder_store.my_builder.z + 0,
+        builder_store.my_builder.x + off_x,
+        builder_store.my_builder.y + off_y,
+        builder_store.my_builder.z + off_z,
         claim.voxel.color
     )
     collector_store.unholdClaim(claim.pk, claim.voxel.pk)
     advanceCurrentColor()
+}
+
+function slotIdxToWorldCoords(idx) {
+    if (builder_store.my_builder.edit_plane === 'xy') {
+        const x = idx % 8
+        const y = Math.floor(idx / 8)
+        const z = 0
+        console.log(x, y, z)
+        return { off_x: x, off_y: y, off_z: z }
+    }
+    if (builder_store.my_builder.edit_plane === 'yz') {
+        const x = 0
+        const y = idx % 8
+        const z = Math.floor(idx / 8)
+        return { off_x: x, off_y: y, off_z: z }
+    }
+    if (builder_store.my_builder.edit_plane === 'zx') {
+        const x = Math.floor(idx / 8)
+        const y = 0
+        const z = idx % 8
+        return { off_x: x, off_y: y, off_z: z }
+    }
+    
 }
 
 function advanceCurrentColor(){
