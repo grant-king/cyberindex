@@ -95,7 +95,9 @@ const next_color_idx = ref(0)
 const current_world_slice_voxels = ref({})
 const translated_world_slice_voxels = ref({})
 
-//async onmounted
+const grid_slots = ref(Array.from({ length: 64 }, (_, idx) => idx))
+const slot_colors = ref(Array.from({ length: 64 }, (_, idx) => '000200'))
+
 onMounted(async () => {
     await collector_store.fetchClaims()
     advanceCurrentColor()
@@ -109,12 +111,10 @@ onMounted(async () => {
     const relative_voxels = convertSliceWorldCoordsToRelative2D(current_world_slice_voxels.value)
     console.log('original', current_world_slice_voxels.value)
     console.log('relative', relative_voxels)
+    slot_colors.value = mapSliceVoxelsTo1DGrid(relative_voxels)
     
 
 })
-
-const grid_slots = ref(Array.from({ length: 64 }, (_, idx) => idx))
-const slot_colors = ref(Array.from({ length: 64 }, (_, idx) => '000200'))
 
 function paintSlot(slot) {
     slot_colors.value[slot] = current_color.value
@@ -141,8 +141,18 @@ function convertSliceWorldCoordsToRelative2D(slice_voxels) {
 function mapSliceVoxelsTo1DGrid(slice_voxels) {
     const grid = Array.from({ length: 64 }, (_, idx) => '000200')
     for (let voxel of slice_voxels) {
-        const idx = voxel.x + voxel.y * 8
-        grid[idx] = voxel.color
+        if(builder_store.my_builder.edit_plane === 'xy'){
+            const idx = voxel.x + voxel.y * 8
+            grid[idx] = voxel.color
+        }
+        if(builder_store.my_builder.edit_plane === 'yz'){
+            const idx = voxel.y + voxel.z * 8
+            grid[idx] = voxel.color
+        }
+        if(builder_store.my_builder.edit_plane === 'zx'){
+            const idx = voxel.z + voxel.x * 8
+            grid[idx] = voxel.color
+        }
     }
     return grid
 }
