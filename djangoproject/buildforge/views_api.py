@@ -157,9 +157,6 @@ class VoxelViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-
-
-
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
@@ -199,12 +196,20 @@ class BuilderViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(session_key=self.request.session.session_key)
 
-    @action(detail=False, methods=["get"])
+    @action(detail=False, methods=["get", "put"])
     def my_builder(self, request):
-        builder, created = Builder.objects.get_or_create(
-                session_key=self.request.session.session_key)
-        serializer = BuilderSerializer(builder, many=False)
-        return Response(serializer.data)
+        if request.method == "GET":
+            builder, created = Builder.objects.get_or_create(
+                    session_key=self.request.session.session_key)
+            serializer = BuilderSerializer(builder, many=False)
+            return Response(serializer.data)
+        elif request.method == "PUT":
+            builder = Builder.objects.get(session_key=self.request.session.session_key)
+            serializer = BuilderSerializer(builder, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PlacementPromiseViewSet(viewsets.ModelViewSet):
