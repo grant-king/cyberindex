@@ -7,6 +7,7 @@ export const useCollectorStore = defineStore('collector', () => {
     const collectibles_hash_map = ref({}) // { 'locationhash': collectible_obj.url }
     const base_url = window.location.origin
     const claims_endpoint = `${base_url}/apiv1/claims/`
+    const claim_list = ref([])
 
     // set interval to check for recent claims from other players in this region, use these to update visual state
     // somewhere set interval to get newly placed voxels in this region, use these to update visual state
@@ -52,6 +53,8 @@ export const useCollectorStore = defineStore('collector', () => {
         }
     }
 
+    // there is a version of this in a worker for using in the game view
+    // this one could be used for simplified 2D CSS world slice map view
     async function createClaim(voxel_pk) {
         const form_data = new FormData()
         form_data.append('voxel', voxel_pk)
@@ -72,5 +75,25 @@ export const useCollectorStore = defineStore('collector', () => {
         }
     }
 
-    return { createClaim, buildHashMap, rebuildHashMap, getCollectiblesInRegion, collection_queue, claim_queue }
+    async function fetchClaims() {
+        const response = await fetch(claims_endpoint, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': window.csrf_token,
+            },
+        })
+        const data = await response.json()
+        if (response.ok) {
+            console.log('claims', data)
+            claim_list.value = data.results
+        } else {
+            console.error('failed to fetch claims')
+            console.error(response)
+        }
+    }
+
+    return { 
+        fetchClaims, createClaim, buildHashMap, rebuildHashMap, 
+        getCollectiblesInRegion, collection_queue, claim_queue 
+    }
 })
