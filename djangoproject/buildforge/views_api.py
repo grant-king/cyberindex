@@ -171,13 +171,11 @@ class VoxelViewSet(viewsets.ModelViewSet):
         except Voxel.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
-        voxel.x = x
-        voxel.y = y
-        voxel.z = z
-        voxel.save()
-        _ = voxel.check_claim_pending
-        serializer = VoxelSerializer(voxel, many=False)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = VoxelSerializer(voxel, data={"x": x, "y": y, "z": z}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            _ = voxel.check_claim_pending
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
@@ -188,6 +186,8 @@ class ClaimViewSet(viewsets.ModelViewSet):
             self.request.session.create()
         serializer.save(session_key=self.request.session.session_key)
         _ = serializer.instance.voxel.check_claim_pending
+        return super().perform_create(serializer)
+
 
     def perform_update(self, serializer):
         # check claim is by this session
@@ -195,6 +195,7 @@ class ClaimViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_403_FORBIDDEN)
         serializer.save()
         _ = serializer.instance.voxel.check_claim_pending
+        return super().perform_update(serializer)
 
     def get_queryset(self):
         if self.request.session.session_key is None:
