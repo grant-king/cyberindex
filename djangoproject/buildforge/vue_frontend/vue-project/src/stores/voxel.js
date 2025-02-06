@@ -141,10 +141,15 @@ export const useVoxelStore = defineStore('voxel', () => {
     const nearest = await fetchNearest(Math.floor(x), Math.floor(y), Math.floor(z))
     for (const voxel of nearest) {
       const index = voxel_list.value.findIndex(v => v.pk === voxel.pk)
-      if (index === -1) {
+      if (index > -1) {
         voxel_list.value.push(voxel)
         const old_mesh = pullVoxelMesh(voxel.pk)
         scene_store.remove(old_mesh)
+        const new_mesh = drawVoxel(voxel.x, voxel.y, voxel.z, `#${voxel.color}`)
+        scene_store.add(new_mesh)
+      }
+      else {
+        voxel_list.value.push(voxel)
         const new_mesh = drawVoxel(voxel.x, voxel.y, voxel.z, `#${voxel.color}`)
         scene_store.add(new_mesh)
       }
