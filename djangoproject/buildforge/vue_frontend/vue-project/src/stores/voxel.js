@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import * as THREE from 'three'
 import alphaMapUrl from '@/assets/alpha_map.png'
+import { useSceneStore } from './scene'
 
 export const useVoxelStore = defineStore('voxel', () => {
   const voxel_list = ref([])
@@ -134,12 +135,50 @@ export const useVoxelStore = defineStore('voxel', () => {
     }
   }
 
+  async function updateNearest(x, y, z) {
+    // use location to fetch group of nearest voxels, then update the voxel list and mesh list
+    const scene_store = useSceneStore()
+    const nearest = await fetchNearest(Math.floor(x), Math.floor(y), Math.floor(z))
+    for (const voxel of nearest) {
+      const index = voxel_list.value.findIndex(v => v.pk === voxel.pk)
+      if (index === -1) {
+        voxel_list.value.push(voxel)
+        const old_mesh = pullVoxelMesh(voxel.pk)
+        scene_store.remove(old_mesh)
+        const new_mesh = drawVoxel(voxel.x, voxel.y, voxel.z, `#${voxel.color}`)
+        scene_store.add(new_mesh)
+      }
+    }
+  }
+
+  async function fetchNearest(x, y, z) {
+    const query_params = new URLSearchParams({
+      x: x,
+      y: y,
+      z: z,
+    })
+    const response = await fetch(`${endpoint}nearest/?${query_params}`, {
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': window.csrf_token,
+      },
+    })
+    if (response.ok) {
+      const data = await response.json()
+      console.log('nearest', data)
+      return data
+    } else {
+      console.error('failed to fetch nearest')
+      console.error(response)
+    }
+  }
+
 
 
 
   return { 
     voxel_mesh_list, pullVoxelMesh, voxel_list, 
     drawVoxels, fetchVoxels, fetchVoxelsInSlice,
-    placeVoxel 
+    placeVoxel, updateNearest
   }
 })
