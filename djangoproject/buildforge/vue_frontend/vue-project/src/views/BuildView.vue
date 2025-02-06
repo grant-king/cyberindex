@@ -136,19 +136,18 @@ async function redrawSlice() {
     slot_colors.value = mapSliceVoxelsTo1DGrid(relative_voxels)
 }
 
-function paintSlot(slot) {
+async function paintSlot(slot) {
     slot_colors.value[slot] = current_color.value
     const claim = collector_store.claim_list.shift()
     const { off_x, off_y, off_z } = slotIdxToWorldCoords(slot)
     console.log(off_x, off_y, off_z)
-    voxel_store.placeVoxel(
+    await voxel_store.placeVoxel(
         claim.voxel.pk,
         builder_store.my_builder.x + off_x,
         builder_store.my_builder.y + off_y,
         builder_store.my_builder.z + off_z,
-        claim.voxel.color
     )
-    collector_store.unholdClaim(claim.pk, claim.voxel.pk)
+    await collector_store.unholdClaim(claim.pk, claim.voxel.pk)
     advanceCurrentColor()
 }
 
