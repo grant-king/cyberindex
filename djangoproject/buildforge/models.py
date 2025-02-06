@@ -6,6 +6,14 @@ class Voxel(models.Model):
     x = models.IntegerField(db_index=True)
     y = models.IntegerField(db_index=True)
     z = models.IntegerField(db_index=True)
+    claim_pending = models.BooleanField(default=False, db_index=True)
+
+    @property
+    def check_claim_pending(self):
+        self.claim_pending = Claim.objects.filter(voxel=self, is_holding=True).exists()
+        self.save()
+        return self.claim_pending
+        
 
 
 class Claim(models.Model):
