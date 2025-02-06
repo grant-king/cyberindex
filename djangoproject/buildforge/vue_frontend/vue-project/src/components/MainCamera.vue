@@ -26,6 +26,7 @@ const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
 const claim_worker = new Worker(new URL('@/workers/claim-processor.js', import.meta.url))
+const zone_worker = new Worker(new URL('@/workers/zone-refresh-processor.js', import.meta.url))
 
 claim_worker.onmessage = (e) => {
     console.log(e.data)
@@ -37,19 +38,21 @@ onMounted(() => {
     measure_interval_id = setInterval(measureCollector, 200)
     visual_interval_id = setInterval(processVisualQueue, 400)
     claim_interval_id = setInterval(processClaimQueue, 800)
-    update_nearest_interval_id = setInterval(() => {
-        voxel_store.updateNearest(
-            camera_store.camera.position.x,
-            camera_store.camera.position.y,
-            camera_store.camera.position.z
-        )
-    }, 2000)
+    //update_nearest_interval_id = setInterval(() => {
+    //    voxel_store.updateNearest(
+    //        camera_store.camera.position.x,
+    //        camera_store.camera.position.y,
+    //        camera_store.camera.position.z
+    //    )
+    //}, 2000)
+    update_nearest_interval_id = setInterval(processZoneRefresh, 2000)
 })
 
 onUnmounted(() => {
     clearInterval(measure_interval_id)
     clearInterval(visual_interval_id)
     clearInterval(claim_interval_id)
+    clearInterval(update_nearest_interval_id)
 })
 
 function measureCollector() {
@@ -91,6 +94,24 @@ async function processClaimQueue() {
         claim_worker.postMessage(wkr_message)
     }
     collector_store.claim_queue = []
+}
+
+async function processZoneRefresh() {
+    const x = camera_store.camera.position.x
+    const y = camera_store.camera.position.y
+    const z = camera_store.camera.position.z
+    const endpoint = '/apiv1/voxels/'
+    const token = window.csrf_token
+    const voxel_list = JSON.parse(JSON.stringify(voxel_store.voxel_list))
+    const mesh_list = JSON.parse(JSON.stringify(voxel_store.voxel_mesh_list))
+    //const wkr_message = {x, y, z, endpoint, token, voxel_list, mesh_list}
+    const wkr_message = [x, y, z, endpoint, token, voxel_list, mesh_list]
+    console.log("sending zone refresh to zone_worker:", wkr_message)
+    zone_worker.postMessage(wkr_message)
+    // on message from worker, update voxel_list and mesh_list
+    zone_worker.onmessage = (e) => {
+        console.log("zone_worker message:", e.data)
+    }
 }
 
 </script>
