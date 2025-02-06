@@ -40,7 +40,7 @@ class VoxelViewSet(viewsets.ModelViewSet):
         # filter by objects with claim = None
         # or with claim and is_holding = False
 
-        return Voxel.objects.filter(Q(claim__isnull=True) | Q(claim__is_holding=False))
+        return Voxel.objects.filter(Q(claim__isnull=True) | Q(claim__is_holding=False)).distinct()
 
     @action(detail=False, methods=["get"])  # clear all
     def clear_all(self, request):
@@ -156,6 +156,10 @@ class VoxelViewSet(viewsets.ModelViewSet):
         serializer = VoxelSerializer(voxels, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=["get"])  # delete all voxels that do not have a color
+    def clear_uncolored(self, request):
+        Voxel.objects.filter(color="").delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
