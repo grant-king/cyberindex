@@ -1,15 +1,23 @@
 onmessage = (event) => {
     const message = e.data;
-    const result = processClaim();
+    const result = processClaim(message);
     postMessage(result);
 };
 
-async function refreshZone() {
+async function refreshZone(data) {
     // (will need working copies of voxel_list and mesh_list, will return those as well as scene_add and scene_remove lists)
     // await fetch nearest
+    const nearest_list = await fetchNearest(Math.floor(data.x), Math.floor(data.y), Math.floor(data.z), data.endpoint)
+    console.log('nearest_list', nearest_list)
 
     // determine a list of indicies to find each (already-rendered) world voxel pk in the voxel store voxel_list
     // list should be length of response.data, containing corresponding index or -1 if the voxel is new
+    let index_list = []
+    for (const voxel of nearest_list) {
+        const index = data.voxel_list.findIndex(v => v.pk === voxel.pk)
+        index_list.push(index)
+    }
+    console.log('index_list', index_list)
 
     // process index list
     // for each index 
