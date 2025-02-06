@@ -111,6 +111,7 @@ class VoxelViewSet(viewsets.ModelViewSet):
             x__in=[x for x, y, z in voxel_coord_list],
             y__in=[y for x, y, z in voxel_coord_list],
             z__in=[z for x, y, z in voxel_coord_list],
+            claim_pending=False,
         )
         serializer = VoxelSerializer(voxels, many=True)
         return Response(serializer.data)
