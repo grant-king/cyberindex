@@ -78,7 +78,7 @@ export const useVoxelStore = defineStore('voxel', () => {
   async function fetchVoxelsInSlice(x, y, z, size = 8, plane = 'xy') {
     if (slice_cache[`${x},${y},${z},${size},${plane}`] !== undefined) {
       console.log('slice cache hit')
-      return slice_cache[`${x},${y},${z},${size},${plane}`]
+      //return slice_cache[`${x},${y},${z},${size},${plane}`]
     }
     const query_params = new URLSearchParams({
       x: x,
