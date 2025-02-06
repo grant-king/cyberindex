@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 import random
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import OuterRef
 
 # import Q
 from django.db.models import Q
@@ -36,11 +37,7 @@ class VoxelViewSet(viewsets.ModelViewSet):
     pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
-        # complex filter with q
-        # filter by objects with claim = None
-        # or with claim and is_holding = False
-
-        return Voxel.objects.filter(Q(claim__isnull=True) | Q(claim__is_holding=False)).distinct()
+        return Voxel.objects.filter(claim_pending=False)
 
     @action(detail=False, methods=["get"])  # clear all
     def clear_all(self, request):
@@ -125,23 +122,21 @@ class VoxelViewSet(viewsets.ModelViewSet):
         z = int(request.query_params.get("z", 0))
         plane = request.query_params.get("plane", "xy")
         square_size = int(request.query_params.get("size", 8))
-        unclaimed_query = Q(claim__isnull=True)
-        holding_query = Q(claim__is_holding=False)
 
         if plane == "xy":
             x_query = Q(x__in=range(x, x + square_size))
             y_query = Q(y__in=range(y, y + square_size))
             voxels = Voxel.objects.filter(
-                x_query & y_query & (unclaimed_query | holding_query),
-                z=z,
+                x_query & y_query,
+                z=z, claim_pending=False,
             )
 
         elif plane == "yz":
             y_query = Q(y__in=range(y, y + square_size))
             z_query = Q(z__in=range(z, z + square_size))
             voxels = Voxel.objects.filter(
-                y_query & z_query & (unclaimed_query | holding_query),
-                x=x,
+                y_query & z_query,
+                x=x, claim_pending=False,
             )
             
 
@@ -149,8 +144,8 @@ class VoxelViewSet(viewsets.ModelViewSet):
             z_query = Q(z__in=range(z, z + square_size))
             x_query = Q(x__in=range(x, x + square_size))
             voxels = Voxel.objects.filter(
-                z_query & x_query & (unclaimed_query | holding_query),
-                y=y,
+                z_query & x_query,
+                y=y, claim_pending=False,
             )
 
         serializer = VoxelSerializer(voxels, many=True)
@@ -160,6 +155,29 @@ class VoxelViewSet(viewsets.ModelViewSet):
     def clear_uncolored(self, request):
         Voxel.objects.filter(color="").delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    # action for moving a voxel's position given key and new x, y, z
+    @action(detail=False, methods=["post"])
+    def move(self, request):
+        # get pk, x, y, z from request form data
+        pk = request.data.get("pk")
+        x = request.data.get("x")
+        y = request.data.get("y")
+        z = request.data.get("z")
+        if pk is None or x is None or y is None or z is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        try:
+            voxel = Voxel.objects.get(pk=pk)
+        except Voxel.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        voxel.x = x
+        voxel.y = y
+        voxel.z = z
+        voxel.save()
+        _ = voxel.check_claim_pending
+        serializer = VoxelSerializer(voxel, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
@@ -169,6 +187,14 @@ class ClaimViewSet(viewsets.ModelViewSet):
         if self.request.session.session_key is None:
             self.request.session.create()
         serializer.save(session_key=self.request.session.session_key)
+        _ = serializer.instance.voxel.check_claim_pending
+
+    def perform_update(self, serializer):
+        # check claim is by this session
+        if serializer.instance.session_key != self.request.session.session_key:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        serializer.save()
+        _ = serializer.instance.voxel.check_claim_pending
 
     def get_queryset(self):
         if self.request.session.session_key is None:
