@@ -31,12 +31,19 @@ worker.onmessage = (e) => {
     console.log(e.data)
 }
 
-let measure_interval_id, visual_interval_id, claim_interval_id
+let measure_interval_id, visual_interval_id, claim_interval_id, update_nearest_interval_id
 
 onMounted(() => {
     measure_interval_id = setInterval(measureCollector, 200)
     visual_interval_id = setInterval(processVisualQueue, 400)
     claim_interval_id = setInterval(processClaimQueue, 800)
+    update_nearest_interval_id = setInterval(() => {
+        voxel_store.updateNearest(
+            camera_store.camera.position.x,
+            camera_store.camera.position.y,
+            camera_store.camera.position.z
+        )
+    }, 2000)
 })
 
 onUnmounted(() => {
