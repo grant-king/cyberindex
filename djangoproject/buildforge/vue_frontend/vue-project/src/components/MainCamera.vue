@@ -25,9 +25,9 @@ const control_store = useCameracontrolStore()
 const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
-const worker = new Worker(new URL('@/workers/claim-processor.js', import.meta.url))
+const claim_worker = new Worker(new URL('@/workers/claim-processor.js', import.meta.url))
 
-worker.onmessage = (e) => {
+claim_worker.onmessage = (e) => {
     console.log(e.data)
 }
 
@@ -87,8 +87,8 @@ async function processClaimQueue() {
         // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
         //collector_store.createClaim(collectible.pk)
         const wkr_message = [collectible.pk, '/apiv1/claims/', window.csrf_token]
-        console.log("sending pk to worker:", wkr_message)
-        worker.postMessage(wkr_message)
+        console.log("sending pk to claim_worker:", wkr_message)
+        claim_worker.postMessage(wkr_message)
     }
     collector_store.claim_queue = []
 }
