@@ -164,18 +164,17 @@ class VoxelViewSet(viewsets.ModelViewSet):
         x = request.data.get("x")
         y = request.data.get("y")
         z = request.data.get("z")
-        if pk is None or x is None or y is None or z is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        try:
-            voxel = Voxel.objects.get(pk=pk)
-        except Voxel.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = VoxelSerializer(voxel, data={"x": x, "y": y, "z": z}, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            _ = voxel.check_claim_pending
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        # get voxel object from pk
+        voxel = Voxel.objects.get(pk=pk)
+        # update voxel's x, y, z
+        voxel.x = x
+        voxel.y = y
+        voxel.z = z
+        # save voxel
+        voxel.save()
+        # return voxel and response
+        serializer = VoxelSerializer(voxel, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
