@@ -111,12 +111,11 @@ export const useVoxelStore = defineStore('voxel', () => {
 
   async function updateVoxel(voxel_pk, x, y, z, color) {
     const form_data = new FormData()
-    form_data.append('voxel', voxel_pk)
+    form_data.append('pk', voxel_pk)
     form_data.append('x', x)
     form_data.append('y', y)
     form_data.append('z', z)
-    form_data.append('color', color)
-    const response = await fetch(endpoint, {
+    const response = await fetch(`${endpoint}move/`, {
       method: 'POST',
       headers: {
         'X-CSRFToken': window.csrf_token,
