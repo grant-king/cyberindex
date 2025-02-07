@@ -116,9 +116,13 @@ async function processZoneRefresh() {
 
         for (const [obj_uuid, position] of Object.entries(near_mesh_new_positions)) {
             if (obj_uuid.startsWith('CREATENEW')){
-                // push voxel data to voxel_list
+                // push voxel data to voxel_list, extract pk from after CREATENEW_
+                const voxel_pk = obj_uuid.split('_')[1]
+                voxel_store.voxel_list.push({pk: voxel_pk, x: position.x, y: position.y, z: position.z, color: position.color})
                 // draw new mesh with voxel store (also adds to mesh_list)
+                const new_mesh = voxel_store.drawVoxel(position.x, position.y, position.z, position.color)
                 // add new returned mesh to scene with scene store
+                scene_store.add(new_mesh)
                 // note: consider not updating hashmap, so that they are temporarily uncollectible
             } else {
                 scene_store.updateObjPos(obj_uuid, position.x, position.y, position.z)
