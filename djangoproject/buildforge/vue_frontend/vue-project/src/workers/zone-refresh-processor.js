@@ -12,7 +12,6 @@ self.onmessage = async (event) => {
     const voxel_list = message[5]; // could be 100000s of voxels, operate on without copying again
     const mesh_list = message[6];
     
-    
     // (to be used by the main thread scene store to select child objects and update their locations 
     // and rotations for subtle animations)
     const near_mesh_new_positions = await getNearestMeshesPositions(x, y, z, endpoint, token, voxel_list, mesh_list)
@@ -45,15 +44,31 @@ async function getNearestMeshesPositions(x, y, z, endpoint, token, voxel_list, m
 };
 
 function getMeshListIdxs(nearest_list, voxel_list){
-    
+    let mesh_idxs = []
+    for (const voxel_data of nearest_list) {
+        const index = voxel_list.findIndex(item => item.pk === voxel_data.pk)
+        mesh_idxs.push(index)
+    }
+    return mesh_idxs
 }
 
 function getMeshObject3DId(mesh_idxs, mesh_list){
-    
+    let mesh_obj_ids = []
+    for (const idx of mesh_idxs) {
+        mesh_obj_ids.push(mesh_list[idx].id)
+    }
+    return mesh_obj_ids
 }
 
 function buildMeshPosDict(mesh_obj_ids, nearest_list){
     // { xyzobjectid": {x: 1, y:2, z:3 }, ... }
+    let mesh_pos_dict = {}
+    for (let i = 0; i < mesh_obj_ids.length; i++) {
+        const obj_id = mesh_obj_ids[i]
+        const voxel_data = nearest_list[i]
+        mesh_pos_dict[{obj_id}] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
+    }
+    return mesh_pos_dict
 
 }
 
@@ -71,7 +86,7 @@ async function fetchNearest(x, y, z, endpoint, token) {
     })
     if (response.ok) {
         const data = await response.json()
-        console.log('nearest', data)
+        //console.log('nearest', data)
         return data
     } else {
         console.error('failed to fetch nearest')
