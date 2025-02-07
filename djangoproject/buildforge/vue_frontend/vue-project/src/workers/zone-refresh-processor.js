@@ -53,9 +53,14 @@ function getMeshListIdxs(nearest_list, voxel_list){
 }
 
 function getMeshObject3DId(mesh_idxs, mesh_list){
+    //need to include a check for -1 case: voxel is new
     let mesh_obj_ids = []
     for (const idx of mesh_idxs) {
-        mesh_obj_ids.push(mesh_list[idx].object.uuid)
+        if (idx < 0){
+            mesh_obj_ids.push('CREATENEW')
+        } else {
+            mesh_obj_ids.push(mesh_list[idx].object.uuid)
+        }
     }
     return mesh_obj_ids
 }
@@ -66,7 +71,11 @@ function buildMeshPosDict(mesh_obj_ids, nearest_list){
     for (let i = 0; i < mesh_obj_ids.length; i++) {
         const obj_id = mesh_obj_ids[i]
         const voxel_data = nearest_list[i]
-        mesh_pos_dict[obj_id] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
+        if (obj_id == 'CREATENEW'){ // if new key will be CREATENEW_12345 so pk can be extracted elsewhere
+            mesh_pos_dict[`${obj_id}_${voxel_data.pk}`] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
+        } else{
+            mesh_pos_dict[`${obj_id}`] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
+        }
     }
     return mesh_pos_dict
 
