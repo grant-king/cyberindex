@@ -29,11 +29,11 @@ export const useSceneStore = defineStore('scene', () => {
     if (current_scene.value === null) {
       initScene()
     }
-    const raw_obj = toRaw(obj)
-    console.log('current scene', current_scene.value)
-    console.log('removing object', raw_obj)
-    current_scene.value.remove(raw_obj)
-    console.log('current scene', current_scene.value)
+    //const raw_obj = toRaw(obj)
+    //console.log('current scene', current_scene.value)
+    //console.log('removing object', raw_obj)
+    current_scene.value.remove(obj)
+    //console.log('current scene', current_scene.value)
     current_scene.value.updateWorldMatrix()
   }
 
