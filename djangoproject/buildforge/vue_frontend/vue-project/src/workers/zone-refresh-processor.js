@@ -30,12 +30,16 @@ async function getNearestMeshesPositions(x, y, z, endpoint, token, voxel_list, m
     // start with offloading one thing from the mian thread
     // start with just fetching the nearest list
     const nearest_list = await fetchNearest(Math.floor(x), Math.floor(y), Math.floor(z), endpoint, token)
+    console.log('nearest_list', nearest_list)
 
     // and then searching voxel_list to produce a list of indicies
     const mesh_idxs = getMeshListIdxs(nearest_list, voxel_list)
+    console.log('mesh_idxs', mesh_idxs)
     // use these indicies to identify corresponding object meshes, 
     // and store the object mesh ids in a list
+    console.log('mesh_list', mesh_list)
     const mesh_obj_ids = getMeshObject3DId(mesh_idxs, mesh_list)
+    console.log('mesh_obj_ids', mesh_obj_ids)
     // return the parallel nearest list and mesh ids list, or make into a dict
     return buildMeshPosDict(mesh_obj_ids, nearest_list)
     
@@ -55,7 +59,7 @@ function getMeshListIdxs(nearest_list, voxel_list){
 function getMeshObject3DId(mesh_idxs, mesh_list){
     let mesh_obj_ids = []
     for (const idx of mesh_idxs) {
-        mesh_obj_ids.push(mesh_list[idx].id)
+        mesh_obj_ids.push(mesh_list[idx].object.uuid)
     }
     return mesh_obj_ids
 }
@@ -66,7 +70,7 @@ function buildMeshPosDict(mesh_obj_ids, nearest_list){
     for (let i = 0; i < mesh_obj_ids.length; i++) {
         const obj_id = mesh_obj_ids[i]
         const voxel_data = nearest_list[i]
-        mesh_pos_dict[{obj_id}] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
+        mesh_pos_dict[obj_id] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
     }
     return mesh_pos_dict
 
