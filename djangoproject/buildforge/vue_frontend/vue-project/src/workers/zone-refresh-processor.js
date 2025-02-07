@@ -11,37 +11,51 @@ self.onmessage = async (event) => {
     const token = message[4];
     const voxel_list = message[5]; // could be 100000s of voxels, operate on without copying again
     const mesh_list = message[6];
-
-
-    const [nearest_list, mesh_ids] = await refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list)
-    const new_hash_map = 1
-    const new_light_objs = createLightObjs()
-
-    postMessage([new_voxel_list, new_voxel_objs, new_hash_map, new_light_objs]);
+    
+    
+    // (to be used by the main thread scene store to select child objects and update their locations 
+    // and rotations for subtle animations)
+    const near_mesh_new_positions = await getNearestMeshesPositions(x, y, z, endpoint, token, voxel_list, mesh_list)
+    
+    postMessage(near_mesh_new_positions);
 };
 
-async function refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list) {
+async function getNearestMeshesPositions(x, y, z, endpoint, token, voxel_list, mesh_list) {
     // (will need working copies of voxel_list and mesh_list, will return those as well as scene_add and scene_remove lists)
     // await fetch nearest
-    const nearest_list = await fetchNearest(Math.floor(x), Math.floor(y), Math.floor(z), endpoint, token)
-    //console.log('nearest_list', nearest_list)
-
+    
     // this can be simple, we just need to offload some of the 
     // expensive computations from the existing version in the main thread 
     // for now keep this simple and focus on only returning minimal data for the local area
-
+    
     // start with offloading one thing from the mian thread
     // start with just fetching the nearest list
-    // and then searching voxel_list to produce a list of indicies 
-    // use these indicies to identify corresponding object meshes, 
-    // and store the object mesh ids in a list 
-    // return the parallel nearest list and mesh ids list, or make into a dict 
-    // { xyzobjectid": {x: 1, y:2, z:3 }, ... }
-    // (to be used by the main thread scene store to select child objects and update their locations 
-    // and rotations for subtle animations)
+    const nearest_list = await fetchNearest(Math.floor(x), Math.floor(y), Math.floor(z), endpoint, token)
 
+    // and then searching voxel_list to produce a list of indicies
+    const mesh_idxs = getMeshListIdxs(nearest_list, voxel_list)
+    // use these indicies to identify corresponding object meshes, 
+    // and store the object mesh ids in a list
+    const mesh_obj_ids = getMeshObject3DId(mesh_idxs, mesh_list)
+    // return the parallel nearest list and mesh ids list, or make into a dict
+    return buildMeshPosDict(mesh_obj_ids, nearest_list)
+    
+    
     // use these values to reduce load of the existing zone update system in the main thread
 };
+
+function getMeshListIdxs(nearest_list, voxel_list){
+    
+}
+
+function getMeshObject3DId(mesh_idxs, mesh_list){
+    
+}
+
+function buildMeshPosDict(mesh_obj_ids, nearest_list){
+    // { xyzobjectid": {x: 1, y:2, z:3 }, ... }
+
+}
 
 async function fetchNearest(x, y, z, endpoint, token) {
     const query_params = new URLSearchParams({
