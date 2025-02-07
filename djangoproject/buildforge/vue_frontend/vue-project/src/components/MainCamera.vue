@@ -117,10 +117,16 @@ async function processZoneRefresh() {
         //const new_voxel_mesh_list = e.data[2]
         const new_scene = new THREE.ObjectLoader().parse(new_scene_json)
         //set positions according to voxel_list
-        for (let voxel_obj of new_scene.children) {
-            const voxel = new_voxel_list.find(v => v.pk === voxel_obj.userData.pk)
-            if (voxel) {
-                voxel_obj.position.set(voxel.x, voxel.y, voxel.z)
+        for (let i=0; i<new_voxel_list.length; i++) {
+            const scene_voxel = new_scene.children[i+3]
+            if (scene_voxel) {
+                scene_voxel.position.set(voxel_list[i].x, voxel_list[i].y, voxel_list[i].z)
+                // set random rotation
+                scene_voxel.rotation.set(
+                    Math.random() * 0.04,
+                    Math.random() * 0.04,
+                    Math.random() * 0.04
+                )
             }
         }
         console.log("new scene:", new_scene)
