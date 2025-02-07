@@ -17,6 +17,17 @@ export const useSceneStore = defineStore('scene', () => {
     }
   }
 
+  async function updateObjPos(uuid, x, y, z){
+    const scene_obj = current_scene.value.getObjectByProperty('uuid', uuid)
+    scene_obj.position.set(x, y, z)
+    // slight random rotation
+    scene_obj.rotation.set(
+      Math.random() * 0.04,
+      Math.random() * 0.04,
+      Math.random() * 0.04
+    )
+  }
+
   function add(obj) {
     if (current_scene.value === null) {
       initScene()
@@ -37,5 +48,5 @@ export const useSceneStore = defineStore('scene', () => {
     current_scene.value.updateWorldMatrix()
   }
 
-  return { initScene, current_scene, render_scene, add, remove  }
+  return { initScene, current_scene, render_scene, add, remove, updateObjPos }
 })
