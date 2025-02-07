@@ -11,8 +11,14 @@ self.onmessage = async (event) => {
     const token = message[4];
     const voxel_list = message[5];
     const mesh_list = message[6];
-    const result = await refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list);
-    postMessage(result);
+    
+    const new_voxel_list = await refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list);
+    const new_voxel_objs = 1
+    const new_hash_map = 1
+    const new_light_objs = createLightObjs()
+    
+    postMessage([new_voxel_list, new_voxel_objs, new_hash_map, new_light_objs]);
+
 };
 
 async function refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list) {
@@ -85,7 +91,7 @@ async function refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list) {
         new_scene.add(mesh)
     }
 
-    return [new_scene.toJSON(), voxel_list]
+    return [new_voxel_list, new_hash_map]
 
     // if the index is > -1 (if voxel is already loaded in world, could have moved )
     // remove old voxel data from voxel_list, 
@@ -106,7 +112,7 @@ async function refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list) {
 
 }
 
-function createLight(x, y, z) {
+function createLightMesh(x, y, z) {
     const color = 0xffffff
     const intensity = 2
     const light = new THREE.DirectionalLight(color, intensity)
@@ -114,14 +120,14 @@ function createLight(x, y, z) {
     return light
 }
 
-function createSun() {
+function createLightObjs() {
     const light1 = createLight(4, 8, 16)
     const light2 = createLight(-4, 8, 16)
     const light3 = createLight(0, 50, -2)
     return [light1, light2, light3]
 }
 
-function drawVoxel(x, y, z, color) {
+function createVoxelMesh(x, y, z, color) {
     const geometry = new THREE.BoxGeometry(1, 1, 1)
     const material = new THREE.MeshPhongMaterial({ color: color })
     const voxel_mesh = new THREE.Mesh(geometry, material)
