@@ -123,7 +123,7 @@ function createSun() {
 
 function drawVoxel(x, y, z, color) {
     const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: color })
+    const material = new THREE.MeshPhongMaterial({ color: color })
     const voxel_mesh = new THREE.Mesh(geometry, material)
     voxel_mesh.position.set(x, y, z)
     voxel_mesh.rotation.set(
