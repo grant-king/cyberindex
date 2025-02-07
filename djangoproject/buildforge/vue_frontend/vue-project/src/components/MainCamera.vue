@@ -16,6 +16,7 @@ import { useCollectorStore } from '@/stores/collector'
 import { useSceneStore } from '@/stores/scene'
 import { useVoxelStore } from '@/stores/voxel'
 import { useCameracontrolStore } from '@/stores/cameracontrol'
+import * as THREE from 'three'
 
 import { onMounted, onUnmounted } from 'vue'
 import { ref, watch } from 'vue'
@@ -32,7 +33,7 @@ claim_worker.onmessage = (e) => {
     console.log(e.data)
 }
 
-let measure_interval_id, visual_interval_id, claim_interval_id, update_nearest_interval_id
+let measure_interval_id, visual_interval_id, claim_interval_id, zone_refresh_interval_id
 
 onMounted(() => {
     measure_interval_id = setInterval(measureCollector, 200)
@@ -45,14 +46,14 @@ onMounted(() => {
     //        camera_store.camera.position.z
     //    )
     //}, 2000)
-    update_nearest_interval_id = setInterval(processZoneRefresh, 2000)
+    zone_refresh_interval_id = setInterval(processZoneRefresh, 4000)
 })
 
 onUnmounted(() => {
     clearInterval(measure_interval_id)
     clearInterval(visual_interval_id)
     clearInterval(claim_interval_id)
-    clearInterval(update_nearest_interval_id)
+    clearInterval(zone_refresh_interval_id)
 })
 
 function measureCollector() {
@@ -106,11 +107,30 @@ async function processZoneRefresh() {
     const mesh_list = JSON.parse(JSON.stringify(voxel_store.voxel_mesh_list))
     //const wkr_message = {x, y, z, endpoint, token, voxel_list, mesh_list}
     const wkr_message = [x, y, z, endpoint, token, voxel_list, mesh_list]
-    console.log("sending zone refresh to zone_worker:", wkr_message)
+    //console.log("sending zone refresh to zone_worker:", wkr_message)
     zone_worker.postMessage(wkr_message)
     // on message from worker, update voxel_list and mesh_list
     zone_worker.onmessage = (e) => {
-        console.log("zone_worker message:", e.data)
+        //console.log("zone_worker message:", e.data)
+        const new_scene_json = e.data[0]
+        const new_voxel_list = e.data[1]
+        //const new_voxel_mesh_list = e.data[2]
+        const new_scene = new THREE.ObjectLoader().parse(new_scene_json)
+        //set positions according to voxel_list
+        for (let voxel_obj of new_scene.children) {
+            const voxel = new_voxel_list.find(v => v.pk === voxel_obj.userData.pk)
+            if (voxel) {
+                voxel_obj.position.set(voxel.x, voxel.y, voxel.z)
+            }
+        }
+        console.log("new scene:", new_scene)
+        //scene_store.current_scene.updateWorldMatrix()
+        voxel_store.voxel_list = new_voxel_list
+        console.log("new voxel list:", new_voxel_list)
+        //voxel_store.mesh_list = new_voxel_mesh_list
+        collector_store.buildHashMap(new_voxel_list)
+        scene_store.current_scene = new_scene
+
     }
 }
 
