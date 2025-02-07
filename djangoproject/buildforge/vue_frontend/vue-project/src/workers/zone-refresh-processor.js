@@ -72,7 +72,7 @@ function buildMeshPosDict(mesh_obj_ids, nearest_list){
         const obj_id = mesh_obj_ids[i]
         const voxel_data = nearest_list[i]
         if (obj_id == 'CREATENEW'){ // if new key will be CREATENEW_12345 so pk can be extracted elsewhere
-            mesh_pos_dict[`${obj_id}_${voxel_data.pk}`] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
+            mesh_pos_dict[`${obj_id}_${voxel_data.pk}`] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z, color: voxel_data.color}
         } else{
             mesh_pos_dict[`${obj_id}`] = {x: voxel_data.x, y: voxel_data.y, z: voxel_data.z}
         }
