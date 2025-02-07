@@ -184,6 +184,6 @@ export const useVoxelStore = defineStore('voxel', () => {
   return { 
     voxel_mesh_list, pullVoxelMesh, voxel_list, 
     drawVoxels, fetchVoxels, fetchVoxelsInSlice,
-    placeVoxel, updateNearest
+    placeVoxel, updateNearest, drawVoxel
   }
 })
