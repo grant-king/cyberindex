@@ -115,7 +115,14 @@ async function processZoneRefresh() {
         const near_mesh_new_positions = e.data
 
         for (const [obj_uuid, position] of Object.entries(near_mesh_new_positions)) {
-            scene_store.updateObjPos(obj_uuid, position.x, position.y, position.z)
+            if (obj_uuid.startsWith('CREATENEW')){
+                // push voxel data to voxel_list
+                // draw new mesh with voxel store (also adds to mesh_list)
+                // add new returned mesh to scene with scene store
+                // note: consider not updating hashmap, so that they are temporarily uncollectible
+            } else {
+                scene_store.updateObjPos(obj_uuid, position.x, position.y, position.z)
+            }
         }
 
     }
