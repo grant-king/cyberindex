@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { onUnmounted, ref, watch } from 'vue'
 import { onMounted } from 'vue'
 import { useCameraStore } from '@/stores/camera'
 import { useSceneStore } from '@/stores/scene'
@@ -20,10 +20,17 @@ const cameracontrol_store = useCameracontrolStore()
 const collector_store = useCollectorStore()
 const clock = new THREE.Clock()
 let renderer = new THREE.WebGLRenderer()
+let animation_frame_id = null
 
 onMounted(() => {
     scene_store.initScene()
     main()
+})
+
+onUnmounted(() => {
+    if (animation_frame_id) {
+        cancelAnimationFrame(animation_frame_id)
+    }
 })
 
 function main() {
@@ -32,10 +39,9 @@ function main() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     
     cameracontrol_store.initControls() // can move to MainCamera.vue
-    
+
     // request first frame and start loop
-    requestAnimationFrame(rendering_loop)
-    
+    animation_frame_id = requestAnimationFrame(rendering_loop)    
 }
 
 function rendering_loop(start_time) {
@@ -44,7 +50,18 @@ function rendering_loop(start_time) {
     }
     
     renderer.render(scene_store.render_scene, camera_store.camera)
-    requestAnimationFrame(rendering_loop)
-    
+    animation_frame_id = requestAnimationFrame(rendering_loop)
 }
+
+// watch for changes to scene_store.render_scene
+watch(() => scene_store.render_scene, (new_scene, old_scene) => {
+    console.log('scene changed', new_scene, old_scene)
+    renderer.render(new_scene, camera_store.camera)
+    // cancel the current animation frame
+    if (animation_frame_id) {
+        cancelAnimationFrame(animation_frame_id)
+    }
+    
+    animation_frame_id = requestAnimationFrame(rendering_loop)
+})
 </script>
