@@ -123,5 +123,5 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
    
   
 
-  return { updateCameraPosition, initControls, pointer_controls, dampening }
+  return { updateCameraPosition, initControls, pointer_controls, dampening, velocity }
 })
