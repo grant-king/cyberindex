@@ -112,29 +112,29 @@ async function processZoneRefresh() {
     // on message from worker, update voxel_list and mesh_list
     zone_worker.onmessage = (e) => {
         //console.log("zone_worker message:", e.data)
-        const new_scene_json = e.data[0]
-        const new_voxel_list = e.data[1]
-        //const new_voxel_mesh_list = e.data[2]
-        const new_scene = new THREE.ObjectLoader().parse(new_scene_json)
-        //set positions according to voxel_list
-        for (let i=0; i<new_voxel_list.length; i++) {
-            const scene_voxel = new_scene.children[i+3]
-            if (scene_voxel) {
-                scene_voxel.position.set(voxel_list[i].x, voxel_list[i].y, voxel_list[i].z)
-                // set random rotation
-                scene_voxel.rotation.set(
-                    Math.random() * 0.04,
-                    Math.random() * 0.04,
-                    Math.random() * 0.04
-                )
-            }
+        const new_voxel_list = e.data[0]
+        const new_voxel_objs = e.data[1]
+        const new_hash_map = e.data[2]
+        const new_light_objs = e.data[3]
+        
+        let new_voxel_mesh_list = []
+        for (let vox_json of new_voxel_objs) {
+            const new_mesh = new THREE.ObjectLoader().parse(vox_json)
+            new_voxel_mesh_list.push(new_mesh)
         }
-        console.log("new scene:", new_scene)
+        
+        const new_scene = new THREE.Scene()
+        for (let vox_mesh of new_voxel_mesh_list){
+            new_scene.add(vox_mesh)
+        }
+
+        scene_store.current_scene = new_scene
+        
         //scene_store.current_scene.updateWorldMatrix()
         voxel_store.voxel_list = new_voxel_list
         console.log("new voxel list:", new_voxel_list)
         //voxel_store.mesh_list = new_voxel_mesh_list
-        collector_store.buildHashMap(new_voxel_list)
+        //collector_store.hash_map = hash_map
         scene_store.current_scene = new_scene
 
     }
