@@ -114,6 +114,10 @@ async function processZoneRefresh() {
         console.log("zone_worker message:", e.data)
         const near_mesh_new_positions = e.data
 
+        for (const [obj_uuid, position] of Object.entries(near_mesh_new_positions)) {
+            scene_store.updateObjPos(obj_uuid, position.x, position.y, position.z)
+        }
+
     }
 }
 
