@@ -10,15 +10,14 @@ self.onmessage = async (event) => {
     const endpoint = message[3];
     const token = message[4];
     const voxel_list = message[5]; // could be 100000s of voxels, operate on without copying again
-    const mesh_list = message[6]; 
-    
-    
+    const mesh_list = message[6];
+
+
     const [nearest_list, mesh_ids] = await refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list)
     const new_hash_map = 1
     const new_light_objs = createLightObjs()
-    
-    postMessage([new_voxel_list, new_voxel_objs, new_hash_map, new_light_objs]);
 
+    postMessage([new_voxel_list, new_voxel_objs, new_hash_map, new_light_objs]);
 };
 
 async function refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list) {
@@ -42,5 +41,26 @@ async function refreshZone(x, y, z, endpoint, token, voxel_list, mesh_list) {
     // and rotations for subtle animations)
 
     // use these values to reduce load of the existing zone update system in the main thread
+};
 
+async function fetchNearest(x, y, z, endpoint, token) {
+    const query_params = new URLSearchParams({
+        x: x,
+        y: y,
+        z: z,
+    })
+    const response = await fetch(`${endpoint}nearest/?${query_params}`, {
+        method: 'GET',
+        headers: {
+            'X-CSRFToken': token,
+        },
+    })
+    if (response.ok) {
+        const data = await response.json()
+        console.log('nearest', data)
+        return data
+    } else {
+        console.error('failed to fetch nearest')
+        console.error(response)
+    }
 }
