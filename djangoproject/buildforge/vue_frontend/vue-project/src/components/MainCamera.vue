@@ -46,7 +46,7 @@ onMounted(() => {
     //        camera_store.camera.position.z
     //    )
     //}, 2000)
-    zone_refresh_interval_id = setInterval(processZoneRefresh, 4000)
+    zone_refresh_interval_id = setInterval(processZoneRefresh, 2000)
 })
 
 onUnmounted(() => {
@@ -98,6 +98,13 @@ async function processClaimQueue() {
 }
 
 async function processZoneRefresh() {
+    //return if velocity is too high
+    if (control_store.velocity.x > 0.04 || control_store.velocity.x < -0.04
+    || control_store.velocity.y > 0.04 || control_store.velocity.y < -0.04
+    || control_store.velocity.z > 0.04 || control_store.velocity.z < -0.04) {
+        console.log("velocity too high, skipping zone refresh")
+        return
+    }
     const x = camera_store.camera.position.x
     const y = camera_store.camera.position.y
     const z = camera_store.camera.position.z
@@ -120,7 +127,8 @@ async function processZoneRefresh() {
                 const voxel_pk = obj_uuid.split('_')[1]
                 voxel_store.voxel_list.push({pk: voxel_pk, x: position.x, y: position.y, z: position.z, color: position.color})
                 // draw new mesh with voxel store (also adds to mesh_list)
-                const new_mesh = voxel_store.drawVoxel(position.x, position.y, position.z, position.color)
+                const new_mesh = voxel_store.drawVoxel(
+                    position.x, position.y, position.z, `#${position.color}`)
                 // add new returned mesh to scene with scene store
                 scene_store.add(new_mesh)
                 // note: consider not updating hashmap, so that they are temporarily uncollectible
