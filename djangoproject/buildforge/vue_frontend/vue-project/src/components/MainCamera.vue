@@ -46,7 +46,7 @@ onMounted(() => {
     //        camera_store.camera.position.z
     //    )
     //}, 2000)
-    zone_refresh_interval_id = setInterval(processZoneRefresh, 2000)
+    zone_refresh_interval_id = setInterval(processZoneRefresh, 4000)
 })
 
 onUnmounted(() => {
