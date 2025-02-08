@@ -25,7 +25,8 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   function initControls() {
     pointer_controls.value = new PointerLockControls(camera_store.createCamera(), document.body)
     camera_store.camera = pointer_controls.value.object
-    document.body.addEventListener('click', function() {
+    const canvas = document.getElementById('three-canvas')
+    canvas.addEventListener('click', function() {
       pointer_controls.value.lock()
     })
     document.body.addEventListener('keydown', onKeyDown)
