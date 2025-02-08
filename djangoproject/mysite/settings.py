@@ -27,9 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ljisx_=1#f3$t4^azifag#a)spb&h%4(ha0dq$(kaaty2o7ze&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = True if os.environ.get('DEBUG') == 'True' else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    os.environ.get('WEBSITE_HOSTNAME'),
+]
 
 
 # Application definition
@@ -85,12 +88,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 
 # Password validation
@@ -127,7 +131,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+#STATIC_URL = os.environ.get('STATIC_STORAGE_URL')
+
+if DEBUG:
+    STATIC_URL = 'static/'
 
 # dev media files
 MEDIA_URL = '/media/'
@@ -162,22 +169,23 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'ctiadmin@grantking.dev'
 
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.azure_storage.AzureStorage",
-        "OPTIONS": {
-            'connection_string': os.environ.get('MEDIA_STORAGE_CONNECTION_STRING'),
-            'azure_container': 'default',
+if not DEBUG:
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+            "OPTIONS": {
+                'connection_string': os.environ.get('MEDIA_STORAGE_CONNECTION_STRING'),
+                'azure_container': 'default',
+            },
+        }, # remember to run python manage.py collectstatic to upload static files to azure
+        "staticfiles": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+            "OPTIONS": {
+                'connection_string': os.environ.get('STATIC_STORAGE_CONNECTION_STRING'),
+                'azure_container': 'default',
+                'overwrite_files': True,
+                'location': 'static',
+            },
         },
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.azure_storage.AzureStorage",
-        "OPTIONS": {
-            'connection_string': os.environ.get('STATIC_STORAGE_CONNECTION_STRING'),
-            'azure_container': 'default',
-            'overwrite_files': True,
-            'location': 'static',
-        },
-    },
-}
+    }
 
