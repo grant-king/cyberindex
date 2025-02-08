@@ -161,3 +161,23 @@ EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'ctiadmin@grantking.dev'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            'connection_string': os.environ.get('MEDIA_STORAGE_CONNECTION_STRING'),
+            'azure_container': 'default',
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            'connection_string': os.environ.get('STATIC_STORAGE_CONNECTION_STRING'),
+            'azure_container': 'default',
+            'overwrite_files': True,
+            'location': 'static',
+        },
+    },
+}
+
