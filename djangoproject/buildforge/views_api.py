@@ -99,7 +99,7 @@ class VoxelViewSet(viewsets.ModelViewSet):
                         # make hollow
                         if x**2 + y**2 + z**2 > 6**2:
                             random_color = "%06x" % random.randint(0, 0xFFFFFF)
-                            # Voxel.objects.create(x=x, y=y, z=z, color=random_color)
+                            Voxel.objects.create(x=x, y=y, z=z, color=random_color)
                             # Voxel.objects.create(x=x, y=y, z=z, color='fdffdf')
         return Response(status=status.HTTP_201_CREATED)
 
