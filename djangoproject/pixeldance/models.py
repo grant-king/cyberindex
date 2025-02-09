@@ -17,6 +17,6 @@ class DancePath(models.Model):
     end_y = models.PositiveSmallIntegerField(db_index=True)
     delta_x = models.SmallIntegerField(db_index=True)
     delta_y = models.SmallIntegerField(db_index=True)
-    event_timestamp = models.PositiveIntegerField()
+    event_timestamp = models.PositiveBigIntegerField()
     click_time_delta = models.IntegerField()
 
