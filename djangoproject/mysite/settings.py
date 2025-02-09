@@ -30,10 +30,12 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # DEBUG = True
 DEBUG = True if os.environ.get("DEBUG") == "True" else False
 
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+
 ALLOWED_HOSTS = [
     os.environ.get("WEBSITE_HOSTNAME"),
 ]
-
 
 # Application definition
 
