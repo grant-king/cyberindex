@@ -275,7 +275,6 @@ const router_navigation = [
   { name: 'Home', to: '/', icon: HomeIcon, current: false },
   { name: 'Project Registration', icon: FolderPlusIcon, to: '/projectadd', current: false },
   { name: 'Community Center', to: '/community', icon: PuzzlePieceIcon, current: false},
-  { name: 'Virtual Zone', to: '/virtual', icon: HandThumbUpIcon, current: false },
   { name: 'About', to: '/about', icon: HandThumbUpIcon, current: false },
 ]
 
@@ -285,7 +284,7 @@ const link_navigation = [
 
 const feat_sponsors = [
   { id: 2, name: 'Hack for LA', href: 'https://www.hackforla.org/', initial: 'HLA', current: false },
-  { id: 1, name: 'Ready Tech Pro', href: 'https://readytechpro.org/', initial: 'RTP', current: false },
+  { id: 1, name: 'Our Disco Tech', href: '/buildforge/', initial: 'ODT', current: false },
   { id: 3, name: 'IT20', href: 'https://2it0.com', initial: 'ITT', current: false },
 ]
 
