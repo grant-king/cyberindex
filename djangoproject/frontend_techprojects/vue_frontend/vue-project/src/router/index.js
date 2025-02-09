@@ -45,11 +45,11 @@ const router = createRouter({
       name: 'community',
       component: () => import('../views/CommunityView.vue'),
     },
-    {
-      path: '/virtual',
-      name: 'virtual',
-      component: () => import('../views/VirtualView.vue'),
-    }
+//    {
+//      path: '/virtual',
+//      name: 'virtual',
+//      component: () => import('../views/VirtualView.vue'),
+//    }
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
