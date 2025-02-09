@@ -6,6 +6,9 @@ import random
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import OuterRef
 
+# admin auth for voxel actions
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 # import Q
 from django.db.models import Q
 
@@ -39,12 +42,9 @@ class VoxelViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Voxel.objects.filter(claim_pending=False)
 
-    @action(detail=False, methods=["get"])  # clear all
-    def clear_all(self, request):
-        Voxel.objects.all().delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    @action(detail=False, methods=["get"])  # add 8x1xN plane of voxels
+    @action(
+        detail=False, methods=["get"], permission_classes=[IsAdminUser]
+    )  # add 8x1xN plane of voxels
     def plane(self, request):
         for x in range(-16, 16):
             for y in range(0, 1):
@@ -53,7 +53,9 @@ class VoxelViewSet(viewsets.ModelViewSet):
                     Voxel.objects.create(x=x, y=y, z=z, color=random_color)
         return Response(status=status.HTTP_201_CREATED)
 
-    @action(detail=False, methods=["get"])  # add 1xNx1 tower of voxels
+    @action(
+        detail=False, methods=["get"], permission_classes=[IsAdminUser]
+    )  # add 1xNx1 tower of voxels
     def tower(self, request):
         random_x = random.randint(-16, 16)
         random_z = random.randint(-16, 16)
@@ -67,7 +69,9 @@ class VoxelViewSet(viewsets.ModelViewSet):
                     )
         return Response(status=status.HTTP_201_CREATED)
 
-    @action(detail=False, methods=["get"])  # build a hollow cube of voxels
+    @action(
+        detail=False, methods=["get"], permission_classes=[IsAdminUser]
+    )  # build a hollow cube of voxels
     def cube(self, request):
         for x in range(-32, 32):
             for y in range(-32, 32):
@@ -84,7 +88,9 @@ class VoxelViewSet(viewsets.ModelViewSet):
                         # Voxel.objects.create(x=x, y=y, z=z, color=random_color)
         return Response(status=status.HTTP_201_CREATED)
 
-    @action(detail=False, methods=["get"])  # build a hollow sphere of voxels
+    @action(
+        detail=False, methods=["get"], permission_classes=[IsAdminUser]
+    )  # build a hollow sphere of voxels
     def sphere(self, request):
         for x in range(-8, 8):
             for y in range(-8, 8):
@@ -94,6 +100,7 @@ class VoxelViewSet(viewsets.ModelViewSet):
                         if x**2 + y**2 + z**2 > 6**2:
                             random_color = "%06x" % random.randint(0, 0xFFFFFF)
                             # Voxel.objects.create(x=x, y=y, z=z, color=random_color)
+                            # Voxel.objects.create(x=x, y=y, z=z, color='fdffdf')
         return Response(status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=["get"])  # get narest 256 voxels to a point
@@ -116,7 +123,9 @@ class VoxelViewSet(viewsets.ModelViewSet):
         serializer = VoxelSerializer(voxels, many=True)
         return Response(serializer.data)
 
-    @action(detail=False, methods=["get"]) # get NxN plane of voxels from an origin a slice plane xy, yz, zx
+    @action(
+        detail=False, methods=["get"]
+    )  # get NxN plane of voxels from an origin a slice plane xy, yz, zx
     def slice(self, request):
         x = int(request.query_params.get("x", 0))
         y = int(request.query_params.get("y", 0))
@@ -129,7 +138,8 @@ class VoxelViewSet(viewsets.ModelViewSet):
             y_query = Q(y__in=range(y, y + square_size))
             voxels = Voxel.objects.filter(
                 x_query & y_query,
-                z=z, claim_pending=False,
+                z=z,
+                claim_pending=False,
             )
 
         elif plane == "yz":
@@ -137,26 +147,29 @@ class VoxelViewSet(viewsets.ModelViewSet):
             z_query = Q(z__in=range(z, z + square_size))
             voxels = Voxel.objects.filter(
                 y_query & z_query,
-                x=x, claim_pending=False,
+                x=x,
+                claim_pending=False,
             )
-            
 
         elif plane == "zx":
             z_query = Q(z__in=range(z, z + square_size))
             x_query = Q(x__in=range(x, x + square_size))
             voxels = Voxel.objects.filter(
                 z_query & x_query,
-                y=y, claim_pending=False,
+                y=y,
+                claim_pending=False,
             )
 
         serializer = VoxelSerializer(voxels, many=True)
         return Response(serializer.data)
 
-    @action(detail=False, methods=["get"])  # delete all voxels that do not have a color
+    @action(
+        detail=False, methods=["get"], permission_classes=[IsAdminUser]
+    )  # delete all voxels that do not have a color
     def clear_uncolored(self, request):
         Voxel.objects.filter(color="").delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     # action for moving a voxel's position given key and new x, y, z
     @action(detail=False, methods=["post"])
     def move(self, request):
@@ -177,6 +190,7 @@ class VoxelViewSet(viewsets.ModelViewSet):
         serializer = VoxelSerializer(voxel, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
@@ -187,7 +201,6 @@ class ClaimViewSet(viewsets.ModelViewSet):
         serializer.save(session_key=self.request.session.session_key)
         _ = serializer.instance.voxel.check_claim_pending
         return super().perform_create(serializer)
-
 
     def perform_update(self, serializer):
         # check claim is by this session
@@ -203,11 +216,6 @@ class ClaimViewSet(viewsets.ModelViewSet):
         session_query = Q(session_key=self.request.session.session_key)
         is_holding_query = Q(is_holding=True)
         return super().get_queryset().filter(session_query & is_holding_query)
-
-    @action(detail=False, methods=["get"])
-    def clear_all(self, request):
-        Claim.objects.filter(session_key=self.request.session.session_key).delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=["get"], pagination_class=HeftyResultsSetPagination)
     def my_claims(self, request):
@@ -231,7 +239,8 @@ class BuilderViewSet(viewsets.ModelViewSet):
     def my_builder(self, request):
         if request.method == "GET":
             builder, created = Builder.objects.get_or_create(
-                    session_key=self.request.session.session_key)
+                session_key=self.request.session.session_key
+            )
             serializer = BuilderSerializer(builder, many=False)
             return Response(serializer.data)
         elif request.method == "PUT":
