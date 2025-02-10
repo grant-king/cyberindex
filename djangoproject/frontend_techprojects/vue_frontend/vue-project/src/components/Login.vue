@@ -56,7 +56,7 @@
   const base_url = window.location.origin
   const reset_url = `${base_url}/password_reset/`
   
-  const company_logo_url = 'https://unrolla.blob.core.windows.net/unrolla/images/cti_logo.webp'
+  const company_logo_url = 'https://myctpmedia.blob.core.windows.net/default/avatars/f8d909803de8b75b0972436093b8e5be67d3c2d3f8a09106674398dd6df98b37.webp'
   
   const username = ref('')
   const password = ref('')
