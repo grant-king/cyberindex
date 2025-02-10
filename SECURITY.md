@@ -16,7 +16,6 @@ If you discover a security vulnerability in this project, please follow these gu
 1. **Contact Information:**  
    Send an email with a detailed description of the vulnerability to:  
    **[security@grantking.dev](mailto:security@grantking.dev)**  
-   *(Replace with your designated security email address.)*
 
 2. **What to Include:**  
    - A detailed description of the vulnerability.
@@ -30,7 +29,6 @@ If you discover a security vulnerability in this project, please follow these gu
 
 4. **Response:**  
    We aim to acknowledge all vulnerability reports within [48 hours] and will keep you updated on the progress.  
-   *(Adjust the timeframe as necessary.)*
 
 ## Acknowledgements
 
