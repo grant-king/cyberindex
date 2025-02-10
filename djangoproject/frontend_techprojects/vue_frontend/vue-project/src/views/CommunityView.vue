@@ -19,8 +19,18 @@
         </div>
         <div class="min-h-32 bg-white/50">
         </div>
-        <div class="">
-            <ThreeDemo />
+        <div class="bg-white/50 p-4">
+            <div class="text-black">
+                <a href="/buildforge"
+                class="text-2xl font-bold border-dotted border-4 border-white/50 px-3 py-2 rounded-sm hover:border-white/80">
+                    Our Disco Tech 
+                </a>
+                    ** now featuring multiplayer bugs! **
+            </div>
+            <div class="py-8 text-xs">
+                I mean multiplayer is very broken, but check it out if you must see the developing state of the project NOW.
+                If anyone knows how to run web workers in a Vue => static bucket Django storages setup without offending CORS, I'd love to learn from you.
+            </div>
         </div>
         <div class="min-h-32 bg-white/50">
         </div>
