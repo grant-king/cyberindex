@@ -2,7 +2,7 @@
     <div class="bg-white/50 py-24 sm:py-32">
         <div class="mx-auto">
             <div class="bg-black">
-                <BasicHeader eyebrow="Welcome" title="Civic Tech Index Results"
+                <BasicHeader eyebrow="Welcome" title="My Community Technology Platform"
                     description="Where thine shalt discoverish." />
             </div>
             <div class="mx-auto mt-32 grid max-w-5xl grid-cols-1 gap-16">
