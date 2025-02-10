@@ -34,7 +34,7 @@
               <!-- Sidebar component, swap this element with another sidebar if you like -->
               <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 pb-4 ring-1 ring-white/10">
                 <div class="flex h-64 shrink-0 items-center">
-                  <img class="h-48 w-auto" src="https://unrolla.blob.core.windows.net/unrolla/images/cti_logo.webp"
+                  <img class="h-48 w-auto" src="https://myctpmedia.blob.core.windows.net/default/avatars/f8d909803de8b75b0972436093b8e5be67d3c2d3f8a09106674398dd6df98b37.webp"
                     alt="Your Company" />
                 </div>
                 <nav class="flex flex-1 flex-col">
@@ -97,7 +97,7 @@
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 pb-4">
         <div class="flex h-64 shrink-0 items-center">
-          <img class="h-48 w-auto" src="https://unrolla.blob.core.windows.net/unrolla/images/cti_logo.webp"
+          <img class="h-48 w-auto" src="https://myctpmedia.blob.core.windows.net/default/avatars/f8d909803de8b75b0972436093b8e5be67d3c2d3f8a09106674398dd6df98b37.webp"
             alt="Your Company" />
         </div>
         <nav class="flex flex-1 flex-col">
