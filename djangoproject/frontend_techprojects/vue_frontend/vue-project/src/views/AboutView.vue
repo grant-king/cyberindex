@@ -1,5 +1,5 @@
 <template>
-  <BasicHeader eyebrow="About" title="Technodex" description="Technodex is a community platform for connecting resources to individuals who are working on community civic tehnology projects." />
+  <BasicHeader eyebrow="About" title="MYCTP.org" description="My Community Technology Platform is a system for connecting resources to individuals who are working on community civic tehnology projects. Now WIP, pre-pre alpha. Proceed with grace." />
   <div class="min-h-32 bg-gradient-to-b from-black via-black to-white/50"></div>
   <div class="bg-white/50">
     <div class="pb-32">
@@ -29,7 +29,7 @@ import BasicHeader from '@/components/BasicHeader.vue';
 const heading_1 = {
   eyebrow: 'connecting the dots',
   title: 'Enhancing access to open software projects for humanity.',
-  description: 'The Civic Technology Projects Index serves as a specialized discovery platform and API dedicated to making civic technology more accessible and connected. We aggregate civic tech initiatives into a central publication where solutions can be easily shared, found, and improved upon.'
+  description: 'The Technology Projects Index serves as a specialized discovery platform and API dedicated to making civic technology more accessible and connected. We aggregate civic tech initiatives into a central publication where solutions can be easily shared, found, and improved upon.'
 }
 
 const heading_2 = {
