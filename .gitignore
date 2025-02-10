@@ -2,3 +2,4 @@
 djangoproject/.env
 *.pyc
 /djangoproject/media
+djangoproject/.vscode/settings.json
