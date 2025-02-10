@@ -20,16 +20,16 @@ import * as THREE from 'three'
 
 import { onMounted, onUnmounted } from 'vue'
 import { ref, watch } from 'vue'
-import claim_worker_script from '@/workers/claim-processor?worker'
-import zone_worker_script from '@/workers/zone-refresh-processor?worker'
+import claim_worker_script from '@/workers/claim-processor?worker&url'
+import zone_worker_script from '@/workers/zone-refresh-processor?worker&url'
 
 const camera_store = useCameraStore()
 const control_store = useCameracontrolStore()
 const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
-const claim_worker = new claim_worker_script()
-const zone_worker = new zone_worker_script()
+const claim_worker = new Worker(claim_worker_script)
+const zone_worker = new Worker(zone_worker_script)
 
 claim_worker.onmessage = (e) => {
     console.log(e.data)
