@@ -6,10 +6,10 @@ export const useMeditationsStore = defineStore('meditations', () => {
     const endpoint = `${base_url}/apiv1/meditation/`
     const meditation_template = {
         message: 'They said, "Dance like this so we can find you, spin and twist until you fly". And so he started to dance and twist, just like this. He started to dance and spin. They found him well; together, they danced a spell. In a moment while spinning, he began to fly.',
-        rep_name: 'Granny K',
-        rep_role: 'Nnun',
+        rep_name: 'Grant King',
+        rep_role: 'Spinning',
         rep_image_url: 'https://unrolla.blob.core.windows.net/unrolla/images/PXL_20231023_004949758_4679usk.webp',
-        company_name: 'Spin Up Alignment',
+        company_name: 'Alignment',
         company_logo_url: 'https://unrolla.blob.core.windows.net/unrolla/images/IT20_pumpkin_logo_D9SHwmg.webp',
         company_website: 'https://2it0.com/',
     }
