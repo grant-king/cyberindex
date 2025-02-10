@@ -2,21 +2,17 @@
     <div class="bg-white/50">
         <div class="min-h-32 border-black border-dashed border-y-8">
             <div class="mx-auto max-w-7xl p-8">
-                <div class="text-2xl">
+                <div class="text-3xl font-mono font-extrabold">
                     SESSION CONSOLE
                 </div>
-                <div>
+                <div class="mt-16">
                     <SessionImageQuilt />
                 </div>
-                <div>
+                <div class="mt-16">
                     <SessionImageAdd />
                 </div>
-                <div>
+                <div class="mt-16">
                     <SessionStats stgrp_idx="0" title="Session Stats" />
-                </div>
-                
-                <div>
-                    <SessionStats stgrp_idx="0" title="Linked Session Stats" />
                 </div>
 
             </div>
