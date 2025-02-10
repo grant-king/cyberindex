@@ -15,7 +15,7 @@ If you discover a security vulnerability in this project, please follow these gu
 
 1. **Contact Information:**  
    Send an email with a detailed description of the vulnerability to:  
-   **[security@yourdomain.com](mailto:security@yourdomain.com)**  
+   **[security@grantking.dev](mailto:security@grantking.dev)**  
    *(Replace with your designated security email address.)*
 
 2. **What to Include:**  
