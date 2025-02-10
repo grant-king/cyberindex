@@ -26,8 +26,8 @@ const control_store = useCameracontrolStore()
 const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
-const claim_worker = new Worker(new URL('@/workers/claim-processor.js', import.meta.url))
-const zone_worker = new Worker(new URL('@/workers/zone-refresh-processor.js', import.meta.url))
+const claim_worker = new Worker(new URL('@/workers/claim-processor.js?worker', import.meta.url))
+const zone_worker = new Worker(new URL('@/workers/zone-refresh-processor.js?worker', import.meta.url))
 
 claim_worker.onmessage = (e) => {
     console.log(e.data)
