@@ -1,7 +1,23 @@
 <template>
-  <BasicHeader eyebrow="About" title="MYCTP.org" description="My Community Technology Platform is a system for connecting resources to individuals who are working on community civic tehnology projects. Now WIP, pre-pre alpha. Proceed with grace." />
+  <BasicHeader eyebrow="About" title="MYCTP.org"
+    description="My Community Technology Platform is a system for connecting resources to individuals who are working on community civic tehnology projects. Now WIP, pre-pre alpha. Proceed with grace." />
+  <div class="min-h-32 bg-gradient-to-t from-black via-black to-white/50"></div>
   <div class="min-h-32 bg-gradient-to-b from-black via-black to-white/50"></div>
   <div class="bg-white/50">
+    <div class="border-dotted border-4 bg-white/5 p-4">
+      <a href="https://grant-king.github.io/cyberindex/">
+        <div>
+          For a comprehensive overview of this system in a familair format
+        </div>
+        <div
+          class="px-1 text-3xl bg-clip-text text-white/80 font-extrabold bg-cover bg-[url('https://unrolla.blob.core.windows.net/unrolla/images/image_1-coral_2461.webp')]">
+          go to docs website
+        </div>
+        <div>
+          For a comprehensive overview of this system in a familair format
+        </div>
+      </a>
+    </div>
     <div class="pb-32">
       <AboutHeader :heading_content="heading_1" />
       <AboutHeader :heading_content="heading_2" />
@@ -10,7 +26,8 @@
       <AboutHeader :heading_content="heading_5" />
       <AboutHeader :heading_content="heading_6" />
     </div>
-    <div class="border-dotted border-t-8 border-b-4 min-h-16"></div>
+    <div class="min-h-32 bg-gradient-to-t from-black via-black to-lime-400/50"></div>
+    <div class="min-h-32 bg-gradient-to-b from-black via-black to-lime-400/50"></div>
     <div class="pb-32">
       <AboutHeader :heading_content="heading_7" />
       <AboutHeader :heading_content="heading_7b" />
