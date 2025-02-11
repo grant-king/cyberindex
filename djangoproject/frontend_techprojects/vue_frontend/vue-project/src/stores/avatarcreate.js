@@ -65,39 +65,61 @@ export const useAvatarCreateStore = defineStore('avatarcreate', () => {
   }
 
   async function convertImageToWebP() {
-    const file = original_image_file.value
-    if (file === null) {
-      console.error('no file selected')
-      return
+    const file = original_image_file.value;
+    if (!file) {
+      console.error('No file selected');
+      return;
     }
-    console.log('converting image to webp')
+    console.log('Converting image to webp');
+  
     return new Promise((resolve, reject) => {
-      const image = new Image()
-      image.src = URL.createObjectURL(file)
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+  
       image.onload = () => {
-        const canvas = document.createElement('canvas')
-        canvas.height = image.height
-        canvas.width = image.width
-        const context = canvas.getContext('2d')
-        context.drawImage(image, 0, 0)
+        // Define maximum allowed dimensions
+        const maxWidth = 800;   // change as needed
+        const maxHeight = 600;  // change as needed
+  
+        let width = image.width;
+        let height = image.height;
+  
+        // Calculate scaling factor if the image is too large
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = width * ratio;
+          height = height * ratio;
+        }
+  
+        // Create a canvas with the new dimensions
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+  
+        const context = canvas.getContext('2d');
+        // Draw the image scaled to the new dimensions
+        context.drawImage(image, 0, 0, width, height);
+  
+        // Convert the canvas to a WebP blob
         canvas.toBlob((blob) => {
           if (blob) {
-            const newFile = new File([blob], 'image.webp', { type: 'image/webp' })
-            image_upload_preview.value = newFile
-            resolve(newFile)
+            const newFile = new File([blob], 'image.webp', { type: 'image/webp' });
+            image_upload_preview.value = newFile;
+            resolve(newFile);
           } else {
-            reject('failed to convert image')
+            reject('Failed to convert image');
           }
-        }, 'image/webp')
-      }
+        }, 'image/webp');
+      };
+  
       image.onerror = (error) => {
-        console.error('failed to load image')
-        console.error(error)
-      }
-    }
-    )
+        console.error('Failed to load image');
+        console.error(error);
+        reject(error);
+      };
+    });
   }
-
+  
 
   return { createAvatar, convertImageToWebP, fetchAllImages, all_images, original_image_file, image_upload_preview }
 })
