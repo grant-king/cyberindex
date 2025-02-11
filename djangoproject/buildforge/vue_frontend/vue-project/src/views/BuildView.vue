@@ -107,20 +107,20 @@ onMounted(async () => {
 })
 
 watch(() => builder_store.my_builder.x, async () => {
-    await redrawSlice()
-    await builder_store.updateBuilder()
+    builder_store.updateBuilder()
+    redrawSlice()
 })
 watch(() => builder_store.my_builder.y, async () => {
-    await redrawSlice()
-    await builder_store.updateBuilder()
+    builder_store.updateBuilder()
+    redrawSlice()
 })
 watch(() => builder_store.my_builder.z, async () => {
-    await redrawSlice()
-    await builder_store.updateBuilder()
+    builder_store.updateBuilder()
+    redrawSlice()
 })
 watch(() => builder_store.my_builder.edit_plane, async () => {
-    await redrawSlice()
-    await builder_store.updateBuilder()
+    builder_store.updateBuilder()
+    redrawSlice()
 })
 
 async function redrawSlice() {
@@ -137,6 +137,10 @@ async function redrawSlice() {
 }
 
 async function paintSlot(slot) {
+    //todo: if slot is already occupied, collect the associated voxel and unpaint the slot
+    // althought this would prevent multiple voxels from occupying the same space, which is not the goal
+    // need some way to let the users collect voxels while the 3d colleciton is broken
+    // or maybe easier to fix the 3d collection first and forget this
     slot_colors.value[slot] = current_color.value
     const claim = collector_store.claim_list.shift()
     const { off_x, off_y, off_z } = slotIdxToWorldCoords(slot)
