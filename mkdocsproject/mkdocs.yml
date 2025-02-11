@@ -1,0 +1,35 @@
+site_name: MYCTP Documentation
+theme:
+  name: readthedocs
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Configuration: getting-started/configuration.md
+    - Contributing: getting-started/contributing.md
+  - Architecture:
+    - Overview: architecture/overview.md
+    - Patterns: architecture/patterns.md
+    - Data Model: architecture/data-model.md
+  - Development:
+    - Frontend:
+      - Overview: development/frontend/overview.md
+      - Add Frontend: development/frontend/adding-frontends.md
+      - Components: development/frontend/components.md
+    - Backend:
+      - Overview: development/backend/overview.md
+      - API: development/backend/api.md
+    - Deployment: development/deployment.md
+  - Features:
+    - Sponsors:
+      - Overview: features/sponsors/overview.md
+      - Integration: features/sponsors/integration.md
+    - Projects: features/projects.md
+    - Community: features/community.md
