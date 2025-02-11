@@ -71,8 +71,8 @@ MYCTP takes a unique approach to community building and civic technology:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/myctp.git
-cd myctp
+git clone https://github.com/grant-king/cyberindex.git
+cd cyberindex/djangoproject
 ```
 
 2. Install backend dependencies:
@@ -82,31 +82,26 @@ source venv/bin/activate  # or `venv\Scripts\activate` on Windows
 pip install -r requirements.txt
 ```
 
-3. start frontend continuous update watch script, for any frontend you are working on. This will have vite build to Django's static after any saved change:
-```bash
-cd ....../scripts/
-python watch.py
-```
-
-4. Set up environment variables:
+3. Set up environment variables:
 ```python
-#create a .env file with the following:
+#create an .env file saved under /djangoproject (next to manage.py)
+# add the variables:
 DEBUG = 'True'
 SECRET_KEY = 'make_up_your_own_key'
 WEBSITE_HOSTNAME = 'localhost'
-AVATAR_HASH_SECRET = 'make it up'
+AVATAR_HASH_SECRET = 'make_it_up'
 
 # optional or not needed for dev
-STRIPE_API_KEY = 'easy to obtain your own'
-STRIPE_PUBLIC_KEY = 'or skip this and stripe component will be broken'
-SENDGRID_API_KEY = 'required for password reset'
-MEDIA_STORAGE_CONNECTION_STRING = 'required for deployment'
-STATIC_STORAGE_CONNECTION_STRING = 'required for deployment'
-STATIC_STORAGE_URL = 'required for deployment'
+STRIPE_API_KEY = 'easytoobtainyourown'
+STRIPE_PUBLIC_KEY = 'orskipthisandstripecomponentwillbebroken'
+SENDGRID_API_KEY = 'requiredforpasswordreset'
+MEDIA_STORAGE_CONNECTION_STRING = 'requiredfordeployment'
+STATIC_STORAGE_CONNECTION_STRING = 'requiredfordeployment'
+STATIC_STORAGE_URL = 'requiredfordeployment'
 
 ```
 
-5. Run migrations:
+4. Run migrations:
 ```bash
 python manage.py migrate
 ```
@@ -116,24 +111,32 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-6. Start development servers:
+6. start frontend continuous update watch script, for any frontend you are working on. This will have vite build to Django's static after any saved change:
 ```bash
-# Backend
+cd ....../scripts/
+python watch.py
+```
+
+7. Start development server:
+```bash
+# django is handling both ends
 python manage.py runserver
 ```
 
-# Frontends will update automatically thanks to any watch.py scripts that are running. You can develop front and back ends together without hiccups.
+Frontends will update automatically thanks to any watch.py scripts that are running. You can develop front and back ends together and test the build live when both wath.py and django dev server are running.
 
 ## Contributing
 
 We welcome contributions! Please someone consider contributing some contribution guidelines.
 
 ### Areas for Contribution
+- Let your passion guide you
 - Project discovery algorithms
 - Community engagement features
 - Documentation improvements
 - UI/UX enhancements
 - Testing and quality assurance
+- Endless areas
 
 ## License
 
