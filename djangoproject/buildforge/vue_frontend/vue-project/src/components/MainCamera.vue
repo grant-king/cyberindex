@@ -100,6 +100,14 @@ async function processClaimQueue() {
 }
 
 async function processZoneRefresh() {
+    // I think this is not the best way to show world updates. Fun for the zone update side-effect animation but extemely 
+    // inefficient as most of the world  will not change frequently.
+    // the most cost effective route would to have the backend filter a list of changes for a period of time, per request
+    // (there is no model or field that will do this now, will have to figure it out... the forgotten PlacementPromise model may do it)
+    // and then send those changes to the client when the client requests a refresh at a regular interval
+    // client sends timestamp of last request, server sends all changes within a much larger zone since that time and a new timestamp
+    // also should be storing this fetched voxel data in localdb and not in the store; store can wrap the localdb for working storage and convenience methods
+
     //return if velocity is too high
     if (control_store.velocity.x > 0.04 || control_store.velocity.x < -0.04
     || control_store.velocity.y > 0.04 || control_store.velocity.y < -0.04
