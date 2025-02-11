@@ -120,6 +120,7 @@ python manage.py createsuperuser
 ```bash
 # Backend
 python manage.py runserver
+```
 
 # Frontends will update automatically thanks to any watch.py scripts that are running. You can develop front and back ends together without hiccups.
 
