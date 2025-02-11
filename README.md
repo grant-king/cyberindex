@@ -1,5 +1,11 @@
 ### CYBERINDEX SOURCE => (MYCTP.org) My Community Technology Platform
 
+
+
+## [VISIT WIP PLATFORM](https://myctp.azurewebsites.net/)
+
+## [VISIT DOCS WEBSITE](https://grant-king.github.io/cyberindex/)
+
 This repo 'cyberindex' holds the current source for a full-stack web application hosted on myctp.org. It is built with Django REST Framework (DRF) and Vue.js. It provides a robust platform for managing user-uploaded civic technology projects. This infrastructure pattern can be adapted and reused for any purpose.
 
 ## Overview
