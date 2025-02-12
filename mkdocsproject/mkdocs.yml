@@ -12,11 +12,16 @@ nav:
   - Home: index.md
   - Overview: overview.md
   - Features:
-    - Sponsors:
-      - Overview: features/sponsors/overview.md
-      - Integration: features/sponsors/integration.md
     - Projects: features/projects.md
-    - Community: features/community.md
+    - Community: 
+      - Overview: features/community/overview.md
+      - Sponsors: features/community/sponsors.md
+      - Meditations: features/community/meditations.md
+      - Reflections: features/community/reflections.md
+      - Pixeldance: features/community/pixeldance.md
+      - Our Disco Tech?: features/community/our-disco-tech-teaser.md
+    - Our Disco Tech: 
+      - Overview: features/our-disco-tech/overview.md
   - Development:
     - Installation: getting-started/installation.md
     - Configuration: getting-started/configuration.md
@@ -29,3 +34,6 @@ nav:
       - Overview: development/backend/overview.md
       - API: development/backend/api.md
     - Deployment: development/deployment.md
+    - Testing: development/testing.md
+    - Learning: development/learning.md
+    - Security Research: development/security-research.md
