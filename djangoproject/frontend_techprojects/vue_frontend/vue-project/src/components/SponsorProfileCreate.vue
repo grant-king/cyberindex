@@ -68,6 +68,7 @@ const sponsorprofiles_store = useSponsorprofilesStore();
 
 async function submit_profile() {
     sponsorprofiles_store.updateSponsorProfile();
+    alert('Profile updated. Congratulations?');
 }
 
 </script>
