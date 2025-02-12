@@ -31,7 +31,7 @@
                 <div class="my-4">
                     <div class="">
                         <button class="border-dotted border-4 rounded-md bg-clip-border text-black font-bold px-3 py-2"
-                            @click="avatarcreate.createAvatar">
+                            @click="submit_image">
                             Submit {{ image_name }}
                         </button>
                     </div>
@@ -94,5 +94,11 @@ async function handle_file_change(event) {
     avatarcreate.original_image_file = file
 }
 
+async function submit_image() {
+    avatarcreate.createAvatar()
+    alert('Image submitted. Check out the quilt above!')
+    image_name.value = null
+    image_preview.value = null
+}
 
 </script>
