@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "cashier",
     "rebirth",
     "buildforge",
+    "radio",
 ]
 
 MIDDLEWARE = [
