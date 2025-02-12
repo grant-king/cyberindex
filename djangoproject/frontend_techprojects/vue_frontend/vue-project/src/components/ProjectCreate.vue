@@ -1,5 +1,5 @@
 <template>
-    <BasicHeader eyebrow="Contribute" title="Submit Your Project" description="paste a github link, maybe add a location, save to the index." />
+    <BasicHeader eyebrow="Contribute" title="Submit Your Project" description="paste a github link, fetch the details, save to our project index." />
     <div class="bg-white/50">
         <div class="space-y-12 px-8 py-16">
             <div class="border-b border-black/10 pb-12">
