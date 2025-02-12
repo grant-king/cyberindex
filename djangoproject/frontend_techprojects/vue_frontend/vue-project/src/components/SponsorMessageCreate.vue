@@ -27,5 +27,6 @@ const sponsormessages_store = useSponsormessagesStore();
 
 async function submit_message() {
     sponsormessages_store.createSponsorMessage();
+    alert('Meditation published. Manage below.');
 }
 </script>
