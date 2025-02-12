@@ -105,7 +105,7 @@ class AvatarViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=["get"])
     def all_images(self, request):
-        avatars = Avatar.objects.all()
+        avatars = Avatar.objects.all().order_by("-created_at")[:200]
         return Response(
             {
                 "public_images": [avatar.public_image.url for avatar in avatars],
