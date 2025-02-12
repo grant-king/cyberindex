@@ -76,13 +76,6 @@
                         </li>
                       </ul>
                     </li>
-                    <li class="mt-auto">
-                      <a href="#"
-                        class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-400 hover:bg-gray-800 hover:text-white">
-                        <Cog6ToothIcon class="size-6 shrink-0" aria-hidden="true" />
-                        Settings
-                      </a>
-                    </li>
                   </ul>
                 </nav>
               </div>
@@ -142,16 +135,6 @@
                 </li>
               </ul>
             </li>
-
-            <!-- All Sponsors -->
-            <li class="mt-auto">
-              <a href="#"
-                class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-400 hover:bg-gray-800 hover:text-white">
-                <UsersIcon class="size-6 shrink-0" aria-hidden="true" />
-                Our Sponsors
-              </a>
-            </li>
-
           </ul>
         </nav>
       </div>
