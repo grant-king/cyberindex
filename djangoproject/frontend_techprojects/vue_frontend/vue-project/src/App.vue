@@ -267,7 +267,7 @@ import {
   XMarkIcon,
   FolderPlusIcon,
   HandThumbUpIcon,
-  GlobeAltIcon,
+  BookOpenIcon,
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 
@@ -279,7 +279,7 @@ const router_navigation = [
 ]
 
 const link_navigation = [
-  { name: 'GitHub', href: 'https://github.com/', icon: GlobeAltIcon, current: false },
+  { name: 'Docs', href: 'https://grant-king.github.io/cyberindex/', icon: BookOpenIcon, current: false },
 ]
 
 const feat_sponsors = [
