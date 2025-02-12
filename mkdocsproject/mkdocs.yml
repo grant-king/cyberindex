@@ -23,9 +23,10 @@ nav:
     - Our Disco Tech: 
       - Overview: features/our-disco-tech/overview.md
   - Development:
-    - Installation: getting-started/installation.md
-    - Configuration: getting-started/configuration.md
-    - Contributing: getting-started/contributing.md
+    - Getting Started:
+      - Installation: development/getting-started/installation.md
+      - Configuration: development/getting-started/configuration.md
+      - Contributing: development/getting-started/contributing.md
     - Frontend:
       - Overview: development/frontend/overview.md
       - Add Frontend: development/frontend/adding-frontends.md
