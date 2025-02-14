@@ -13,6 +13,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import vertexshadercode from './shaders/vertex_main.wgsl?raw'
 import fragmentshadercode from './shaders/fragment_main.wgsl?raw'
 
+const GRID_SIZE = 4
+
 const canvas = ref(null)
 const adapter = ref(null)
 const device = ref(null)
@@ -45,13 +47,22 @@ onMounted(async () => {
     console.log(adapter.value)
     device.value = await adapter.value.requestDevice()
 
+    // create a uniform buffer that describes the grid
+    const uniform_array = new Float32Array([GRID_SIZE, GRID_SIZE])
+    const uniform_buffer = device.value.createBuffer({
+        label: "grid uniforms",
+        size: uniform_array.byteLength,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    })
+    // write to device
+    device.value.queue.writeBuffer(uniform_buffer, 0, uniform_array)
+
     // create vertex buffer ready to accept verticies
     const vertex_buffer = device.value.createBuffer({
         label: 'cell verticies',
         size: verticies.byteLength,
         usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     })
-
     // copy vertex data into device's memory
     device.value.queue.writeBuffer(vertex_buffer, /*bufferOffset=*/0, verticies)
 
@@ -96,6 +107,16 @@ onMounted(async () => {
         }
     })
 
+    // create a bind group
+    const bind_group = device.value.createBindGroup({
+        label: "cell renderer bind group",
+        layout: cell_pipeline.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: { buffer: uniform_buffer},
+        }],
+    })
+
     context.value.configure({
         device: device.value,
         format: canvas_format.value
@@ -114,6 +135,9 @@ onMounted(async () => {
     //pipeline
     pass.setPipeline(cell_pipeline)
     pass.setVertexBuffer(0, vertex_buffer)
+
+    pass.setBindGroup(0, bind_group)
+    
     pass.draw(verticies.length / 2) // 6 verticies
 
     // end the render pass
