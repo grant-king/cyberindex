@@ -3,7 +3,8 @@
     WEB GPU DEMO
 </div>
 <div>
-    <canvas id="gpu-demo-canvas"></canvas>   
+    <canvas id="gpu-demo-canvas"
+    class="h-screen w-screen"></canvas>   
 </div>
 </template>
 
@@ -15,6 +16,18 @@ const device = ref(null)
 const context = ref(null)
 const canvas_format = ref(null)
 const encoder = ref(null)
+const verticies = new Float32Array([
+    // x, y
+    // triangle 1
+    -0.8, -0.8, 
+    0.8, -0.8,
+    0.8, 0.8,
+    // triangle 2
+    -0.8, -0.8, 
+    0.8, 0.8,
+    -0.8, 0.8
+])
+
 
 
 onMounted(async () => {
@@ -28,12 +41,31 @@ onMounted(async () => {
     }
     console.log(adapter.value)
     device.value = await adapter.value.requestDevice()
+    const vertex_buffer = device.value.createBuffer({
+        label: 'cell verticies',
+        size: verticies.byteLength,
+        usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+    })
+    //copy vertex buffer into device's memory
+    device.value.queue.writeBuffer(vertex_buffer, /*bufferOffset=*/0, verticies)
+    // define the vetex layout
+    const vertex_buffer_layout = {
+        arrayStride: 8,
+        attributes: [
+            {
+                format: "float32x2",
+                offset: 0,
+                shaderLocation: 0,
+            }
+        ],
+    }
     context.value = canvas.value.getContext('webgpu')
     canvas_format.value = navigator.gpu.getPreferredCanvasFormat()
     context.value.configure({
         device: device.value,
         format: canvas_format.value
     })
+
     encoder.value = device.value.createCommandEncoder()
     const pass = encoder.value.beginRenderPass({
         colorAttachments: [{
