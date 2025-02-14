@@ -2,5 +2,9 @@
 
 @vertex
 fn vertexMain(@location(0) pos: vec2f) -> @builtin(position) vec4f {
-    return vec4f(pos.x / grid.x, pos.y / grid.y, 0, 1);
+    // very dense: 
+    // pos / grid => centered square
+    // pos + 1 / grid => corner-centered square
+    let grid_pos = (pos + 1) / grid - 1; // aligned with grid location
+    return vec4f(grid_pos.x, grid_pos.y, 0, 1);
 }
