@@ -2,9 +2,9 @@
 <div>
     WEB GPU DEMO
 </div>
-<div>
+<div class="">
     <canvas id="gpu-demo-canvas"
-    class="h-screen w-screen"></canvas>   
+    class="min-w-full"></canvas>   
 </div>
 </template>
 
@@ -41,13 +41,17 @@ onMounted(async () => {
     }
     console.log(adapter.value)
     device.value = await adapter.value.requestDevice()
+
+    // create vertex buffer ready to accept verticies
     const vertex_buffer = device.value.createBuffer({
         label: 'cell verticies',
         size: verticies.byteLength,
         usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     })
-    //copy vertex buffer into device's memory
+
+    // copy vertex data into device's memory
     device.value.queue.writeBuffer(vertex_buffer, /*bufferOffset=*/0, verticies)
+
     // define the vetex layout
     const vertex_buffer_layout = {
         arrayStride: 8,
@@ -59,6 +63,17 @@ onMounted(async () => {
             }
         ],
     }
+
+    // define the cell shader module
+    const cell_shader_module = device.value.createShaderModule(
+        {
+            label: "cell shader",
+            code: `
+            //shader code here
+            `
+        }
+    )
+
     context.value = canvas.value.getContext('webgpu')
     canvas_format.value = navigator.gpu.getPreferredCanvasFormat()
     context.value.configure({
