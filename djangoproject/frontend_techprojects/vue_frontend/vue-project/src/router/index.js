@@ -1,7 +1,8 @@
 import { createRouter, createMemoryHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 //import SponsorOnboardingView from '@/views/SponsorOnboardingView.vue'
-import CommunityView from '../views/CommunityView.vue'
+//import CommunityView from '../views/CommunityView.vue'
+import WebGPUView from '@/views/WebGPUView.vue'
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -10,7 +11,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      //component: CommunityView,
+      //component: WebGPUView,
     },
     {
       path: '/about',
@@ -45,11 +46,11 @@ const router = createRouter({
       name: 'community',
       component: () => import('../views/CommunityView.vue'),
     },
-//    {
-//      path: '/virtual',
-//      name: 'virtual',
-//      component: () => import('../views/VirtualView.vue'),
-//    }
+    {
+      path: '/webgpu',
+      name: 'webgpu',
+      component: () => import('../views/WebGPUView.vue'),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
