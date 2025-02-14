@@ -1,15 +1,18 @@
 <template>
-<div>
-    WEB GPU DEMO
-</div>
-<div class="">
-    <canvas id="gpu-demo-canvas"
-    class="min-w-full"></canvas>   
-</div>
+    <div>
+        WEB GPU DEMO
+    </div>
+    <div class="">
+        <canvas id="gpu-demo-canvas" class="min-w-full"></canvas>
+    </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+
+import vertexshadercode from './shaders/vertex_main.wgsl?raw'
+import fragmentshadercode from './shaders/fragment_main.wgsl?raw'
+
 const canvas = ref(null)
 const adapter = ref(null)
 const device = ref(null)
@@ -19,11 +22,11 @@ const encoder = ref(null)
 const verticies = new Float32Array([
     // x, y
     // triangle 1
-    -0.8, -0.8, 
+    -0.8, -0.8,
     0.8, -0.8,
     0.8, 0.8,
     // triangle 2
-    -0.8, -0.8, 
+    -0.8, -0.8,
     0.8, 0.8,
     -0.8, 0.8
 ])
@@ -68,14 +71,31 @@ onMounted(async () => {
     const cell_shader_module = device.value.createShaderModule(
         {
             label: "cell shader",
-            code: `
-            //shader code here
-            `
+            code: vertexshadercode + fragmentshadercode
         }
     )
 
     context.value = canvas.value.getContext('webgpu')
     canvas_format.value = navigator.gpu.getPreferredCanvasFormat()
+
+    // create a render pipeline
+    const cell_pipeline = device.value.createRenderPipeline({
+        label: "cell pipeline",
+        layout: "auto",
+        vertex: {
+            module: cell_shader_module,
+            entryPoint: "vertexMain",
+            buffers: [vertex_buffer_layout]
+        },
+        fragment: {
+            module: cell_shader_module,
+            entryPoint: "fragmentMain",
+            targets: [{
+                format: canvas_format.value
+            }]
+        }
+    })
+
     context.value.configure({
         device: device.value,
         format: canvas_format.value
@@ -90,13 +110,19 @@ onMounted(async () => {
             storeOp: 'store'
         }]
     })
+
+    //pipeline
+    pass.setPipeline(cell_pipeline)
+    pass.setVertexBuffer(0, vertex_buffer)
+    pass.draw(verticies.length / 2) // 6 verticies
+
     // end the render pass
     pass.end()
     // create a handle to the recorded commands
     const command_buffer = encoder.value.finish()
     // submit the command buffer to the GPU's queue, takes a list of command buffers
     // once submitted, buffer can't be used again. build another command buffer to submit more commands
-    
+
     device.value.queue.submit([command_buffer])
     // can also be one-liner
     // device.queue.submit([encoder.finish()])
