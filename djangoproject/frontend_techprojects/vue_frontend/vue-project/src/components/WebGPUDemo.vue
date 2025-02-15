@@ -1,6 +1,7 @@
 <template>
     <div>
         WEB GPU DEMO
+        <a href="https://codelabs.developers.google.com/your-first-webgpu-app">:: REFERENCE ::</a>
     </div>
     <div class="">
         <canvas id="gpu-demo-canvas" class="min-w-full"></canvas>
@@ -13,7 +14,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import vertexshadercode from './shaders/vertex_main.wgsl?raw'
 import fragmentshadercode from './shaders/fragment_main.wgsl?raw'
 
-const GRID_SIZE = 4
+const GRID_SIZE = 8
 
 const canvas = ref(null)
 const adapter = ref(null)
@@ -137,7 +138,7 @@ onMounted(async () => {
     pass.setVertexBuffer(0, vertex_buffer)
 
     pass.setBindGroup(0, bind_group)
-    
+
     pass.draw(verticies.length / 2) // 6 verticies
 
     // end the render pass
