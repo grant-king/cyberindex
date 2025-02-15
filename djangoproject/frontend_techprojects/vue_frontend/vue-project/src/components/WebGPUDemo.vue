@@ -139,7 +139,7 @@ onMounted(async () => {
 
     pass.setBindGroup(0, bind_group)
 
-    pass.draw(verticies.length / 2) // 6 verticies
+    pass.draw(verticies.length / 2, GRID_SIZE * GRID_SIZE) // 6 verticies
 
     // end the render pass
     pass.end()
