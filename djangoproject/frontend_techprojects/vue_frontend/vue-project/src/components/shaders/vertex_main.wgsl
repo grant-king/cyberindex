@@ -9,6 +9,7 @@ struct VertexOutput {
 };
 
 @group(0) @binding(0) var<uniform> grid: vec2f;
+@group(0) @binding(1) var<storage> cell_state: array<u32>;
 
 @vertex
 fn vertexMain(input: VertexInput) -> VertexOutput {
@@ -16,12 +17,14 @@ fn vertexMain(input: VertexInput) -> VertexOutput {
     let idx = f32(input.instance); 
     // compute cell coordinate from instance_index
     let cell = vec2f(idx % grid.x, floor(idx / grid.x));
+    let state = f32(cell_state[input.instance]);
     let cell_offset = cell / grid * 2;
     // very dense: 
     // pos / grid => centered square
     // pos + 1 / grid => corner-centered square
     // grid_pos = (pos + 1) / grid - 1 => aligned with grid location
-    let grid_pos = (input.pos + 1) / grid - 1 + cell_offset; // aligned with grid at cell location
+    // let grid_pos = (input.pos + 1) / grid - 1 + cell_offset => aligned with grid at cell location
+    let grid_pos = (state*input.pos + 1) / grid - 1 + cell_offset; // show if active
     var output: VertexOutput;
     output.pos = vec4f(grid_pos.x, grid_pos.y, 0, 1);
     output.cell = cell;
