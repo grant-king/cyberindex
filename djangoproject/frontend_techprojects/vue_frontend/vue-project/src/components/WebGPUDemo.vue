@@ -15,7 +15,11 @@ import vertexshadercode from './shaders/vertex_main.wgsl?raw'
 import fragmentshadercode from './shaders/fragment_main.wgsl?raw'
 
 const GRID_SIZE = 8
+const UPDATE_INTERVAL = 800 //ms
 
+let interval_tracker = 0
+
+const step = ref(0)
 const canvas = ref(null)
 const adapter = ref(null)
 const device = ref(null)
@@ -48,9 +52,17 @@ onMounted(async () => {
     device.value = await adapter.value.requestDevice()
 
     // create storage buffer for the simulation state
+    // use two for ping-pong pattern
     const cell_state_array = new Uint32Array(GRID_SIZE * GRID_SIZE)
-    const state_storage_buffer = device.value.createBuffer({
-        label: "cell state",
+    
+    const state_storage_buffer_a = device.value.createBuffer({
+        label: "cell state a",
+        size: cell_state_array.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    })
+
+    const state_storage_buffer_b = device.value.createBuffer({
+        label: "cell state b",
         size: cell_state_array.byteLength,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     })
@@ -59,8 +71,14 @@ onMounted(async () => {
     for (let i=0; i<cell_state_array.length; i+=3){
         cell_state_array[i] = 1
     }
-    device.value.queue.writeBuffer(state_storage_buffer, 0, cell_state_array)
-
+    device.value.queue.writeBuffer(state_storage_buffer_a, 0, cell_state_array)
+    
+    // mark every 2nd cell of the grid as active
+    for (let i=0; i<cell_state_array.length; i+=2){
+        cell_state_array[i] = 1
+    }
+    device.value.queue.writeBuffer(state_storage_buffer_b, 0, cell_state_array)
+    
     // create a uniform buffer that describes the grid
     const uniform_array = new Float32Array([GRID_SIZE, GRID_SIZE])
     const uniform_buffer = device.value.createBuffer({
@@ -122,7 +140,7 @@ onMounted(async () => {
     })
 
     // create a bind group
-    const bind_group = device.value.createBindGroup({
+    const bind_group_a = device.value.createBindGroup({
         label: "cell renderer bind group",
         layout: cell_pipeline.getBindGroupLayout(0),
         entries: [{
@@ -131,7 +149,21 @@ onMounted(async () => {
         },
         {
             binding: 1,
-            resource: { buffer: state_storage_buffer}
+            resource: { buffer: state_storage_buffer_a}
+        },
+    ],
+    })
+
+    const bind_group_b = device.value.createBindGroup({
+        label: "cell renderer bind group",
+        layout: cell_pipeline.getBindGroupLayout(0),
+        entries: [{
+            binding: 0,
+            resource: { buffer: uniform_buffer },
+        },
+        {
+            binding: 1,
+            resource: { buffer: state_storage_buffer_b}
         },
     ],
     })
@@ -140,36 +172,37 @@ onMounted(async () => {
         device: device.value,
         format: canvas_format.value
     })
+    
+    function update_grid() {
+        step.value++
+        const bind_groups = [bind_group_a, bind_group_b]
+    
+        // start a render pass
+        encoder.value = device.value.createCommandEncoder()
+        const pass = encoder.value.beginRenderPass({
+                colorAttachments: [{
+                    view: context.value.getCurrentTexture().createView(),
+                    loadOp: "clear",
+                    clearValue: { r: 0, g: 0.2, b: 0, a: 1.0},
+                    storeOp: "store",
+                }]
+            })
+    
+        //draw the grid
+        pass.setPipeline(cell_pipeline)
+        pass.setBindGroup(0, bind_groups[step.value % 2])
+        pass.setVertexBuffer(0, vertex_buffer)
+        pass.draw(verticies.length / 2, GRID_SIZE * GRID_SIZE)
 
-    encoder.value = device.value.createCommandEncoder()
-    const pass = encoder.value.beginRenderPass({
-        colorAttachments: [{
-            view: context.value.getCurrentTexture().createView(),
-            loadOp: 'clear',
-            clearValue: { r: 0.0, g: 0.2, b: 0.0, a: 0.2 },
-            storeOp: 'store'
-        }]
-    })
+        pass.end()
+        device.value.queue.submit([encoder.value.finish()])
 
-    //pipeline
-    pass.setPipeline(cell_pipeline)
-    pass.setVertexBuffer(0, vertex_buffer)
+        //requestAnimationFrame(update_grid) //too fast
+    }
 
-    pass.setBindGroup(0, bind_group)
-
-    pass.draw(verticies.length / 2, GRID_SIZE * GRID_SIZE) // 6 verticies
-
-    // end the render pass
-    pass.end()
-    // create a handle to the recorded commands
-    const command_buffer = encoder.value.finish()
-    // submit the command buffer to the GPU's queue, takes a list of command buffers
-    // once submitted, buffer can't be used again. build another command buffer to submit more commands
-
-    device.value.queue.submit([command_buffer])
-    // can also be one-liner
-    // device.queue.submit([encoder.finish()])
+    setInterval(update_grid, UPDATE_INTERVAL)
 })
+
 
 
 
