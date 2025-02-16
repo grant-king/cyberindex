@@ -4,7 +4,7 @@
         <a href="https://codelabs.developers.google.com/your-first-webgpu-app">:: REFERENCE ::</a>
     </div>
     <div class="">
-        <canvas id="gpu-demo-canvas" class="min-w-full"></canvas>
+        <canvas id="gpu-demo-canvas" class="min-w-full aspect-square"></canvas>
     </div>
 </template>
 
@@ -35,7 +35,6 @@ const verticies = new Float32Array([
 ])
 
 
-
 onMounted(async () => {
     canvas.value = document.getElementById('gpu-demo-canvas')
     if (!navigator.gpu) {
@@ -47,6 +46,20 @@ onMounted(async () => {
     }
     console.log(adapter.value)
     device.value = await adapter.value.requestDevice()
+
+    // create storage buffer for the simulation state
+    const cell_state_array = new Uint32Array(GRID_SIZE * GRID_SIZE)
+    const state_storage_buffer = device.value.createBuffer({
+        label: "cell state",
+        size: cell_state_array.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    })
+
+    // mark every 3rd cell of the grid as active
+    for (let i=0; i<cell_state_array.length; i+=3){
+        cell_state_array[i] = 1
+    }
+    device.value.queue.writeBuffer(state_storage_buffer, 0, cell_state_array)
 
     // create a uniform buffer that describes the grid
     const uniform_array = new Float32Array([GRID_SIZE, GRID_SIZE])
@@ -114,8 +127,13 @@ onMounted(async () => {
         layout: cell_pipeline.getBindGroupLayout(0),
         entries: [{
             binding: 0,
-            resource: { buffer: uniform_buffer},
-        }],
+            resource: { buffer: uniform_buffer },
+        },
+        {
+            binding: 1,
+            resource: { buffer: state_storage_buffer}
+        },
+    ],
     })
 
     context.value.configure({
