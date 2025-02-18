@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 import random
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import OuterRef
+from django.utils.dateparse import parse_datetime
 
 # admin auth for voxel actions
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -122,6 +123,20 @@ class VoxelViewSet(viewsets.ModelViewSet):
         )
         serializer = VoxelSerializer(voxels, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=["get"]) # get voxels updated since query
+    def recent(self, request):
+        updated_since = request.query_params.get('updated_since')
+        if updated_since is not None:
+            updated_since = parse_datetime(updated_since)
+            voxels = Voxel.objects.filter(updated_at__gt=updated_since)
+            serializer = VoxelSerializer(voxels, many=True)
+            return Response(serializer.data)
+        else:
+            # return last 20 updated voxels
+            voxels = Voxel.objects.order_by('-updated_at')[:20]
+            serializer = VoxelSerializer(voxels, many=True)
+            return Response(serializer.data)
 
     @action(
         detail=False, methods=["get"]
