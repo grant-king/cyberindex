@@ -7,6 +7,7 @@ class Voxel(models.Model):
     y = models.IntegerField(db_index=True)
     z = models.IntegerField(db_index=True)
     claim_pending = models.BooleanField(default=False, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def check_claim_pending(self):
@@ -14,7 +15,6 @@ class Voxel(models.Model):
         self.save()
         return self.claim_pending
         
-
 
 class Claim(models.Model):
     voxel = models.ForeignKey(Voxel, on_delete=models.CASCADE)
