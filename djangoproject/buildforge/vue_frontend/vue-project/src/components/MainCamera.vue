@@ -20,16 +20,16 @@ import * as THREE from 'three'
 
 import { onMounted, onUnmounted } from 'vue'
 import { ref, watch } from 'vue'
-import claim_worker_obj from '../workers/claim-processor?worker'
-import zone_worker_obj from '../workers/zone-refresh-processor?worker'
+import claim_worker_obj from '../workers/claim-processor?worker&inline'
+import zone_worker_obj from '../workers/zone-refresh-processor?worker&inline'
 
 const camera_store = useCameraStore()
 const control_store = useCameracontrolStore()
 const collector_store = useCollectorStore()
 const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
-const claim_worker = new claim_worker_obj
-const zone_worker = new zone_worker_obj
+const claim_worker = new claim_worker_obj()
+const zone_worker = new zone_worker_obj()
 
 claim_worker.onmessage = (e) => {
     console.log(e.data)
@@ -92,7 +92,7 @@ async function processClaimQueue() {
     for (let collectible of collector_store.claim_queue) {
         // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
         //collector_store.createClaim(collectible.pk)
-        const wkr_message = [collectible.pk, '/apiv1/claims/', window.csrf_token]
+        const wkr_message = [collectible.pk, `${window.location.origin}/apiv1/claims/`, window.csrf_token]
         console.log("sending pk to claim_worker:", wkr_message)
         claim_worker.postMessage(wkr_message)
     }
@@ -118,7 +118,7 @@ async function processZoneRefresh() {
     const x = camera_store.camera.position.x
     const y = camera_store.camera.position.y
     const z = camera_store.camera.position.z
-    const endpoint = '/apiv1/voxels/'
+    const endpoint = `${window.location.origin}/apiv1/voxels/`
     const token = window.csrf_token
     const voxel_list = JSON.parse(JSON.stringify(voxel_store.voxel_list))
     const mesh_list = JSON.parse(JSON.stringify(voxel_store.voxel_mesh_list))
