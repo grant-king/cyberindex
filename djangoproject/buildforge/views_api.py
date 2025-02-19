@@ -129,8 +129,8 @@ class VoxelViewSet(viewsets.ModelViewSet):
         updated_since = request.query_params.get('updated_since')
         if updated_since is not None:
             updated_since = parse_datetime(updated_since)
-            voxels = Voxel.objects.filter(updated_at__gt=updated_since)
-            serializer = VoxelSerializer(voxels, many=True)
+            voxels = Voxel.objects.filter(updated_at__gt=updated_since, claim_pending=False)
+            serializer = VoxelSerializer(voxels, many=True) 
             return Response(serializer.data)
         else:
             # return last 20 updated voxels
