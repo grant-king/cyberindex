@@ -7,7 +7,7 @@ class Voxel(models.Model):
     y = models.IntegerField(db_index=True)
     z = models.IntegerField(db_index=True)
     claim_pending = models.BooleanField(default=False, db_index=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     @property
     def check_claim_pending(self):
