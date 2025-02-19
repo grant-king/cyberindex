@@ -22,6 +22,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { ref, watch } from 'vue'
 import claim_worker_obj from '../workers/claim-processor?worker&inline'
 import zone_worker_obj from '../workers/zone-refresh-processor?worker&inline'
+import recent_worker_obj from '../workers/recent-refresh-processor?worker&inline'
 
 const camera_store = useCameraStore()
 const control_store = useCameracontrolStore()
@@ -30,12 +31,16 @@ const scene_store = useSceneStore()
 const voxel_store = useVoxelStore()
 const claim_worker = new claim_worker_obj()
 const zone_worker = new zone_worker_obj()
+const recent_worker = new recent_worker_obj()
+
+const last_updated = ref(new Date())
+console.log("last_updated:", last_updated.value.toISOString())
 
 claim_worker.onmessage = (e) => {
     console.log(e.data)
 }
 
-let measure_interval_id, visual_interval_id, claim_interval_id, zone_refresh_interval_id
+let measure_interval_id, visual_interval_id, claim_interval_id, zone_refresh_interval_id, recent_refresh_interval_id
 
 onMounted(() => {
     measure_interval_id = setInterval(measureCollector, 200)
@@ -48,14 +53,17 @@ onMounted(() => {
     //        camera_store.camera.position.z
     //    )
     //}, 2000)
-    zone_refresh_interval_id = setInterval(processZoneRefresh, 4000)
+    //zone_refresh_interval_id = setInterval(processZoneRefresh, 4000)
+    recent_refresh_interval_id = setInterval(processRecentRefresh, 4000)
+
 })
 
 onUnmounted(() => {
     clearInterval(measure_interval_id)
     clearInterval(visual_interval_id)
     clearInterval(claim_interval_id)
-    clearInterval(zone_refresh_interval_id)
+    //clearInterval(zone_refresh_interval_id)
+    clearInterval(recent_refresh_interval_id)
 })
 
 function measureCollector() {
@@ -80,7 +88,7 @@ function processVisualQueue() {
             control_store.dampening(0.8)
             // remove voxel from scene
             scene_store.remove(obj_3d)
-            
+
             // create Claim with voxel pk - will omit voxel from world voxel queryset and work out any collection conflicts
             collector_store.claim_queue.push(collectible)
         }
@@ -110,8 +118,8 @@ async function processZoneRefresh() {
 
     //return if velocity is too high
     if (control_store.velocity.x > 0.04 || control_store.velocity.x < -0.04
-    || control_store.velocity.y > 0.04 || control_store.velocity.y < -0.04
-    || control_store.velocity.z > 0.04 || control_store.velocity.z < -0.04) {
+        || control_store.velocity.y > 0.04 || control_store.velocity.y < -0.04
+        || control_store.velocity.z > 0.04 || control_store.velocity.z < -0.04) {
         console.log("velocity too high, skipping zone refresh")
         return
     }
@@ -132,10 +140,10 @@ async function processZoneRefresh() {
         const near_mesh_new_positions = e.data
 
         for (const [obj_uuid, position] of Object.entries(near_mesh_new_positions)) {
-            if (obj_uuid.startsWith('CREATENEW')){
+            if (obj_uuid.startsWith('CREATENEW')) {
                 // push voxel data to voxel_list, extract pk from after CREATENEW_
                 const voxel_pk = obj_uuid.split('_')[1]
-                voxel_store.voxel_list.push({pk: voxel_pk, x: position.x, y: position.y, z: position.z, color: position.color})
+                voxel_store.voxel_list.push({ pk: voxel_pk, x: position.x, y: position.y, z: position.z, color: position.color })
                 // draw new mesh with voxel store (also adds to mesh_list)
                 const new_mesh = voxel_store.drawVoxel(
                     position.x, position.y, position.z, `#${position.color}`)
@@ -150,4 +158,35 @@ async function processZoneRefresh() {
     }
 }
 
+async function processRecentRefresh() {
+    // at this point it processes just new voxels, 
+    // but not yet removing collected voxels
+    // todo mechanism to remove collected voxels
+
+    const query_params = new URLSearchParams({
+        updated_since: last_updated.value.toISOString()
+    })
+    const endpoint = `${window.location.origin}/apiv1/voxels/recent/?${query_params}`
+    const token = window.csrf_token
+
+    const wkr_message = [endpoint, token]
+    console.log("sending recent refresh to recent_worker:", wkr_message)
+    recent_worker.postMessage(wkr_message)
+    // on message from worker, update voxel_list and mesh_list
+    recent_worker.onmessage = (e) => {
+        console.log("recent_worker message:", e.data)
+        const recent_voxels = e.data
+        for (const voxel of recent_voxels) {
+            // push voxel data to voxel_list
+            voxel_store.voxel_list.push(voxel) // add wrapper that has deduplication
+            // draw new mesh with voxel store (also adds to mesh_list)
+            const new_mesh = voxel_store.drawVoxel(
+                voxel.x, voxel.y, voxel.z, `#${voxel.color}`)
+            // add new returned mesh to scene with scene store
+            scene_store.add(new_mesh)
+        }
+        last_updated.value = new Date()
+    }
+
+}
 </script>
