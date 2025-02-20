@@ -1,14 +1,14 @@
 <template>
     <!-- Plane Painter -->
-    <div class="border-16 border-dotted"
+    <div class="border-16 border-dotted transfrom-flat rotate-x-180"
     :style="{ borderColor: `#${current_color}` }">
         <div class="bg-black overflow-auto max-w-4xl mx-auto p-4">
-            <div class="grid grid-cols-16 gap-4">
+            <div class="grid grid-cols-16 gap-1">
                 <div v-for="slot in grid_slots" :key="slot" class="column">
-                    <div class="text-white text-xs aspect-square w-auto border border-white/50"
+                    <div class="aspect-square w-auto border border-white/50"
                     :style="{ backgroundColor: `#${slot_colors[slot]}` }"
                     @click="paintSlot(slot)">
-                        {{ slot }}
+                        
                     </div>
                 </div>
             </div>
