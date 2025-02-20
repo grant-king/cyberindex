@@ -1,4 +1,4 @@
-import{d as ti,r as ft,j as Qi,k as Ki}from"./index-CHGIaz6A.js";/**
+import{d as ti,r as ft,j as Qi,t as Ki}from"./index-Cke_MBh2.js";/**
  * @license
  * Copyright 2010-2025 Three.js Authors
  * SPDX-License-Identifier: MIT
