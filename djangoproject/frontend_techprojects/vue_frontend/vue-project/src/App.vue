@@ -152,8 +152,8 @@
         <div class="h-6 w-px bg-black/10 lg:hidden" aria-hidden="true" />
 
         <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-          <form class="grid flex-1 grid-cols-1" action="#" method="GET">
-            <input type="search" name="search" aria-label="Search"
+          <form class="grid flex-1 grid-cols-1" action="https://grant-king.github.io/cyberindex/search.html" method="GET">
+            <input type="search" name="q" aria-label="Search"
               class="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-black outline-none placeholder:text-gray-400 sm:text-sm/6"
               placeholder="Search" />
             <MagnifyingGlassIcon class="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"
