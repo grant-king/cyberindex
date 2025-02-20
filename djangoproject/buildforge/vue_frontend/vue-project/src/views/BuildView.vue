@@ -3,7 +3,7 @@
     <div class="border-16 border-dotted"
     :style="{ borderColor: `#${current_color}` }">
         <div class="bg-black overflow-auto max-w-4xl mx-auto p-4">
-            <div class="grid grid-cols-8 gap-4">
+            <div class="grid grid-cols-16 gap-4">
                 <div v-for="slot in grid_slots" :key="slot" class="column">
                     <div class="text-white text-xs aspect-square w-auto border border-white/50"
                     :style="{ backgroundColor: `#${slot_colors[slot]}` }"
@@ -95,8 +95,8 @@ const next_color_idx = ref(0)
 const current_world_slice_voxels = ref({})
 const translated_world_slice_voxels = ref({})
 
-const grid_slots = ref(Array.from({ length: 64 }, (_, idx) => idx))
-const slot_colors = ref(Array.from({ length: 64 }, (_, idx) => '000200'))
+const grid_slots = ref(Array.from({ length: 256 }, (_, idx) => idx))
+const slot_colors = ref(Array.from({ length: 256 }, (_, idx) => '000200'))
 
 onMounted(async () => {
     await collector_store.fetchClaims()
@@ -128,7 +128,7 @@ async function redrawSlice() {
         builder_store.my_builder.x, 
         builder_store.my_builder.y, 
         builder_store.my_builder.z,
-        8,
+        16,
         builder_store.my_builder.edit_plane)
     const relative_voxels = convertSliceWorldCoordsToRelative2D(current_world_slice_voxels.value)
     console.log('original', current_world_slice_voxels.value)
@@ -157,22 +157,22 @@ async function paintSlot(slot) {
 
 function slotIdxToWorldCoords(idx) {
     if (builder_store.my_builder.edit_plane === 'xy') {
-        const x = idx % 8
-        const y = Math.floor(idx / 8)
+        const x = idx % 16
+        const y = Math.floor(idx / 16)
         const z = 0
         console.log(x, y, z)
         return { off_x: x, off_y: y, off_z: z }
     }
     if (builder_store.my_builder.edit_plane === 'yz') {
         const x = 0
-        const y = idx % 8
-        const z = Math.floor(idx / 8)
+        const y = idx % 16
+        const z = Math.floor(idx / 16)
         return { off_x: x, off_y: y, off_z: z }
     }
     if (builder_store.my_builder.edit_plane === 'zx') {
-        const x = Math.floor(idx / 8)
+        const x = Math.floor(idx / 16)
         const y = 0
-        const z = idx % 8
+        const z = idx % 16
         return { off_x: x, off_y: y, off_z: z }
     }
     
@@ -203,18 +203,18 @@ function convertSliceWorldCoordsToRelative2D(slice_voxels) {
 }
 
 function mapSliceVoxelsTo1DGrid(slice_voxels) {
-    const grid = Array.from({ length: 64 }, (_, idx) => '000200')
+    const grid = Array.from({ length: 256 }, (_, idx) => '000200')
     for (let voxel of slice_voxels) {
         if(builder_store.my_builder.edit_plane === 'xy'){
-            const idx = voxel.x + voxel.y * 8
+            const idx = voxel.x + voxel.y * 16
             grid[idx] = voxel.color
         }
         if(builder_store.my_builder.edit_plane === 'yz'){
-            const idx = voxel.y + voxel.z * 8
+            const idx = voxel.y + voxel.z * 16
             grid[idx] = voxel.color
         }
         if(builder_store.my_builder.edit_plane === 'zx'){
-            const idx = voxel.z + voxel.x * 8
+            const idx = voxel.z + voxel.x * 16
             grid[idx] = voxel.color
         }
     }
