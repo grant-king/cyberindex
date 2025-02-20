@@ -1,14 +1,12 @@
 <template>
     <!-- Plane Painter -->
-    <div class="border-16 border-dotted transfrom-flat rotate-x-180"
-    :style="{ borderColor: `#${current_color}` }">
+    <div class="border-16 border-dotted transfrom-flat rotate-x-180" :style="{ borderColor: `#${current_color}` }">
         <div class="bg-black overflow-auto max-w-4xl mx-auto p-4">
             <div class="grid grid-cols-16 gap-1">
                 <div v-for="slot in grid_slots" :key="slot" class="column">
                     <div class="aspect-square w-auto border border-white/50"
-                    :style="{ backgroundColor: `#${slot_colors[slot]}` }"
-                    @click="paintSlot(slot)">
-                        
+                        :style="{ backgroundColor: `#${slot_colors[slot]}` }" @click="paintSlot(slot)">
+
                     </div>
                 </div>
             </div>
@@ -22,55 +20,46 @@
         <div class="p-4 text-white">
             <div>set builder origin</div>
             <div class="p-2">
-                <label for="x"
-                class="mr-2">set x</label>
+                <label for="x" class="mr-2">set x</label>
                 <input type="number" id="x" class="bg-white/50 h-8 w-16 rounded-sm"
-                v-model="builder_store.my_builder.x"/>
+                    v-model="builder_store.my_builder.x" />
             </div>
             <div class="p-2">
-                <label for="y"
-                class="mr-2">set y</label>
+                <label for="y" class="mr-2">set y</label>
                 <input type="number" id="y" class="bg-white/50 h-8 w-16 rounded-sm"
-                v-model="builder_store.my_builder.y"/>
+                    v-model="builder_store.my_builder.y" />
             </div>
             <div class="p-2">
-                <label for="z"
-                class="mr-2">set z</label>
+                <label for="z" class="mr-2">set z</label>
                 <input type="number" id="z" class="bg-white/50 h-8 w-16 rounded-sm"
-                v-model="builder_store.my_builder.z"/>
+                    v-model="builder_store.my_builder.z" />
             </div>
         </div>
         <div class="p-4 text-white">
             <div>set build plane</div>
             <div class="p-2 flex objects-center">
-                <label for="xy"
-                class="mr-2">select xy</label>
-                <input type="radio" id="xy" value="xy" name="plane"
-                v-model="builder_store.my_builder.edit_plane"
-                class="h-8 w-8 rounded-sm"/>
+                <label for="xy" class="mr-2">select xy</label>
+                <input type="radio" id="xy" value="xy" name="plane" v-model="builder_store.my_builder.edit_plane"
+                    class="h-8 w-8 rounded-sm" />
             </div>
             <div class="p-2 flex objects-center">
-                <label for="yz"
-                class="mr-2">select yz</label>
-                <input type="radio" id="yz" value="yz" name="plane"
-                v-model="builder_store.my_builder.edit_plane"
-                class="h-8 w-8 rounded-sm"/>
+                <label for="yz" class="mr-2">select yz</label>
+                <input type="radio" id="yz" value="yz" name="plane" v-model="builder_store.my_builder.edit_plane"
+                    class="h-8 w-8 rounded-sm" />
             </div>
             <div class="p-2 flex objects-center">
-                <label for="zx"
-                class="mr-2">select zx</label>
-                <input type="radio" id="zx" value="zx" name="plane"
-                v-model="builder_store.my_builder.edit_plane"
-                class="h-8 w-8 rounded-sm"/>
+                <label for="zx" class="mr-2">select zx</label>
+                <input type="radio" id="zx" value="zx" name="plane" v-model="builder_store.my_builder.edit_plane"
+                    class="h-8 w-8 rounded-sm" />
             </div>
         </div>
     </div>
     <!-- Paint Stack -->
     <div class="mx-auto">
         <div class="flex-wrap flex p-4">
-            <div class="p-1"
-            v-for="claim in collector_store.claim_list" :key="claim.voxel.pk">
-                <div :style="{ backgroundColor: `#${claim.voxel.color}` }" class="aspect-square w-auto border border-black">
+            <div class="p-1" v-for="claim in collector_store.claim_list" :key="claim.voxel.pk">
+                <div :style="{ backgroundColor: `#${claim.voxel.color}` }"
+                    class="aspect-square w-auto border border-black">
                     <div class="w-4 h-4">
                     </div>
                 </div>
@@ -105,30 +94,26 @@ onMounted(async () => {
     advanceCurrentColor()
     await builder_store.fetchMyBuilder()
     await redrawSlice()
-    
+
 })
 
 watch(() => builder_store.my_builder.x, async () => {
-    //builder_store.updateBuilder()
     redrawSlice()
 })
 watch(() => builder_store.my_builder.y, async () => {
-    //builder_store.updateBuilder()
     redrawSlice()
 })
 watch(() => builder_store.my_builder.z, async () => {
-    //builder_store.updateBuilder()
     redrawSlice()
 })
 watch(() => builder_store.my_builder.edit_plane, async () => {
-    //builder_store.updateBuilder()
     redrawSlice()
 })
 
 async function redrawSlice() {
     current_world_slice_voxels.value = await voxel_store.fetchVoxelsInSlice(
-        builder_store.my_builder.x, 
-        builder_store.my_builder.y, 
+        builder_store.my_builder.x,
+        builder_store.my_builder.y,
         builder_store.my_builder.z,
         16,
         builder_store.my_builder.edit_plane)
@@ -139,10 +124,6 @@ async function redrawSlice() {
 }
 
 async function paintSlot(slot) {
-    //todo: if slot is already occupied, collect the associated voxel and unpaint the slot
-    // althought this would prevent multiple voxels from occupying the same space, which is not the goal
-    // need some way to let the users collect voxels while the 3d colleciton is broken
-    // or maybe easier to fix the 3d collection first and forget this
     slot_colors.value[slot] = current_color.value
     const claim = collector_store.claim_list.shift()
     const { off_x, off_y, off_z } = slotIdxToWorldCoords(slot)
@@ -177,17 +158,16 @@ function slotIdxToWorldCoords(idx) {
         const z = idx % 16
         return { off_x: x, off_y: y, off_z: z }
     }
-    
 }
 
-function advanceCurrentColor(){
-    if(collector_store.claim_list.length === 0){
+function advanceCurrentColor() {
+    if (collector_store.claim_list.length === 0) {
         collector_store.fetchClaims()
     }
-    if(collector_store.claim_list.length > 0){
+    if (collector_store.claim_list.length > 0) {
         current_color.value = collector_store.claim_list[0].voxel.color
     }
-    else{
+    else {
         current_color.value = '000200'
     }
 }
@@ -207,15 +187,15 @@ function convertSliceWorldCoordsToRelative2D(slice_voxels) {
 function mapSliceVoxelsTo1DGrid(slice_voxels) {
     const grid = Array.from({ length: 256 }, (_, idx) => '000200')
     for (let voxel of slice_voxels) {
-        if(builder_store.my_builder.edit_plane === 'xy'){
+        if (builder_store.my_builder.edit_plane === 'xy') {
             const idx = voxel.x + voxel.y * 16
             grid[idx] = voxel.color
         }
-        if(builder_store.my_builder.edit_plane === 'yz'){
+        if (builder_store.my_builder.edit_plane === 'yz') {
             const idx = voxel.y + voxel.z * 16
             grid[idx] = voxel.color
         }
-        if(builder_store.my_builder.edit_plane === 'zx'){
+        if (builder_store.my_builder.edit_plane === 'zx') {
             const idx = voxel.z + voxel.x * 16
             grid[idx] = voxel.color
         }
