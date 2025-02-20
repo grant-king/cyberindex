@@ -18,6 +18,7 @@
     <div></div>
     <div></div>
     <div class="flex flex-wrap justify-center object-center">
+        <BuilderPosGizmo />
         <div class="p-4 text-white">
             <div>set builder origin</div>
             <div class="p-2">
@@ -85,6 +86,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useCollectorStore } from '@/stores/collector';
 import { useBuilderStore } from '@/stores/builder';
 import { useVoxelStore } from '@/stores/voxel';
+import BuilderPosGizmo from '@/components/BuilderPosGizmo.vue';
 
 const collector_store = useCollectorStore()
 const builder_store = useBuilderStore()
