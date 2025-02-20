@@ -1,6 +1,6 @@
 <template>
-    <div class="">
-        <div class="bg-white/10 hover:bg-white/20 rounded-sm">
+    <div class="font-mono font-bold text-white">
+        <div class="bg-white/10 rounded-sm">
             <div class="grid grid-cols-3 gap-1 text-center place-content-around w-64 h-64">
                 <button class="size-16 bg-white/10 hover:bg-white/20 rounded-sm " @click="dec_x_inc_y">
 
@@ -24,12 +24,16 @@
                 </button>
                 <div class="size-16 place-content-center">
                     <button class="h-8 w-16 rounded-t-sm bg-white/10 hover:bg-white/20" @click="increment_z">
+
                         Z+
+
                     </button>
                     <hr>
                     <hr>
                     <button class="h-8 w-16 bg-white/10 rounded-b-sm hover:bg-white/20" @click="decrement_z">
+
                         Z-
+
                     </button>
                 </div>
                 <button class="size-16 bg-white/10 hover:bg-white/20 rounded-sm place-content-center" @click="increment_x">
