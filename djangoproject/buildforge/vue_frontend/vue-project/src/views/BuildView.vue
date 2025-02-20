@@ -109,19 +109,19 @@ onMounted(async () => {
 })
 
 watch(() => builder_store.my_builder.x, async () => {
-    builder_store.updateBuilder()
+    //builder_store.updateBuilder()
     redrawSlice()
 })
 watch(() => builder_store.my_builder.y, async () => {
-    builder_store.updateBuilder()
+    //builder_store.updateBuilder()
     redrawSlice()
 })
 watch(() => builder_store.my_builder.z, async () => {
-    builder_store.updateBuilder()
+    //builder_store.updateBuilder()
     redrawSlice()
 })
 watch(() => builder_store.my_builder.edit_plane, async () => {
-    builder_store.updateBuilder()
+    //builder_store.updateBuilder()
     redrawSlice()
 })
 
