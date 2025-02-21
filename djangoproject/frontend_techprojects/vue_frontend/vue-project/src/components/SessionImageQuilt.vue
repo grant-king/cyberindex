@@ -1,6 +1,6 @@
 <template>
     <div class="" @click="avatarcreate.fetchAllImages">
-        <div class="text-2xl my-8">
+        <div class="text-xl my-8">
             Session Image Quilt
         </div>
         <div class="flex flex-wrap">
