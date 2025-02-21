@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../../../img/favicon.ico" />
-    <title>Overview - MYCTP Documentation</title>
+    <title>Anon Auth - MYCTP Documentation</title>
     <link rel="stylesheet" href="../../../css/theme.css" />
     <link rel="stylesheet" href="../../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Overview";
-        var mkdocs_page_input_path = "features\\community\\overview.md";
+        var mkdocs_page_name = "Anon Auth";
+        var mkdocs_page_input_path = "features\\community\\anon-auth.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -53,19 +53,19 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" >Community</a>
     <ul class="current">
-                <li class="toctree-l2 current"><a class="reference internal current" href="#">Overview</a>
+                <li class="toctree-l2"><a class="reference internal" href="../overview/">Overview</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Anon Auth</a>
     <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#describe-the-vibe">describe the vibe</a>
+    <li class="toctree-l3"><a class="reference internal" href="#automated-session-authentication">automated session authentication</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#so-more-like-a-dive-bar-and-less-like-a-convention-center">so more like a dive bar, and less like a convention center?</a>
+    <li class="toctree-l4"><a class="reference internal" href="#temporary-cookie-key">temporary cookie key</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#enhanced-linked-session-authentication-session-image">enhanced linked session authentication (session image)</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#collaborative-interactions">collaborative interactions</a>
-    </li>
     </ul>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../anon-auth/">Anon Auth</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../sponsors/">Sponsors</a>
                 </li>
@@ -141,7 +141,7 @@
     <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Features</li>
           <li class="breadcrumb-item">Community</li>
-      <li class="breadcrumb-item active">Overview</li>
+      <li class="breadcrumb-item active">Anon Auth</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -150,20 +150,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="community-overview">Community Overview</h1>
-<p>The community part of My Community Technology Platform</p>
-<h2 id="describe-the-vibe">describe the vibe</h2>
-<p>This platform seeks to provide a particular flavor of community interaction in alternative, experimental ways. This is not a souless hub filled with endless strangers. This is an intimate niche community spot that people stumble on, where we hope everyone can find something to love.</p>
-<h4 id="so-more-like-a-dive-bar-and-less-like-a-convention-center">so more like a dive bar, and less like a convention center?</h4>
-<p>You've got it! That's the vibe we are going for. The cozy dive, not the crazy hive.</p>
-<h2 id="collaborative-interactions">collaborative interactions</h2>
-<p>Our community features... feature some different types of experimental collaborative interactions. Pixeldance, Our Disco Tech, the community image quilt are some collaborative communal experiences that you may want to experience.</p>
+                <h1 id="anonymous-authorization">Anonymous Authorization</h1>
+<p>This system employs special authorization mechanisms to ensure that our users enjoy a friction-free experience.</p>
+<h2 id="automated-session-authentication">automated session authentication</h2>
+<p>Except for special circumstances (see Sponsors) our platform uses anonomous automated session authentication in order to provide customized experience to return visitors without requiring an email and password.</p>
+<h4 id="temporary-cookie-key">temporary cookie key</h4>
+<p>This system stores a key in your browser (you can see it in your cookies!) that is used to provide an enjoyable experience with temporary data persistance for all users.</p>
+<h4 id="enhanced-linked-session-authentication-session-image">enhanced linked session authentication (session image)</h4>
+<p>There may be some users who want to keep their platform progression across different browsers or devices:</p>
+<ul>
+<li>Don't want to lose track of those fresh voxels you've collected but haven't yet built with? </li>
+<li>Don't want to lose track of the complete list of meditations that you've reflected on?</li>
+<li>Do you want to connect your sessions across devices to play as the same Our Disco Tech builder on multiple screens?</li>
+</ul>
+<p>The answer for these users is to submit something called a "session image":</p>
+<ul>
+<li>Submit a session image (.png) and the system will link your session keys, and will grant you acccess to that aggregated data from any linked session.</li>
+<li>The image will be used like a username and password.</li>
+<li>Keep it safe - submitting an image will upload a converted version for our session image quilt. </li>
+<li>As long as the origninal image is kept private, the data generated by activity from linked sessions will remain within your exclusive control.</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../../projects/" class="btn btn-neutral float-left" title="Projects"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../anon-auth/" class="btn btn-neutral float-right" title="Anon Auth">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../overview/" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../sponsors/" class="btn btn-neutral float-right" title="Sponsors">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -186,10 +198,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../../projects/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../overview/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../anon-auth/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../sponsors/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

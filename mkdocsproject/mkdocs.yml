@@ -15,6 +15,7 @@ nav:
     - Projects: features/projects.md
     - Community: 
       - Overview: features/community/overview.md
+      - Anon Auth: features/community/anon-auth.md
       - Sponsors: features/community/sponsors.md
       - Meditations: features/community/meditations.md
       - Reflections: features/community/reflections.md
