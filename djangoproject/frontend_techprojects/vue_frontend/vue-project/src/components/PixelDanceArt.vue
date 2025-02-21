@@ -1,13 +1,15 @@
 <template>
     <div class="">
-        <div class="flex mx-auto align-center justify-center bg-white/50 overflow-hidden">
+        <div class="p-8 font-mono text-3xl font-bold">
+            Pixeldance :: Community Art
+        </div>
+        <div class="flex mx-auto align-center justify-center overflow-hidden">
             <div class="border-4 border-dotted">
                 <div class="relative bg-black"
                     :style="{ width: `${stage_width}px`, height: `${stage_height}px` }" @click="play_pixel_dance">
                     <div v-for="pixeldance in pixeldance_store.pixeldance_list" :key="pixeldance.id"
                         class="absolute w-4 h-4 opacity-80 rounded-full"
                         :style="{ left: `${pixeldance.x * (stage_width / 400)}px`, top: `${pixeldance.y * (stage_width / 400)}px`, backgroundColor: pixeldance.color }">
-
                     </div>
                 </div>
             </div>
