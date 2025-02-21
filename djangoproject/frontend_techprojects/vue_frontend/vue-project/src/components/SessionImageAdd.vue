@@ -2,15 +2,12 @@
     <div class="">
         <div class="">
             <div class="my-8">
-                <div class="">
-                    connect this session to other sessions...
-                </div>
-                <div class="text-4xl">
+                <div class="text-2xl py-2 font-bold uppercase">
                     submit a session image
                 </div>
                 <div>
                     <button
-                        class="border-dotted text-xs border-b-2 border-r-4 rounded-sm bg-clip-border text-black font-bold px-3 py-2"
+                        class="border-dotted text-xs border-b-2 border-r-4 rounded-sm bg-clip-border text-black px-3 py-2"
                         @click="show_about = !show_about">
                         About Session Image
                     </button>
