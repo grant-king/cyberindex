@@ -2,26 +2,38 @@
     <div class="">
         <div>
             <BasicHeader eyebrow="you are so very welcome" title="Community Center"
-                description="Or 'Chill Zone'? 'Meditation Lagoon'? Feel free to give it a private nickname. Whatever you want to call this place, please have a good time." />
+                description="Feel free to give it a private nickname. Whatever you want to call this place, please have a good time." />
         </div>
-        <div>
+
+        <div class="border-black border-dashed border-y-8 bg-white/50">
+            <div class="min-h-16">
+            </div>
             <PixelDanceArt />
+            <div class="min-h-16">
+            </div>
         </div>
-        <div class="min-h-16 bg-white/50">
-        </div>
-        <div class="">
-            <SponsorCarousel />
-        </div>
-        <div class="min-h-32 bg-white/50">
-        </div>
-        <div class="">
+        <div class="border-black border-dashed border-y-8">
+            <div class="min-h-16">
+            </div>
             <SessionConsole />
+            <div class="min-h-16">
+            </div>
         </div>
-        <div class="min-h-32 bg-white/50">
-        </div>
-        <div class="bg-white/50">
+        <div class="bg-white/50 border-black border-dashed border-y-8">
+            <div class="min-h-16">
+            </div>
             <div class="font-mono p-8 text-3xl font-bold">
-                Experiments
+                Meditation Lagoon
+            </div>
+            <SponsorCarousel />
+            <div class="min-h-16">
+            </div>
+        </div>
+        <div class="bg-white/50 border-black border-dashed border-y-8">
+            <div class="min-h-16">
+            </div>
+            <div class="font-mono p-8 text-3xl font-bold">
+                Extra Experimental Experiments
             </div>
             <div class=" p-8">
                 <div class="text-black">
@@ -31,6 +43,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="hidden p-8">
                 <RouterLink to="/webgpu">
                     <button
@@ -39,7 +52,8 @@
                     </button>
                 </RouterLink>
             </div>
-
+            <div class="min-h-16">
+            </div>
         </div>
 
         <div class="min-h-32 bg-white/50">
