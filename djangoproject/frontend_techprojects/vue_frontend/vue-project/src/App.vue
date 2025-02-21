@@ -64,7 +64,9 @@
                       </ul>
                     </li>
                     <li>
-                      <div class="text-xs/6 font-semibold text-gray-400">Featured <RouterLink to="/login">Sponsors</RouterLink></div>
+                      <div class="text-xs/6 font-semibold text-gray-400">Featured <RouterLink to="/login">Sponsors
+                        </RouterLink>
+                      </div>
                       <ul role="list" class="-mx-2 mt-2 space-y-1">
                         <li v-for="feat_sponsor in feat_sponsors" :key="feat_sponsor.name">
                           <a :href="feat_sponsor.href"
@@ -124,7 +126,8 @@
 
             <!-- featured sponsors -->
             <li>
-              <div class="text-xs/6 font-semibold text-gray-400">Featured <RouterLink to="/login">Sponsors</RouterLink></div>
+              <div class="text-xs/6 font-semibold text-gray-400">Featured <RouterLink to="/login">Sponsors</RouterLink>
+              </div>
               <ul role="list" class="-mx-2 mt-2 space-y-1">
                 <li v-for="feat_sponsor in feat_sponsors" :key="feat_sponsor.name">
                   <a :href="feat_sponsor.href"
@@ -158,7 +161,7 @@
             method="GET">
             <input type="search" name="q" aria-label="Search"
               class="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-black outline-none placeholder:text-gray-400 sm:text-sm/6"
-              placeholder="Search" />
+              placeholder="Search Help Documents" />
             <MagnifyingGlassIcon class="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"
               aria-hidden="true" />
           </form>
@@ -182,7 +185,7 @@
 
             <!-- Separator -->
             <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-black/10" aria-hidden="true" />
-            
+
             <div v-show="user_id > 0">
               <!-- Profile dropdown -->
               <Menu as="div" class="relative">
@@ -223,11 +226,14 @@
     </div>
   </div>
   <div class="min-h-32 bg-gradient-to-b from-white/50 via-black to-black"></div>
-  <FooterAnimation />
-  <PixelDanceRecorder />
-  <FooterAnimation />
-  <PixelDancePlayer />
-  <FooterAnimation />
+  <div class="lg:ml-72">
+    <FooterAnimation />
+    <PixelDanceRecorder />
+    <FooterAnimation />
+    <PixelDancePlayer />
+    <FooterAnimation />
+  </div>
+
 </template>
 
 <script setup>
