@@ -1,5 +1,5 @@
 <template>
-<div class="bg-white/50 mx-auto">
+<div class="mx-auto">
     <div class="flex items-center justify-center">
         <div class="max-w-xl bg-white/5 px-8 rounded-md"
         @click="store.readMeditation">
