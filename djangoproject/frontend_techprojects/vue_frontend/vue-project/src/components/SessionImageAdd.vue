@@ -2,7 +2,7 @@
     <div class="">
         <div class="">
             <div class="my-8">
-                <div class="text-2xl py-2 font-bold uppercase">
+                <div class="text-2xl py-2">
                     submit a session image
                 </div>
                 <div>
@@ -14,7 +14,8 @@
                 </div>
             </div>
             <div class="my-4">
-                <input :v-model="image_name" type="file" accept="image/png" @change="handle_file_change" />
+                <input :v-model="image_name" type="file" accept="image/png" @change="handle_file_change" 
+                class="text-2xl font-mono"/>
             </div>
             <div v-if="image_name">
                 <div class="max-w-64">
