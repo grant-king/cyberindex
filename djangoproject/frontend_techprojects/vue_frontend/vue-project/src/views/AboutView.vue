@@ -33,7 +33,20 @@
       <AboutHeader :heading_content="heading_7b" />
       <AboutHeader :heading_content="heading_8" />
       <AboutHeader :heading_content="heading_9" />
-      <AboutHeader :heading_content="heading_10" />
+      <div class="border-dotted border-4 bg-white/5 p-4">
+        <a href="https://grant-king.github.io/cyberindex/">
+          <div>
+            you may also use the covert link in the navigation menu, find the word "Sponsors"
+          </div>
+          <div
+          class="px-1 text-3xl bg-clip-text text-white/80 font-extrabold bg-cover bg-[url('https://unrolla.blob.core.windows.net/unrolla/images/image_1-coral_2461.webp')]">
+          <RouterLink to="/login">Sponsor Login</RouterLink>
+        </div>
+        <div>
+          in the navigation menu, click the word "Sponsors" within the heading "Featured Sponsors"
+        </div>
+      </a>
+    </div>
     </div>
   </div>
 </template>
@@ -86,21 +99,20 @@ const heading_7 = {
 }
 
 const heading_7b = {
-  eyebrow: 'simple process',
-  title: 'No accounts, no logins',
-  description: 'This platform doesn’t provide persistant accounts for everyday users. It still provides a customized experience for all, by storing a temporary key on your device (cookies).'
-}
+  eyebrow: 'a different approach',
+  title: 'No regular accounts, no regular logins',
+  description: 'This platform doesn’t provide persistant accounts for everyday users. It still provides a customized and semi persistent experience for all, by storing a temporary key on your device. You may also submit a session image to link your temporary keys for persist experience across devices and sessions.'}
 
 const heading_8 = {
-  eyebrow: 'special tools',
-  title: 'Features for Organizations',
-  description: 'Sponsors and organizations gain access to specialized tools including public message publication, dynamic sponsor account control interface, and customized analytics.'
-}
-
-const heading_9 = {
   eyebrow: 'technical details',
   title: 'Integration & Access',
   description: 'Access our index through our web interface or API. We maintain current GitHub metrics, project health indicators, and engagement statistics. Developers can integrate our API into their own platforms, creating specialized civic tech discovery experiences for their communities.'
+}
+
+const heading_9 = {
+  eyebrow: 'very special',
+  title: 'Sponsor Features',
+  description: 'Sponsors have access to specialized features like the ability to pubilsh community meditations, a dynamic sponsor account control interface, and customized analytics.'
 }
 
 </script>
