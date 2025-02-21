@@ -34,7 +34,8 @@
               <!-- Sidebar component, swap this element with another sidebar if you like -->
               <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 pb-4 ring-1 ring-white/10">
                 <div class="flex h-64 shrink-0 items-center">
-                  <img class="h-48 w-auto" src="https://myctpmedia.blob.core.windows.net/default/avatars/f8d909803de8b75b0972436093b8e5be67d3c2d3f8a09106674398dd6df98b37.webp"
+                  <img class="h-48 w-auto"
+                    src="https://myctpmedia.blob.core.windows.net/default/avatars/f8d909803de8b75b0972436093b8e5be67d3c2d3f8a09106674398dd6df98b37.webp"
                     alt="Your Company" />
                 </div>
                 <nav class="flex flex-1 flex-col">
@@ -63,7 +64,7 @@
                       </ul>
                     </li>
                     <li>
-                      <div class="text-xs/6 font-semibold text-gray-400">Featured Sponsors</div>
+                      <div class="text-xs/6 font-semibold text-gray-400">Featured <RouterLink to="/login">Sponsors</RouterLink></div>
                       <ul role="list" class="-mx-2 mt-2 space-y-1">
                         <li v-for="feat_sponsor in feat_sponsors" :key="feat_sponsor.name">
                           <a :href="feat_sponsor.href"
@@ -90,7 +91,8 @@
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 pb-4">
         <div class="flex h-64 shrink-0 items-center">
-          <img class="h-48 w-auto" src="https://myctpmedia.blob.core.windows.net/default/avatars/f8d909803de8b75b0972436093b8e5be67d3c2d3f8a09106674398dd6df98b37.webp"
+          <img class="h-48 w-auto"
+            src="https://myctpmedia.blob.core.windows.net/default/avatars/f8d909803de8b75b0972436093b8e5be67d3c2d3f8a09106674398dd6df98b37.webp"
             alt="Your Company" />
         </div>
         <nav class="flex flex-1 flex-col">
@@ -122,7 +124,7 @@
 
             <!-- featured sponsors -->
             <li>
-              <div class="text-xs/6 font-semibold text-gray-400">Featured Sponsors</div>
+              <div class="text-xs/6 font-semibold text-gray-400">Featured <RouterLink to="/login">Sponsors</RouterLink></div>
               <ul role="list" class="-mx-2 mt-2 space-y-1">
                 <li v-for="feat_sponsor in feat_sponsors" :key="feat_sponsor.name">
                   <a :href="feat_sponsor.href"
@@ -152,7 +154,8 @@
         <div class="h-6 w-px bg-black/10 lg:hidden" aria-hidden="true" />
 
         <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-          <form class="grid flex-1 grid-cols-1" action="https://grant-king.github.io/cyberindex/search.html" method="GET">
+          <form class="grid flex-1 grid-cols-1" action="https://grant-king.github.io/cyberindex/search.html"
+            method="GET">
             <input type="search" name="q" aria-label="Search"
               class="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-black outline-none placeholder:text-gray-400 sm:text-sm/6"
               placeholder="Search" />
@@ -179,32 +182,34 @@
 
             <!-- Separator -->
             <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-black/10" aria-hidden="true" />
-
-            <!-- Profile dropdown -->
-            <Menu as="div" class="relative">
-              <MenuButton class="-m-1.5 flex items-center p-1.5">
-                <span class="sr-only">Open user menu</span>
-                <img class="size-8 rounded-full bg-gray-50"
-                  src="https://unrolla.blob.core.windows.net/unrolla/images/PXL_20240421_025657878.webp" alt="" />
-                <span class="hidden lg:flex lg:items-center">
-                  <ChevronDownIcon class="ml-2 size-5 text-gray-400" aria-hidden="true" />
-                </span>
-              </MenuButton>
-              <transition enter-active-class="transition ease-out duration-100"
-                enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-                leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
-                leave-to-class="transform opacity-0 scale-95">
-                <MenuItems
-                  class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none">
-                  <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
+            
+            <div v-show="user_id > 0">
+              <!-- Profile dropdown -->
+              <Menu as="div" class="relative">
+                <MenuButton class="-m-1.5 flex items-center p-1.5">
+                  <span class="sr-only">Open user menu</span>
+                  <img class="size-8 rounded-full bg-gray-50"
+                    src="https://unrolla.blob.core.windows.net/unrolla/images/PXL_20240421_025657878.webp" alt="" />
+                  <span class="hidden lg:flex lg:items-center">
+                    <ChevronDownIcon class="ml-2 size-5 text-gray-400" aria-hidden="true" />
+                  </span>
+                </MenuButton>
+                <transition enter-active-class="transition ease-out duration-100"
+                  enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
+                  leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
+                  leave-to-class="transform opacity-0 scale-95">
+                  <MenuItems
+                    class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none">
+                    <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
                     <RouterLink :to="item.to"
-                    :class="[active ? 'bg-gray-50 outline-none' : '', 'block px-3 py-1 text-sm/6 text-black']">
-                    {{ item.name }}
+                      :class="[active ? 'bg-gray-50 outline-none' : '', 'block px-3 py-1 text-sm/6 text-black']">
+                      {{ item.name }}
                     </RouterLink>
-                  </MenuItem>
-                </MenuItems>
-              </transition>
-            </Menu>
+                    </MenuItem>
+                  </MenuItems>
+                </transition>
+              </Menu>
+            </div>
           </div>
         </div>
       </div>
@@ -227,7 +232,7 @@
 
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import FooterAnimation from './components/FooterAnimation.vue'
 import PixelDanceRecorder from './components/PixelDanceRecorder.vue'
 import PixelDancePlayer from './components/PixelDancePlayer.vue'
@@ -257,7 +262,7 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 const router_navigation = [
   { name: 'Home', to: '/', icon: HomeIcon, current: false },
   { name: 'Project Registration', icon: FolderPlusIcon, to: '/projectadd', current: false },
-  { name: 'Community Center', to: '/community', icon: PuzzlePieceIcon, current: false},
+  { name: 'Community Center', to: '/community', icon: PuzzlePieceIcon, current: false },
   { name: 'About', to: '/about', icon: HandThumbUpIcon, current: false },
 ]
 
@@ -266,8 +271,8 @@ const link_navigation = [
 ]
 
 const feat_sponsors = [
-  { id: 2, name: 'Hack for LA', href: 'https://www.hackforla.org/', initial: 'HLA', current: false },
   { id: 1, name: 'Our Disco Tech', href: '/buildforge/', initial: 'ODT', current: false },
+  { id: 2, name: 'Grant King Dev', href: 'https://grantking.dev/', initial: 'GKD', current: false },
   { id: 3, name: 'IT20', href: 'https://2it0.com', initial: 'ITT', current: false },
 ]
 
@@ -281,8 +286,13 @@ const userNavigation = computed(() => {
       { name: 'Sponsor Login', to: '/login' },
     ]
   }
-})	
+})
 
 const sidebarOpen = ref(false)
+const user_id = ref(0)
+
+onMounted(() => {
+  user_id.value = window.user_id
+})
 
 </script>
