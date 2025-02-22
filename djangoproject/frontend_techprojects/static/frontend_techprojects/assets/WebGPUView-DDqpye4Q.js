@@ -1,4 +1,4 @@
-import{e as a,z as V,o as y,c as h,a as s,d as O,F as T,b as q}from"./index-CxHn06Qy.js";const R=`struct VertexInput {\r
+import{e as a,z as V,o as y,c as h,a as s,d as O,F as T,b as q}from"./index-CjaT8QIT.js";const R=`struct VertexInput {\r
     @location(0) pos: vec2f,\r
     @builtin(instance_index) instance: u32,\r
 };\r
