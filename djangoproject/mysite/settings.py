@@ -36,6 +36,8 @@ if not DEBUG:
 
 ALLOWED_HOSTS = [
     os.environ.get("WEBSITE_HOSTNAME"),
+    "myctp.org",
+    "www.myctp.org",
 ]
 
 # Application definition
