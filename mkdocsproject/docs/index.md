@@ -6,7 +6,7 @@
 
 # ::::::::::::::::
 
-# Visit [MYCTP](https://myctp.azurewebsites.net/).org
+# Visit [MYCTP](https://myctp.org/).org
 
 # ::::::::::::::::
 
