@@ -21,17 +21,71 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     up: false,
     down: false,
   })
+  const gamepad = ref(null)
 
   function initControls() {
     pointer_controls.value = new PointerLockControls(camera_store.createCamera(), document.body)
     camera_store.camera = pointer_controls.value.object
     const canvas = document.getElementById('three-canvas')
-    canvas.addEventListener('click', function() {
+    canvas.addEventListener('click', function () {
       pointer_controls.value.lock()
     })
-    document.body.addEventListener('keydown', onKeyDown)
-    document.body.addEventListener('keyup', onKeyUp)
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    window.addEventListener('gamepadconnected', gamepadconnected)
   }
+
+  function gamepadconnected(event) {
+    console.log('gamepad connected================================', event.gamepad.id, event.gamepad.buttons.length)
+    gamepad.value = event.gamepad
+  }
+
+  function pollGamepad() {
+    if (!gamepad.value) {
+      return
+    }
+    const gamepads = navigator.getGamepads()
+    for (let gamepad of gamepads) {
+      const button_x = gamepad.buttons[0]
+      const button_o = gamepad.buttons[1]
+      const button_sqare = gamepad.buttons[2]
+      const button_triangle = gamepad.buttons[3]
+      const button_lbutt = gamepad.buttons[4]
+      const button_rbutt = gamepad.buttons[5]
+      const button_ltrigger = gamepad.buttons[6]
+      const button_rtrigger = gamepad.buttons[7]
+      const button_share = gamepad.buttons[8]
+      const button_options = gamepad.buttons[9]
+      const button_ldepress = gamepad.buttons[10]
+      const button_rdepress = gamepad.buttons[11]
+      const button_up = gamepad.buttons[12]
+      const button_down = gamepad.buttons[13]
+      const button_left = gamepad.buttons[14]
+      const button_right = gamepad.buttons[15]
+      const button_system = gamepad.buttons[16]
+
+      console.log('gamepad buttons pressed:')
+      if (button_x.pressed) console.log('x')
+      if (button_o.pressed) console.log('o')
+      if (button_sqare.pressed) console.log('sqare')
+      if (button_triangle.pressed) console.log('triangle')
+      if (button_lbutt.pressed) console.log('lbutt')
+      if (button_rbutt.pressed) console.log('rbutt')
+      if (button_ltrigger.pressed) console.log('ltrigger')
+      if (button_rtrigger.pressed) console.log('rtrigger')
+      if (button_share.pressed) console.log('share')
+      if (button_options.pressed) console.log('options')
+      if (button_ldepress.pressed) console.log('ldepress')
+      if (button_rdepress.pressed) console.log('rdepress')
+      if (button_up.pressed) console.log('up')
+      if (button_down.pressed) console.log('down')
+      if (button_left.pressed) console.log('left')
+      if (button_right.pressed) console.log('right')
+      if (button_system.pressed) console.log('system/home/guide')
+
+    }
+  }
+
 
   function updateCameraPosition(delta_time) {
     updateOrientation(delta_time)
@@ -63,9 +117,9 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     acceleration.value.multiplyScalar(0.9 - dampening_temporal)
   }
 
-  function onKeyDown(event){
+  function onKeyDown(event) {
     console.log('key pressed', event.code)
-    switch(event.code){
+    switch (event.code) {
       case 'KeyW':
       case 'ArrowUp':
         keys_pressed.value.forward = true
@@ -93,8 +147,8 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     }
   }
 
-  function onKeyUp(event){
-    switch(event.code){
+  function onKeyUp(event) {
+    switch (event.code) {
       case 'KeyW':
       case 'ArrowUp':
         keys_pressed.value.forward = false
@@ -121,8 +175,8 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
         break
     }
   }
-   
-  
 
-  return { updateCameraPosition, initControls, pointer_controls, dampening, velocity }
+
+
+  return { updateCameraPosition, initControls, pollGamepad, pointer_controls, dampening, velocity }
 })
