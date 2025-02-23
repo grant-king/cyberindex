@@ -71,16 +71,47 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       if (button_triangle.pressed) console.log('triangle')
       if (button_lbutt.pressed) console.log('lbutt')
       if (button_rbutt.pressed) console.log('rbutt')
-      if (button_ltrigger.pressed) console.log('ltrigger')
-      if (button_rtrigger.pressed) console.log('rtrigger')
+      if (button_ltrigger.pressed) {
+        console.log('ltrigger')
+        keys_pressed.value.down = true
+      } 
+      else {
+        keys_pressed.value.down = false
+      }
+      if (button_rtrigger.pressed){
+        console.log('rtrigger')
+        keys_pressed.value.up = true
+      } else {
+        keys_pressed.value.up = false
+      }
       if (button_share.pressed) console.log('share')
       if (button_options.pressed) console.log('options')
       if (button_ldepress.pressed) console.log('ldepress')
       if (button_rdepress.pressed) console.log('rdepress')
-      if (button_up.pressed) console.log('up')
-      if (button_down.pressed) console.log('down')
-      if (button_left.pressed) console.log('left')
-      if (button_right.pressed) console.log('right')
+      if (button_up.pressed) {
+        console.log('up')
+        keys_pressed.value.forward = true
+      } else {
+        keys_pressed.value.forward = false
+      }
+      if (button_down.pressed) {
+        console.log('down')
+        keys_pressed.value.backward = true
+      } else {
+        keys_pressed.value.backward = false
+      }
+      if (button_left.pressed) {
+        console.log('left')
+        keys_pressed.value.left = true
+      } else {
+        keys_pressed.value.left = false
+      }
+      if (button_right.pressed) {
+        console.log('right')
+        keys_pressed.value.right = true
+      } else {
+        keys_pressed.value.right = false
+      } 
       if (button_system.pressed) console.log('system/home/guide')
 
     }
