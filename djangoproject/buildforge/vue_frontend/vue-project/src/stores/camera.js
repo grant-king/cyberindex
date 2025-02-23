@@ -10,6 +10,10 @@ export const useCameraStore = defineStore('camera', () => {
   const z_position = ref(50)
   const camera = ref(null)
 
+  const camera_rig = ref(null)
+  const yaw_object = ref(null)
+  const pitch_object = ref(null)
+  
   function createCamera() {
     if (camera.value === null) {
       camera.value = new THREE.PerspectiveCamera(fov.value, aspect.value, near.value, far.value)
@@ -17,13 +21,26 @@ export const useCameraStore = defineStore('camera', () => {
     }
     return camera.value
   }
+  
+  function createCameraRig() {
+    if (camera_rig.value === null) {  
+      camera_rig.value = new THREE.Object3D()
+      yaw_object.value = new THREE.Object3D()
+      camera_rig.value.add(yaw_object.value)
+      pitch_object.value = new THREE.Object3D()
+      yaw_object.value.add(pitch_object.value)
+      pitch_object.value.add(createCamera())
+    }
+    
+    return camera_rig.value
+  }
 
   function updatePosition(dx, dy, dz) {
     camera.value.position.x += dx
     camera.value.position.y += dy
     camera.value.position.z += dz
-  } 
-  
+  }
 
-  return { createCamera, camera, updatePosition }
+
+  return { createCamera, createCameraRig, camera, updatePosition, yaw_object, pitch_object, camera_rig }
 })
