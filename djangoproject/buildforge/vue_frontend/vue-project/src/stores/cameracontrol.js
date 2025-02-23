@@ -10,6 +10,8 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   const relative_orientation = ref(new THREE.Vector3(0, 0, 0))
   const position = ref(new THREE.Vector3())
   const velocity = ref(new THREE.Vector3())
+  const current_rotational_velocity = ref(new THREE.Vector2()) // x = pitch, y = yaw
+  const target_rotational_velocity = ref(new THREE.Vector2())
   const acceleration = ref(new THREE.Vector3())
   const pointer_controls = ref(null)
   const acceleration_constant = 2
@@ -36,7 +38,7 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   }
 
   function gamepadconnected(event) {
-    console.log('gamepad connected================================', event.gamepad.id, event.gamepad.buttons.length)
+    console.log('gamepad connected================================', event.gamepad.id)
     gamepad.value = event.gamepad
   }
 
@@ -45,26 +47,30 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       return
     }
     const gamepads = navigator.getGamepads()
-    for (let gamepad of gamepads) {
-      const button_x = gamepad.buttons[0]
-      const button_o = gamepad.buttons[1]
-      const button_sqare = gamepad.buttons[2]
-      const button_triangle = gamepad.buttons[3]
-      const button_lbutt = gamepad.buttons[4]
-      const button_rbutt = gamepad.buttons[5]
-      const button_ltrigger = gamepad.buttons[6]
-      const button_rtrigger = gamepad.buttons[7]
-      const button_share = gamepad.buttons[8]
-      const button_options = gamepad.buttons[9]
-      const button_ldepress = gamepad.buttons[10]
-      const button_rdepress = gamepad.buttons[11]
-      const button_up = gamepad.buttons[12]
-      const button_down = gamepad.buttons[13]
-      const button_left = gamepad.buttons[14]
-      const button_right = gamepad.buttons[15]
-      const button_system = gamepad.buttons[16]
+    gamepad.value = navigator.getGamepads()[0]
+    if (gamepad.value) {
+      const button_x = gamepad.value.buttons[0]
+      const button_o = gamepad.value.buttons[1]
+      const button_sqare = gamepad.value.buttons[2]
+      const button_triangle = gamepad.value.buttons[3]
+      const button_lbutt = gamepad.value.buttons[4]
+      const button_rbutt = gamepad.value.buttons[5]
+      const button_ltrigger = gamepad.value.buttons[6]
+      const button_rtrigger = gamepad.value.buttons[7]
+      const button_share = gamepad.value.buttons[8]
+      const button_options = gamepad.value.buttons[9]
+      const button_ldepress = gamepad.value.buttons[10]
+      const button_rdepress = gamepad.value.buttons[11]
+      const button_up = gamepad.value.buttons[12]
+      const button_down = gamepad.value.buttons[13]
+      const button_left = gamepad.value.buttons[14]
+      const button_right = gamepad.value.buttons[15]
+      const button_system = gamepad.value.buttons[16]
+      const axis_left_x = gamepad.value.axes[0]
+      const axis_left_y = gamepad.value.axes[1]
+      const axis_right_x = gamepad.value.axes[2]
+      const axis_right_y = gamepad.value.axes[3]
 
-      console.log('gamepad buttons pressed:')
       if (button_x.pressed) console.log('x')
       if (button_o.pressed) console.log('o')
       if (button_sqare.pressed) console.log('sqare')
@@ -113,6 +119,19 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
         keys_pressed.value.right = false
       } 
       if (button_system.pressed) console.log('system/home/guide')
+      console.log('gamepad axes:')
+      
+      console.log('left stick x:', axis_left_x)
+      
+      
+      console.log('left stick y:', axis_left_y)
+      
+      
+      console.log('right stick x:', axis_right_x) // yaw
+      target_rotational_velocity.value.y += axis_right_x * 0.1
+      
+      console.log('right stick y:', axis_right_y) // pitch
+      target_rotational_velocity.value.x += axis_right_y  * 0.04
 
     }
   }
@@ -123,6 +142,12 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     velocity.value.add(acceleration.value.clone().multiplyScalar(delta_time))
     position.value.add(velocity.value.clone().multiplyScalar(delta_time))
     camera_store.camera.position.copy(position.value)
+
+    current_rotational_velocity.value.lerp(target_rotational_velocity.value, 0.1)
+    camera_store.camera.rotation.x -= current_rotational_velocity.value.x * delta_time
+    camera_store.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera_store.camera.rotation.x))
+    camera_store.camera.rotation.y -= current_rotational_velocity.value.y * delta_time
+
     dampening(delta_time)
   }
 
@@ -146,6 +171,7 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     const dampening_temporal = Math.abs(1 - delta_time)
     velocity.value.multiplyScalar(dampening_temporal)
     acceleration.value.multiplyScalar(0.9 - dampening_temporal)
+    target_rotational_velocity.value.multiplyScalar(dampening_temporal)
   }
 
   function onKeyDown(event) {
