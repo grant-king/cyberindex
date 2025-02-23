@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import * as THREE from 'three'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
 import { useCameraStore } from './camera.js'
+import { useSceneStore } from './scene.js'
 
 const camera_store = useCameraStore()
 
@@ -14,6 +15,7 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   const target_rotational_velocity = ref(new THREE.Vector2())
   const acceleration = ref(new THREE.Vector3())
   const pointer_controls = ref(null)
+  const gamepad_camera_rig = ref(null)
   const acceleration_constant = 2
   const keys_pressed = ref({
     forward: false,
@@ -40,6 +42,9 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   function gamepadconnected(event) {
     console.log('gamepad connected================================', event.gamepad.id)
     gamepad.value = event.gamepad
+    gamepad_camera_rig.value = camera_store.createCameraRig()
+    const scene_store = useSceneStore()
+    scene_store.add(gamepad_camera_rig.value)
   }
 
   function pollGamepad() {
@@ -136,10 +141,10 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       keys_pressed.value.backward = [true, false][axis_left_y > 0.1 ? 0 : 1]
       
       
-      console.log('right stick x:', axis_right_x) // yaw
+      console.log('right stick x:', axis_right_x) // yaw around y, controlled by right stick x axis
       target_rotational_velocity.value.y += axis_right_x * 0.1
       
-      console.log('right stick y:', axis_right_y) // pitch
+      console.log('right stick y:', axis_right_y) // pitch around x, controlled by right stick y axis
       target_rotational_velocity.value.x -= axis_right_y  * 0.04
 
     }
@@ -151,12 +156,21 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     velocity.value.add(acceleration.value.clone().multiplyScalar(delta_time))
     position.value.add(velocity.value.clone().multiplyScalar(delta_time))
     camera_store.camera.position.copy(position.value)
-
-    current_rotational_velocity.value.lerp(target_rotational_velocity.value, 0.1)
-    camera_store.camera.rotation.x -= current_rotational_velocity.value.x * delta_time
-    camera_store.camera.rotation.y -= current_rotational_velocity.value.y * delta_time
-
+    updateGamepadRotation(delta_time)
+    
     dampening(delta_time)
+  }
+  
+  function updateGamepadRotation(delta_time) {
+    if (!gamepad.value) {
+      return
+    }
+    
+    current_rotational_velocity.value.lerp(target_rotational_velocity.value, 0.1)
+    
+  
+    camera_store.yaw_object.rotation.y -= current_rotational_velocity.value.y * delta_time
+    camera_store.pitch_object.rotation.x -= current_rotational_velocity.value.x * delta_time
   }
 
   function updateOrientation(delta_time) {
