@@ -40,9 +40,10 @@ claim_worker.onmessage = (e) => {
     console.log(e.data)
 }
 
-let measure_interval_id, visual_interval_id, claim_interval_id, zone_refresh_interval_id, recent_refresh_interval_id
+let measure_interval_id, visual_interval_id, claim_interval_id, zone_refresh_interval_id, recent_refresh_interval_id, controller_poll_interval_id
 
 onMounted(() => {
+    controller_poll_interval_id = setInterval(controllerPoll, 100)
     measure_interval_id = setInterval(measureCollector, 200)
     visual_interval_id = setInterval(processVisualQueue, 400)
     claim_interval_id = setInterval(processClaimQueue, 800)
@@ -64,7 +65,12 @@ onUnmounted(() => {
     clearInterval(claim_interval_id)
     //clearInterval(zone_refresh_interval_id)
     clearInterval(recent_refresh_interval_id)
+    clearInterval(controller_poll_interval_id)
 })
+
+function controllerPoll() {
+    control_store.pollGamepad()
+}
 
 function measureCollector() {
     const cam_x = camera_store.camera.position.x
