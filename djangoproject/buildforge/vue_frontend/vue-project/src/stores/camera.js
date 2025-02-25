@@ -31,7 +31,6 @@ export const useCameraStore = defineStore('camera', () => {
       pitch_object.value = new THREE.Object3D()
       yaw_object.value.add(pitch_object.value)
       camera.value = new THREE.PerspectiveCamera(fov.value, aspect.value, near.value, far.value)
-      //pitch_object.value.add(camera.value)
     }
     
     return camera_rig.value
@@ -48,7 +47,6 @@ export const useCameraStore = defineStore('camera', () => {
     console.log('camera_rig yaw rotation', camera_rig.value.children[0].rotation)
     camera.value.rotation.y = camera_rig.value.children[0].rotation.y
     camera.value.rotation.x = camera_rig.value.children[0].children[0].rotation.x
-    //console.log('camera rig position updated', camera_rig.value)
   }
 
   return { createCamera, createCameraRig, camera, yaw_object, pitch_object, camera_rig, updateRigPos }

@@ -75,15 +75,6 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       const axis_left_y = gamepad.value.axes[1]
       const axis_right_x = gamepad.value.axes[2]
       const axis_right_y = gamepad.value.axes[3]
-      
-      //console.log('left stick x:', axis_left_x)
-      //keys_pressed.value.left = [true, false][axis_left_x < -0.1 ? 0 : 1]
-      //keys_pressed.value.right = [true, false][axis_left_x > 0.1 ? 0 : 1]
-      
-      
-      //console.log('left stick y:', axis_left_y) // forward/backward
-      //keys_pressed.value.forward = [true, false][axis_left_y < -0.1 ? 0 : 1]
-      //keys_pressed.value.backward = [true, false][axis_left_y > 0.1 ? 0 : 1]
 
       if (button_x.pressed) console.log('x')
       if (button_o.pressed) console.log('o')
@@ -135,19 +126,14 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       if (button_system.pressed) {
         console.log('system/home/guide')
         // exit pointerlock controls
-        pointer_controls.value.unlock()
-        
+        pointer_controls.value.unlock()  
       } 
-      //console.log('gamepad axes:')
-      
-      
       
       //console.log('right stick x:', axis_right_x) // yaw around y, controlled by right stick x axis
       target_rotational_velocity.value.y += axis_right_x * 0.1
       
       //console.log('right stick y:', axis_right_y) // pitch around x, controlled by right stick y axis
       target_rotational_velocity.value.x -= axis_right_y  * 0.04
-
     }
   }
 
@@ -172,10 +158,6 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     
     current_rotational_velocity.value.lerp(target_rotational_velocity.value, 0.1)
 
-    console.log('current_rotational_velocity', current_rotational_velocity.value)
-    console.log('target_rotational_velocity', target_rotational_velocity.value)
-  
-    console.log('applied y rotation', delta_time)
     // yaw object
     camera_store.camera_rig.children[0].rotation.y -= current_rotational_velocity.value.y * delta_time
     // pitch object
@@ -263,8 +245,6 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
         break
     }
   }
-
-
 
   return { updateCameraPosition, initControls, pollGamepad, pointer_controls, dampening, velocity }
 })
