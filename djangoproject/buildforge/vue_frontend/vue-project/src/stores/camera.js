@@ -1,13 +1,14 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import * as THREE from 'three'
+import { loadRouteLocation } from 'vue-router'
 
 export const useCameraStore = defineStore('camera', () => {
   const fov = ref(75)
   const aspect = ref(window.innerWidth / window.innerHeight)
   const near = ref(0.1)
   const far = ref(1000)
-  const z_position = ref(50)
+  const z_position = ref(0)
   const camera = ref(null)
 
   const camera_rig = ref(null)
@@ -29,18 +30,26 @@ export const useCameraStore = defineStore('camera', () => {
       camera_rig.value.add(yaw_object.value)
       pitch_object.value = new THREE.Object3D()
       yaw_object.value.add(pitch_object.value)
-      pitch_object.value.add(createCamera())
+      camera.value = new THREE.PerspectiveCamera(fov.value, aspect.value, near.value, far.value)
+      //pitch_object.value.add(camera.value)
     }
     
     return camera_rig.value
   }
 
-  function updatePosition(dx, dy, dz) {
-    camera.value.position.x += dx
-    camera.value.position.y += dy
-    camera.value.position.z += dz
+  function updateRigPos(pos) {
+    if (camera_rig.value === null) {
+      console.log('camera rig not created yet')
+      camera.value.position.copy(pos)
+      return
+    }
+    camera_rig.value.position.copy(pos)
+    camera.value.position.copy(camera_rig.value.position)
+    console.log('camera_rig yaw rotation', camera_rig.value.children[0].rotation)
+    camera.value.rotation.y = camera_rig.value.children[0].rotation.y
+    camera.value.rotation.x = camera_rig.value.children[0].children[0].rotation.x
+    //console.log('camera rig position updated', camera_rig.value)
   }
 
-
-  return { createCamera, createCameraRig, camera, updatePosition, yaw_object, pitch_object, camera_rig }
+  return { createCamera, createCameraRig, camera, yaw_object, pitch_object, camera_rig, updateRigPos }
 })
