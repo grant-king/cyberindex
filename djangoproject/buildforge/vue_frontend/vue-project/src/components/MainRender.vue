@@ -64,4 +64,16 @@ watch(() => scene_store.render_scene, (new_scene, old_scene) => {
     
     animation_frame_id = requestAnimationFrame(rendering_loop)
 })
+
+// watch for changes to camera_store.camera
+watch(() => camera_store.camera, (new_camera, old_camera) => {
+    console.log('camera changed', new_camera, old_camera)
+    renderer.render(scene_store.render_scene, new_camera)
+    // cancel the current animation frame
+    if (animation_frame_id) {
+        cancelAnimationFrame(animation_frame_id)
+    }
+    
+    animation_frame_id = requestAnimationFrame(rendering_loop)
+})
 </script>
