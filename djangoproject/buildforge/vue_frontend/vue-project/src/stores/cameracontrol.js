@@ -42,9 +42,9 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
   function gamepadconnected(event) {
     console.log('gamepad connected================================', event.gamepad.id)
     gamepad.value = event.gamepad
-    gamepad_camera_rig.value = camera_store.createCameraRig()
     const scene_store = useSceneStore()
-    scene_store.add(gamepad_camera_rig.value)
+    scene_store.add(camera_store.createCameraRig())
+    //pointer_controls.value = new PointerLockControls(camera_store.camera_rig.object[0].object[0].object[0], document.body)
   }
 
   function pollGamepad() {
@@ -75,6 +75,15 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       const axis_left_y = gamepad.value.axes[1]
       const axis_right_x = gamepad.value.axes[2]
       const axis_right_y = gamepad.value.axes[3]
+      
+      //console.log('left stick x:', axis_left_x)
+      //keys_pressed.value.left = [true, false][axis_left_x < -0.1 ? 0 : 1]
+      //keys_pressed.value.right = [true, false][axis_left_x > 0.1 ? 0 : 1]
+      
+      
+      //console.log('left stick y:', axis_left_y) // forward/backward
+      //keys_pressed.value.forward = [true, false][axis_left_y < -0.1 ? 0 : 1]
+      //keys_pressed.value.backward = [true, false][axis_left_y > 0.1 ? 0 : 1]
 
       if (button_x.pressed) console.log('x')
       if (button_o.pressed) console.log('o')
@@ -99,25 +108,25 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
       if (button_options.pressed) console.log('options')
       if (button_ldepress.pressed) console.log('ldepress')
       if (button_rdepress.pressed) console.log('rdepress')
-      if (button_up.pressed) {
+      if (button_up.pressed || axis_left_y < -0.1) {
         console.log('up')
         keys_pressed.value.forward = true
       } else {
         keys_pressed.value.forward = false
       }
-      if (button_down.pressed) {
+      if (button_down.pressed || axis_left_y > 0.1) {
         console.log('down')
         keys_pressed.value.backward = true
       } else {
         keys_pressed.value.backward = false
       }
-      if (button_left.pressed) {
+      if (button_left.pressed || axis_left_x < -0.1) {
         console.log('left')
         keys_pressed.value.left = true
       } else {
         keys_pressed.value.left = false
       }
-      if (button_right.pressed) {
+      if (button_right.pressed || axis_left_x > 0.1) {
         console.log('right')
         keys_pressed.value.right = true
       } else {
@@ -129,22 +138,14 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
         pointer_controls.value.unlock()
         
       } 
-      console.log('gamepad axes:')
-      
-      console.log('left stick x:', axis_left_x)
-      keys_pressed.value.left = [true, false][axis_left_x < -0.1 ? 0 : 1]
-      keys_pressed.value.right = [true, false][axis_left_x > 0.1 ? 0 : 1]
+      //console.log('gamepad axes:')
       
       
-      console.log('left stick y:', axis_left_y) // forward/backward
-      keys_pressed.value.forward = [true, false][axis_left_y < -0.1 ? 0 : 1]
-      keys_pressed.value.backward = [true, false][axis_left_y > 0.1 ? 0 : 1]
       
-      
-      console.log('right stick x:', axis_right_x) // yaw around y, controlled by right stick x axis
+      //console.log('right stick x:', axis_right_x) // yaw around y, controlled by right stick x axis
       target_rotational_velocity.value.y += axis_right_x * 0.1
       
-      console.log('right stick y:', axis_right_y) // pitch around x, controlled by right stick y axis
+      //console.log('right stick y:', axis_right_y) // pitch around x, controlled by right stick y axis
       target_rotational_velocity.value.x -= axis_right_y  * 0.04
 
     }
@@ -155,22 +156,30 @@ export const useCameracontrolStore = defineStore('cameracontrol', () => {
     updateOrientation(delta_time)
     velocity.value.add(acceleration.value.clone().multiplyScalar(delta_time))
     position.value.add(velocity.value.clone().multiplyScalar(delta_time))
-    camera_store.camera.position.copy(position.value)
-    updateGamepadRotation(delta_time)
+    //camera_store.camera.position.copy(position.value)
+    camera_store.updateRigPos(position.value)
+    updateGamepadRotation(position, delta_time)
     
     dampening(delta_time)
   }
   
-  function updateGamepadRotation(delta_time) {
+  function updateGamepadRotation(position, delta_time) {
     if (!gamepad.value) {
+      console.log('no gamepad connected')
       return
+      
     }
     
     current_rotational_velocity.value.lerp(target_rotational_velocity.value, 0.1)
-    
+
+    console.log('current_rotational_velocity', current_rotational_velocity.value)
+    console.log('target_rotational_velocity', target_rotational_velocity.value)
   
-    camera_store.yaw_object.rotation.y -= current_rotational_velocity.value.y * delta_time
-    camera_store.pitch_object.rotation.x -= current_rotational_velocity.value.x * delta_time
+    console.log('applied y rotation', delta_time)
+    // yaw object
+    camera_store.camera_rig.children[0].rotation.y -= current_rotational_velocity.value.y * delta_time
+    // pitch object
+    camera_store.camera_rig.children[0].children[0].rotation.x -= current_rotational_velocity.value.x * delta_time
   }
 
   function updateOrientation(delta_time) {
