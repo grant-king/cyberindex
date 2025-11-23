@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "rebirth",
     "buildforge",
     "radio",
+    "cultomatic",
 ]
 
 MIDDLEWARE = [
