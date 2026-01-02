@@ -59,11 +59,13 @@ INSTALLED_APPS = [
     "buildforge",
     "radio",
     "cultomatic",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -211,3 +213,10 @@ if not DEBUG:
             },
         },
     }
+
+CORS_ALLOWED_ORIGINS = []
+
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:5173",
+    ]
