@@ -29,6 +29,7 @@ from rebirth import views_api as rebirth_views
 from buildforge import views_api as buildforge_views
 from django.conf import settings
 from django.conf.urls.static import static
+from cultomatic import views_api as cultomatic_views
 
 router = routers.DefaultRouter()
 router.register(r'locations', techprojects_views.LocationViewSet)
@@ -60,6 +61,9 @@ urlpatterns = [
     path('login/', sponsors_views.LoginView.as_view(), name='login'),
     path('logout/', sponsors_views.LogoutView.as_view(), name='logout'),
     path('register/', sponsors_views.RegisterView.as_view(), name='register'),
+    # cultomatic accounts
+    path('cultomatic/register/', cultomatic_views.RegisterView.as_view(), name='cultomatic_register'),
+    # password reset
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
