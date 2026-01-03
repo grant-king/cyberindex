@@ -48,6 +48,7 @@ router.register(r'voxels', buildforge_views.VoxelViewSet)
 router.register(r'claims', buildforge_views.ClaimViewSet)
 router.register(r'builders', buildforge_views.BuilderViewSet)
 router.register(r'placements', buildforge_views.PlacementPromiseViewSet)
+router.register(r'animations', cultomatic_views.AnimationViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
