@@ -42,6 +42,9 @@ class CreatorViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Creator.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class AnimationViewSet(viewsets.ModelViewSet):
@@ -51,3 +54,7 @@ class AnimationViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         return Animation.objects.filter(creator__user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user.creator)
+
