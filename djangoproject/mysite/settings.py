@@ -210,7 +210,7 @@ if not DEBUG:
         },
     }
 
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = ["https://cultomatics.org"]
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
