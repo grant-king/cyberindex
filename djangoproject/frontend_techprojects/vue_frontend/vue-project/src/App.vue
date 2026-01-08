@@ -228,10 +228,6 @@
   <div class="min-h-32 bg-gradient-to-b from-white/50 via-black to-black"></div>
   <div class="lg:ml-72">
     <FooterAnimation />
-    <PixelDanceRecorder />
-    <FooterAnimation />
-    <PixelDancePlayer />
-    <FooterAnimation />
   </div>
 
 </template>
@@ -268,8 +264,8 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 const router_navigation = [
   { name: 'Home', to: '/', icon: HomeIcon, current: false },
   { name: 'Project Registration', icon: FolderPlusIcon, to: '/projectadd', current: false },
-  { name: 'Community Center', to: '/community', icon: PuzzlePieceIcon, current: false },
-  { name: 'About', to: '/about', icon: HandThumbUpIcon, current: false },
+  //{ name: 'Community Center', to: '/community', icon: PuzzlePieceIcon, current: false },
+  //{ name: 'About', to: '/about', icon: HandThumbUpIcon, current: false },
 ]
 
 const link_navigation = [
@@ -277,9 +273,9 @@ const link_navigation = [
 ]
 
 const feat_sponsors = [
-  { id: 1, name: 'Our Disco Tech', href: '/buildforge/', initial: 'ODT', current: false },
+  //{ id: 1, name: 'Our Disco Tech', href: '/buildforge/', initial: 'ODT', current: false },
   { id: 2, name: 'Grant King Dev', href: 'https://grantking.dev/', initial: 'GKD', current: false },
-  { id: 3, name: 'IT20', href: 'https://2it0.com', initial: 'ITT', current: false },
+  //{ id: 3, name: 'IT20', href: 'https://2it0.com', initial: 'ITT', current: false },
 ]
 
 const userNavigation = computed(() => {
