@@ -4,3 +4,5 @@ djangoproject/.env
 /djangoproject/media
 djangoproject/.vscode/settings.json
 .vscode/settings.json
+/djangoproject/frontend_techprojects/static
+/djangoproject/buildforge/static
