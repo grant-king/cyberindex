@@ -10,6 +10,6 @@ class Creator(models.Model):
 class Animation(models.Model):
     creator = models.ForeignKey(Creator, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="cultomatic/animations/")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     info = models.JSONField(default=dict) #image and frame size, palette, etc
 
