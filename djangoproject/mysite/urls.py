@@ -64,6 +64,7 @@ urlpatterns = [
     path('register/', sponsors_views.RegisterView.as_view(), name='register'),
     # cultomatic accounts
     path('cultomatic/register/', cultomatic_views.RegisterView.as_view(), name='cultomatic_register'),
+    path('apiv1/cultomatic/export/', cultomatic_views.AnimationExportView.as_view(), name='cultomatic_export'),
     # password reset
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

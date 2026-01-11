@@ -13,3 +13,8 @@ class AnimationSerializer(serializers.ModelSerializer):
         model = Animation
         fields = ["id", "image", "info"]
 
+
+class AnimationExportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Animation
+        fields = ["id", "image", "created_at"]

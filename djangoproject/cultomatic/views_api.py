@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from cultomatic.models import Animation, Creator
 from django.contrib.auth.models import User
 from django.contrib.auth import login
-from cultomatic.serializers import AnimationSerializer, CreatorSerializer
-from rest_framework.permissions import IsAuthenticated
+from cultomatic.serializers import AnimationSerializer, CreatorSerializer, AnimationExportSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class RegisterView(APIView):
     """
@@ -58,3 +58,13 @@ class AnimationViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user.creator)
 
+
+class AnimationExportView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        start_date = request.data.get("start_date")
+        end_date = request.data.get("end_date")
+        animations = Animation.objects.filter(created_at__gte=start_date, created_at__lte=end_date)
+        serializer = AnimationExportSerializer(animations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
