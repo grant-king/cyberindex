@@ -23,7 +23,7 @@ mkdocs==1.6.1
 mkdocs-get-deps==0.2.0
 packaging==24.2
 pathspec==0.12.1
-pillow==11.1.0
+pillow==12.1.1
 platformdirs==4.3.6
 psycopg2==2.9.10
 pycparser==2.22
